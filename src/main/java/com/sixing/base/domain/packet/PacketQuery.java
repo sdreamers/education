@@ -30,4 +30,5 @@ public class PacketQuery extends BaseVO implements Serializable {
     private String createTimeEnd;
 	private Long creatorId;
 	private String creatorName;
+	private String[] packets;
 }

@@ -65,8 +65,8 @@ public class ResultModel<T> {
 		this.content = content;
 	}
 	
-	public static ResultModel ok() {
-		return new ResultModel(Constant.RESPONSE_SUCCESS_CODE, ResponseMsgConstant.success);
+	public static <T> ResultModel<T> ok() {
+		return new ResultModel<T>(Constant.RESPONSE_SUCCESS_CODE, ResponseMsgConstant.success);
 	}
 	
 	public static <T> ResultModel<T> ok(T content) {

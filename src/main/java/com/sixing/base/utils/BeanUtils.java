@@ -1,5 +1,6 @@
 package com.sixing.base.utils;
 
+import com.google.common.collect.Lists;
 import com.sixing.base.utils.exception.ServiceException;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.springframework.beans.FatalBeanException;
@@ -8,6 +9,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -160,6 +162,23 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         } catch (Exception e) {
             e.printStackTrace();
             throw new ServiceException(e.getMessage());
+        }
+    }
+
+    public static <S, T> List<T> copyProperties(List<S> sources, Class<T> targetClass) {
+        List<T> result = Lists.newArrayList();
+        try {
+            if (sources == null || sources.isEmpty()) {
+                return result;
+            }
+            for (S source : sources) {
+                T target = targetClass.newInstance();
+                copyAndTrimProperties(source, target);
+                result.add(target);
+            }
+            return result;
+        } catch (Exception e) {
+            return result;
         }
     }
 

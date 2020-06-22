@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sixing.education.school.dao.SchoolDAO">
+<mapper namespace="com.sixing.education.supplier.dao.SupplierDAO">
 
-    <resultMap id="baseResultPO" type="com.sixing.base.domain.school.SchoolPO">
+    <resultMap id="baseResultPO" type="com.sixing.base.domain.supplier.SupplierPO">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
     </resultMap>
@@ -30,12 +30,6 @@
         <where>
             <if test="whereParams.id != null">AND `id`=#{whereParams.id}</if>
             <if test="whereParams.name != null">AND `name`=#{whereParams.name}</if>
-            <if test="whereParams.schools != null and whereParams.schools.length > 0">
-                AND `name` IN
-                <foreach collection="whereParams.schools" item="item" separator="," open="(" close=")">
-                    #{item}
-                </foreach>
-            </if>
         </where>
     </sql>
     <sql id="sortAll">
@@ -50,7 +44,7 @@
     </sql>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="insertParams.id">
-        insert into t_school
+        insert into t_supplier
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="insertParams.id != null"> `id`,</if>
             <if test="insertParams.name != null"> `name`,</if>
@@ -62,35 +56,35 @@
     </insert>
 
     <update id="update">
-        update t_school
+        update t_supplier
         <include refid="setAll" />
         <include refid="whereAll" />
     </update>
 
     <delete id="delete">
-        delete from t_school
+        delete from t_supplier
         <include refid="whereAll" />
     </delete>
 
     <select id="count" resultType="java.lang.Integer">
-        select count(id) from t_school
+        select count(id) from t_supplier
         <include refid="whereAll" />
     </select>
 
     <select id="get" resultMap="baseResultPO">
-        select * from t_school
+        select * from t_supplier
         <include refid="whereAll" />
     </select>
 
     <select id="select" resultMap="baseResultPO">
         select
         <include refid="selectAll" />
-        from t_school
+        from t_supplier
         <include refid="whereAll" />
     </select>
 
     <select id="list" resultMap="baseResultPO">
-        select * from t_school
+        select * from t_supplier
         <include refid="whereAll" />
         <include refid="sortAll" />
     </select>
@@ -98,13 +92,13 @@
     <select id="selects" resultMap="baseResultPO">
         select
         <include refid="selectAll" />
-        from t_school
+        from t_supplier
         <include refid="whereAll" />
         <include refid="sortAll" />
     </select>
 
     <select id="listPaging" resultMap="baseResultPO">
-        select * from t_school
+        select * from t_supplier
         <include refid="whereAll" />
         <include refid="sortAll" />
         <include refid="pagingAll" />
@@ -113,7 +107,7 @@
     <select id="selectsPaging" resultMap="baseResultPO">
         select
         <include refid="selectAll" />
-        from t_school
+        from t_supplier
         <include refid="whereAll" />
         <include refid="sortAll" />
         <include refid="pagingAll" />
