@@ -1,0 +1,105 @@
+.login{
+    background-color: #f1f5f8;
+    height: 100%;
+    overflow: hidden;
+    &-con{
+        position: absolute;
+        left: 50%;
+        top: 40%;
+        transform: translate(-50%,-50%);
+        width: 400px;
+        z-index: 10;
+        &-header{
+            font-size: 24px;
+            font-weight: 300;
+            text-align: left;
+            color: #fff;
+            padding: 30px 20px;
+            background: linear-gradient(rgb(245,151,63), rgb(247,138,40));
+        }
+        .form-con{
+            padding: 10px 0 0;
+        }
+        .login-tip{
+            font-size: 10px;
+            text-align: center;
+            color: #c3c3c3;
+        }
+    }
+    .float-assets {
+        position: absolute;
+        left: 10%;
+        width: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .el-input__inner {
+        line-height: 40px;
+        height: 40px;
+    }
+    .el-form-item--mini .el-form-item__label {
+        line-height: 40px;
+    }
+}
+.el-card__header {
+    padding: 0;
+}
+.bg {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-size: cover;
+}
+.wall {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 458px;
+    height: 363px;
+    z-index: 2;
+}
+.roof {
+    width: 429px;
+    height: 244px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1;
+}
+.cloud {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    height: 100%;
+}
+.cloud-line {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+.stone {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+}
+.loginBtn {
+    color: #fff;
+    padding: 10px 20px;
+    background: linear-gradient(rgb(245,151,63), rgb(247,138,40));
+    background-color: transparent!important;
+    border-color: transparent;
+    &:hover,
+    &:active,
+    &:visited,
+    &:focus {
+        background: linear-gradient(rgb(245,151,63), rgb(247,138,40));
+        border-color: transparent;
+    }
+}

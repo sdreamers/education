@@ -1,0 +1,70 @@
+{
+    "warehouseMap": "http://local.dongpinyun.cn:9090/manager/dict/warehouse.shtml",
+    "warehouseByUserCurrentCity": "http://local.dongpinyun.cn:9090/manager/dict/warehouseByUserCurrentCity.shtml",
+
+    "paymethodMap": "http://local.dongpinyun.cn:9090/manager/dict/paymethod.shtml",
+
+    "paymentTypeMap": "http://local.dongpinyun.cn:9090/manager/dict/paymentType.shtml",
+
+    "orderStatusMap": "http://local.dongpinyun.cn:9090/manager/dict/orderStatus.shtml",
+
+    "bannerShowLocations": "http://local.dongpinyun.cn:9090/manager/dict/bannerShowLocation.shtml",
+
+    "bannerStatus": "http://local.dongpinyun.cn:9090/manager/dict/bannerStatus.shtml",
+
+    "productCategories": "http://local.dongpinyun.cn:9090/manager/dict/productCategory.shtml",
+
+    "bannerProductCategoryType": "http://local.dongpinyun.cn:9090/manager/dict/bannerProductCategoryType.shtml",
+
+    "purchasePaymentMethodMap": "http://local.dongpinyun.cn:9090/manager/dict/purchasePaymentMethod.shtml",
+
+    "typeMap": "http://local.dongpinyun.cn:9090/manager/dict/stockNoteType.shtml",
+
+    "subTypeMap": "http://local.dongpinyun.cn:9090/manager/dict/subStockNoteType.shtml",
+
+    "orderSourceMap": "http://local.dongpinyun.cn:9090/manager/dict/orderSource.shtml",
+
+    "deliverymanSexMap": "http://local.dongpinyun.cn:9090/manager/dict/deliverymanSex.shtml",
+
+    "deliverymanStatusMap": "http://local.dongpinyun.cn:9090/manager/dict/deliverymanStatus.shtml",
+
+    "distributionLines": "http://local.dongpinyun.cn:9090/manager/dict/distributionLine.shtml",
+
+    "merchantStatusMap": "http://local.dongpinyun.cn:9090/manager/dict/merchantStatus.shtml",
+
+    "merchantGroups": "http://local.dongpinyun.cn:9090/manager/dict/merchantGroup.shtml",
+
+    "company": "http://local.dongpinyun.cn:9090/manager/dict/company.shtml",
+
+    "orderFlagMap": "http://local.dongpinyun.cn:9090/manager/dict/orderFlag.shtml",
+
+    "returnCauseMap": "http://local.dongpinyun.cn:9090/manager/dict/returnCause.shtml",
+
+    "refundTypeMap": "http://local.dongpinyun.cn:9090/manager/dict/refundType.shtml",
+
+    "percentage": "http://local.dongpinyun.cn:9090/manager/dict/percentage.shtml",
+
+    "orderRefundStatusMap": "http://local.dongpinyun.cn:9090/manager/dict/orderRefundStatus.shtml",
+
+    "orderRefundTypeMap": "http://local.dongpinyun.cn:9090/manager/dict/orderRefundType.shtml",
+
+    "permissionTypeMap": "http://local.dongpinyun.cn:9090/manager/dict/permissionType.shtml",
+
+    "priceStatusMap": "http://local.dongpinyun.cn:9090/manager/dict/priceStatus.shtml",
+
+    "productBrandStatus": "http://local.dongpinyun.cn:9090/manager/dict/productBrandStatus.shtml",
+
+    "salesmanRoleMap": "http://local.dongpinyun.cn:9090/manager/dict/salesmanRole.shtml",
+
+    "salesmanStatusMap": "http://local.dongpinyun.cn:9090/manager/dict/salesmanStatus.shtml",
+
+    "salesmanSexMap": "http://local.dongpinyun.cn:9090/manager/dict/salesmanSex.shtml",
+    
+    "workflowCodes": "/dict/workflowCodes.shtml",
+
+    "roles":"/dict/roles.shtml",
+
+    "workflowHandlerTypes": "/dict/workflowHandlerTypes.shtml",
+
+    "workflowEvents": "/dict/workflowEvents.shtml"
+}

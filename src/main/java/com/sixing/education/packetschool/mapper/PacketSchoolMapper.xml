@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sixing.education.packet.dao.PacketDAO">
+
+    <resultMap id="baseResultPO" type="com.sixing.base.domain.packetschool.PacketSchoolPO">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="packet_id" property="packetId" jdbcType="BIGINT" />
+        <result column="packet_name" property="packetName" jdbcType="VARCHAR" />
+        <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+        <result column="school_name" property="schoolName" jdbcType="VARCHAR" />
+        <result column="current_year" property="currentYear" jdbcType="VARCHAR" />
+        <result column="control_amount" property="controlAmount" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <sql id="selectAll">
+        <choose>
+            <when test="selectFields != null">
+                <trim suffixOverrides=",">
+                    <foreach collection="selectFields" item="selectField">
+                        ${selectField},
+                    </foreach>
+                </trim>
+            </when>
+            <otherwise>*</otherwise>
+        </choose>
+    </sql>
+
+    <sql id="setAll">
+        <set>
+            <if test="setParams.packetId != null">`packet_id`=#{setParams.packetId},</if>
+            <if test="setParams.packetName != null">`packet_name`=#{setParams.packetName},</if>
+            <if test="setParams.schoolId != null">`school_id`=#{setParams.schoolId},</if>
+            <if test="setParams.schoolName != null">`school_name`=#{setParams.schoolName},</if>
+            <if test="setParams.currentYear != null">`current_year`=#{setParams.currentYear},</if>
+            <if test="setParams.controlAmount != null">`control_amount`=#{setParams.controlAmount},</if>
+        </set>
+    </sql>
+
+    <sql id="whereAll">
+        <where>
+            <if test="whereParams.id != null">AND `id`=#{whereParams.id}</if>
+            <if test="whereParams.packetId != null">AND `packet_id`=#{whereParams.packetId}</if>
+            <if test="whereParams.packetName != null">AND `packet_name`=#{whereParams.packetName}</if>
+            <if test="whereParams.schoolId != null">AND `school_id`=#{whereParams.schoolId}</if>
+            <if test="whereParams.schoolName != null">AND `school_name`=#{whereParams.schoolName}</if>
+            <if test="whereParams.currentYear != null">AND `current_year`=#{whereParams.currentYear}</if>
+            <if test="whereParams.controlAmount != null">AND `control_amount`=#{whereParams.controlAmount}</if>
+        </where>
+    </sql>
+    <sql id="sortAll">
+        <if test="whereParams.sortBy != null and whereParams.sortBy != '' and whereParams.direction != null and whereParams.direction != ''">
+            order by ${whereParams.sortBy} ${whereParams.direction}, id
+        </if>
+    </sql>
+    <sql id="pagingAll">
+        <if test="pageParams != null and pageParams.offset != null and pageParams.limit != null">
+            limit #{pageParams.offset}, #{pageParams.limit}
+        </if>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="insertParams.id">
+        insert into t_packet_school
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="insertParams.id != null"> `id`,</if>
+            <if test="insertParams.packetId != null"> `packet_id`,</if>
+            <if test="insertParams.packetName != null"> `packet_name`,</if>
+            <if test="insertParams.schoolId != null"> `school_id`,</if>
+            <if test="insertParams.schoolName != null"> `school_name`,</if>
+            <if test="insertParams.currentYear != null"> `current_year`,</if>
+            <if test="insertParams.controlAmount != null"> `control_amount`,</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="insertParams.id != null">#{insertParams.id},</if>
+            <if test="insertParams.packetId != null">#{insertParams.packetId},</if>
+            <if test="insertParams.packetName != null">#{insertParams.packetName},</if>
+            <if test="insertParams.schoolId != null">#{insertParams.schoolId},</if>
+            <if test="insertParams.schoolName != null">#{insertParams.schoolName},</if>
+            <if test="insertParams.currentYear != null">#{insertParams.currentYear},</if>
+            <if test="insertParams.controlAmount != null">#{insertParams.controlAmount},</if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        update t_packet_school
+        <include refid="setAll" />
+        <include refid="whereAll" />
+    </update>
+
+    <delete id="delete">
+        delete from t_packet_school
+        <include refid="whereAll" />
+    </delete>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(id) from t_packet_school
+        <include refid="whereAll" />
+    </select>
+
+    <select id="get" resultMap="baseResultPO">
+        select * from t_packet_school
+        <include refid="whereAll" />
+    </select>
+
+    <select id="select" resultMap="baseResultPO">
+        select
+        <include refid="selectAll" />
+        from t_packet_school
+        <include refid="whereAll" />
+    </select>
+
+    <select id="list" resultMap="baseResultPO">
+        select * from t_packet_school
+        <include refid="whereAll" />
+        <include refid="sortAll" />
+    </select>
+
+    <select id="selects" resultMap="baseResultPO">
+        select
+        <include refid="selectAll" />
+        from t_packet_school
+        <include refid="whereAll" />
+        <include refid="sortAll" />
+    </select>
+
+    <select id="listPaging" resultMap="baseResultPO">
+        select * from t_packet_school
+        <include refid="whereAll" />
+        <include refid="sortAll" />
+        <include refid="pagingAll" />
+    </select>
+
+    <select id="selectsPaging" resultMap="baseResultPO">
+        select
+        <include refid="selectAll" />
+        from t_packet_school
+        <include refid="whereAll" />
+        <include refid="sortAll" />
+        <include refid="pagingAll" />
+    </select>
+
+</mapper>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sixing.education.device.dao.DeviceDAO">
+
+    <resultMap id="baseResultPO" type="com.sixing.base.domain.device.DevicePO">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="packet_id" property="packetId" jdbcType="BIGINT" />
+        <result column="packet_name" property="packetName" jdbcType="VARCHAR" />
+        <result column="school_id" property="schoolId" jdbcType="BIGINT" />
+        <result column="school_name" property="schoolName" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="technical_paramter" property="technicalParamter" jdbcType="VARCHAR" />
+        <result column="specification" property="specification" jdbcType="VARCHAR" />
+        <result column="model" property="model" jdbcType="VARCHAR" />
+        <result column="unit" property="unit" jdbcType="VARCHAR" />
+        <result column="num" property="num" jdbcType="INTEGER" />
+        <result column="excluding_tax_price" property="excludingTaxPrice" jdbcType="DECIMAL" />
+        <result column="tax" property="tax" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <sql id="selectAll">
+        <choose>
+            <when test="selectFields != null">
+                <trim suffixOverrides=",">
+                    <foreach collection="selectFields" item="selectField">
+                        ${selectField},
+                    </foreach>
+                </trim>
+            </when>
+            <otherwise>*</otherwise>
+        </choose>
+    </sql>
+
+    <sql id="setAll">
+        <set>
+            <if test="setParams.packetId != null">`packet_id`=#{setParams.packetId},</if>
+            <if test="setParams.packetName != null">`packet_name`=#{setParams.packetName},</if>
+            <if test="setParams.schoolId != null">`school_id`=#{setParams.schoolId},</if>
+            <if test="setParams.schoolName != null">`school_name`=#{setParams.schoolName},</if>
+            <if test="setParams.name != null">`name`=#{setParams.name},</if>
+            <if test="setParams.technicalParamter != null">`technical_paramter`=#{setParams.technicalParamter},</if>
+            <if test="setParams.specification != null">`specification`=#{setParams.specification},</if>
+            <if test="setParams.model != null">`model`=#{setParams.model},</if>
+            <if test="setParams.unit != null">`unit`=#{setParams.unit},</if>
+            <if test="setParams.num != null">`num`=#{setParams.num},</if>
+            <if test="setParams.excludingTaxPrice != null">`excluding_tax_price`=#{setParams.excludingTaxPrice},</if>
+            <if test="setParams.tax != null">`tax`=#{setParams.tax},</if>
+        </set>
+    </sql>
+
+    <sql id="whereAll">
+        <where>
+            <if test="whereParams.id != null">AND `id`=#{whereParams.id}</if>
+            <if test="whereParams.packetId != null">AND `packet_id`=#{whereParams.packetId}</if>
+            <if test="whereParams.packetName != null">AND `packet_name`=#{whereParams.packetName}</if>
+            <if test="whereParams.schoolId != null">AND `school_id`=#{whereParams.schoolId}</if>
+            <if test="whereParams.schoolName != null">AND `school_name`=#{whereParams.schoolName}</if>
+            <if test="whereParams.name != null">AND `name`=#{whereParams.name}</if>
+            <if test="whereParams.technicalParamter != null">AND `technical_paramter`=#{whereParams.technicalParamter}</if>
+            <if test="whereParams.specification != null">AND `specification`=#{whereParams.specification}</if>
+            <if test="whereParams.model != null">AND `model`=#{whereParams.model}</if>
+            <if test="whereParams.unit != null">AND `unit`=#{whereParams.unit}</if>
+            <if test="whereParams.num != null">AND `num`=#{whereParams.num}</if>
+            <if test="whereParams.excludingTaxPrice != null">AND `excluding_tax_price`=#{whereParams.excludingTaxPrice}</if>
+            <if test="whereParams.tax != null">AND `tax`=#{whereParams.tax}</if>
+        </where>
+    </sql>
+    <sql id="sortAll">
+        <if test="whereParams.sortBy != null and whereParams.sortBy != '' and whereParams.direction != null and whereParams.direction != ''">
+            order by ${whereParams.sortBy} ${whereParams.direction}, id
+        </if>
+    </sql>
+    <sql id="pagingAll">
+        <if test="pageParams != null and pageParams.offset != null and pageParams.limit != null">
+            limit #{pageParams.offset}, #{pageParams.limit}
+        </if>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="insertParams.id">
+        insert into t_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="insertParams.id != null"> `id`,</if>
+            <if test="insertParams.packetId != null"> `packet_id`,</if>
+            <if test="insertParams.packetName != null"> `packet_name`,</if>
+            <if test="insertParams.schoolId != null"> `school_id`,</if>
+            <if test="insertParams.schoolName != null"> `school_name`,</if>
+            <if test="insertParams.name != null"> `name`,</if>
+            <if test="insertParams.technicalParamter != null"> `technical_paramter`,</if>
+            <if test="insertParams.specification != null"> `specification`,</if>
+            <if test="insertParams.model != null"> `model`,</if>
+            <if test="insertParams.unit != null"> `unit`,</if>
+            <if test="insertParams.num != null"> `num`,</if>
+            <if test="insertParams.excludingTaxPrice != null"> `excluding_tax_price`,</if>
+            <if test="insertParams.tax != null"> `tax`,</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="insertParams.id != null">#{insertParams.id},</if>
+            <if test="insertParams.packetId != null">#{insertParams.packetId},</if>
+            <if test="insertParams.packetName != null">#{insertParams.packetName},</if>
+            <if test="insertParams.schoolId != null">#{insertParams.schoolId},</if>
+            <if test="insertParams.schoolName != null">#{insertParams.schoolName},</if>
+            <if test="insertParams.name != null">#{insertParams.name},</if>
+            <if test="insertParams.technicalParamter != null">#{insertParams.technicalParamter},</if>
+            <if test="insertParams.specification != null">#{insertParams.specification},</if>
+            <if test="insertParams.model != null">#{insertParams.model},</if>
+            <if test="insertParams.unit != null">#{insertParams.unit},</if>
+            <if test="insertParams.num != null">#{insertParams.num},</if>
+            <if test="insertParams.excludingTaxPrice != null">#{insertParams.excludingTaxPrice},</if>
+            <if test="insertParams.tax != null">#{insertParams.tax},</if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        update t_device
+        <include refid="setAll" />
+        <include refid="whereAll" />
+    </update>
+
+    <delete id="delete">
+        delete from t_device
+        <include refid="whereAll" />
+    </delete>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(id) from t_device
+        <include refid="whereAll" />
+    </select>
+
+    <select id="get" resultMap="baseResultPO">
+        select * from t_device
+        <include refid="whereAll" />
+    </select>
+
+    <select id="select" resultMap="baseResultPO">
+        select
+        <include refid="selectAll" />
+        from t_device
+        <include refid="whereAll" />
+    </select>
+
+    <select id="list" resultMap="baseResultPO">
+        select * from t_device
+        <include refid="whereAll" />
+        <include refid="sortAll" />
+    </select>
+
+    <select id="selects" resultMap="baseResultPO">
+        select
+        <include refid="selectAll" />
+        from t_device
+        <include refid="whereAll" />
+        <include refid="sortAll" />
+    </select>
+
+    <select id="listPaging" resultMap="baseResultPO">
+        select * from t_device
+        <include refid="whereAll" />
+        <include refid="sortAll" />
+        <include refid="pagingAll" />
+    </select>
+
+    <select id="selectsPaging" resultMap="baseResultPO">
+        select
+        <include refid="selectAll" />
+        from t_device
+        <include refid="whereAll" />
+        <include refid="sortAll" />
+        <include refid="pagingAll" />
+    </select>
+
+</mapper>

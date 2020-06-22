@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sixing.education.packet.dao.PacketDAO">
+
+    <resultMap id="baseResultPO" type="com.sixing.base.domain.packet.PacketPO">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="supplier_name" property="supplierName" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="creator_id" property="creatorId" jdbcType="BIGINT" />
+        <result column="creator_name" property="creatorName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="selectAll">
+        <choose>
+            <when test="selectFields != null">
+                <trim suffixOverrides=",">
+                    <foreach collection="selectFields" item="selectField">
+                        ${selectField},
+                    </foreach>
+                </trim>
+            </when>
+            <otherwise>*</otherwise>
+        </choose>
+    </sql>
+
+    <sql id="setAll">
+        <set>
+            <if test="setParams.name != null">`name`=#{setParams.name},</if>
+            <if test="setParams.supplierId != null">`supplier_id`=#{setParams.supplierId},</if>
+            <if test="setParams.supplierName != null">`supplier_name`=#{setParams.supplierName},</if>
+            <if test="setParams.createTime != null">`create_time`=#{setParams.createTime},</if>
+            <if test="setParams.creatorId != null">`creator_id`=#{setParams.creatorId},</if>
+            <if test="setParams.creatorName != null">`creator_name`=#{setParams.creatorName},</if>
+        </set>
+    </sql>
+
+    <sql id="whereAll">
+        <where>
+            <if test="whereParams.id != null">AND `id`=#{whereParams.id}</if>
+            <if test="whereParams.name != null">AND `name`=#{whereParams.name}</if>
+            <if test="whereParams.supplierId != null">AND `supplier_id`=#{whereParams.supplierId}</if>
+            <if test="whereParams.supplierName != null">AND `supplier_name`=#{whereParams.supplierName}</if>
+            <if test="whereParams.createTime != null">AND `create_time`=#{whereParams.createTime}</if>
+            <if test="whereParams.creatorId != null">AND `creator_id`=#{whereParams.creatorId}</if>
+            <if test="whereParams.creatorName != null">AND `creator_name`=#{whereParams.creatorName}</if>
+            <if test="whereParams.createTimeStart != null and whereParams.createTimeStart != ''">
+                AND `create_time` &gt;= #{whereParams.createTimeStart}
+            </if>
+            <if test="whereParams.createTimeEnd != null and whereParams.createTimeEnd != ''">
+                AND `create_time` &lt;= #{whereParams.createTimeEnd}
+            </if>
+        </where>
+    </sql>
+    <sql id="sortAll">
+        <if test="whereParams.sortBy != null and whereParams.sortBy != '' and whereParams.direction != null and whereParams.direction != ''">
+            order by ${whereParams.sortBy} ${whereParams.direction}, id
+        </if>
+    </sql>
+    <sql id="pagingAll">
+        <if test="pageParams != null and pageParams.offset != null and pageParams.limit != null">
+            limit #{pageParams.offset}, #{pageParams.limit}
+        </if>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="insertParams.id">
+        insert into t_packet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="insertParams.id != null"> `id`,</if>
+            <if test="insertParams.name != null"> `name`,</if>
+            <if test="insertParams.supplierId != null"> `supplier_id`,</if>
+            <if test="insertParams.supplierName != null"> `supplier_name`,</if>
+            <if test="insertParams.createTime != null"> `create_time`,</if>
+            <if test="insertParams.creatorId != null"> `creator_id`,</if>
+            <if test="insertParams.creatorName != null"> `creator_name`,</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="insertParams.id != null">#{insertParams.id},</if>
+            <if test="insertParams.name != null">#{insertParams.name},</if>
+            <if test="insertParams.supplierId != null">#{insertParams.supplierId},</if>
+            <if test="insertParams.supplierName != null">#{insertParams.supplierName},</if>
+            <if test="insertParams.createTime != null">#{insertParams.createTime},</if>
+            <if test="insertParams.creatorId != null">#{insertParams.creatorId},</if>
+            <if test="insertParams.creatorName != null">#{insertParams.creatorName},</if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        update t_packet
+        <include refid="setAll" />
+        <include refid="whereAll" />
+    </update>
+
+    <delete id="delete">
+        delete from t_packet
+        <include refid="whereAll" />
+    </delete>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(id) from t_packet
+        <include refid="whereAll" />
+    </select>
+
+    <select id="get" resultMap="baseResultPO">
+        select * from t_packet
+        <include refid="whereAll" />
+    </select>
+
+    <select id="select" resultMap="baseResultPO">
+        select
+        <include refid="selectAll" />
+        from t_packet
+        <include refid="whereAll" />
+    </select>
+
+    <select id="list" resultMap="baseResultPO">
+        select * from t_packet
+        <include refid="whereAll" />
+        <include refid="sortAll" />
+    </select>
+
+    <select id="selects" resultMap="baseResultPO">
+        select
+        <include refid="selectAll" />
+        from t_packet
+        <include refid="whereAll" />
+        <include refid="sortAll" />
+    </select>
+
+    <select id="listPaging" resultMap="baseResultPO">
+        select * from t_packet
+        <include refid="whereAll" />
+        <include refid="sortAll" />
+        <include refid="pagingAll" />
+    </select>
+
+    <select id="selectsPaging" resultMap="baseResultPO">
+        select
+        <include refid="selectAll" />
+        from t_packet
+        <include refid="whereAll" />
+        <include refid="sortAll" />
+        <include refid="pagingAll" />
+    </select>
+
+</mapper>
