@@ -25,7 +25,7 @@ public class DeviceController {
     private DeviceService deviceService;
 
     @PostMapping("/import")
-    public ResultModel<Void> deviceImport(MultipartFile file, @RequestParam String packet, @RequestParam Integer currentYear) {
+    public ResultModel<Void> deviceImport(MultipartFile file, @RequestParam String packet, @RequestParam Integer currentYear, @RequestParam Integer type) {
         try {
             if (file == null || file.isEmpty()) {
                 return ResultModel.fail("请选择文件");
@@ -44,7 +44,7 @@ public class DeviceController {
                 return resultModel;
             }
             packet = packet.trim();
-            deviceService.importDevice(devices, packet, currentYear);
+            deviceService.importDevice(devices, packet, currentYear, type);
             return ResultModel.ok();
         } catch (Exception e) {
             return ResultModel.fail("系统异常, 请联系管理员");

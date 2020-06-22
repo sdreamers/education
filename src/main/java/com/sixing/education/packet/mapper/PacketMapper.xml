@@ -74,6 +74,7 @@
             <if test="insertParams.createTime != null"> `create_time`,</if>
             <if test="insertParams.creatorId != null"> `creator_id`,</if>
             <if test="insertParams.creatorName != null"> `creator_name`,</if>
+            <if test="insertParams.type != null"> `type`,</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="insertParams.id != null">#{insertParams.id},</if>
@@ -83,6 +84,7 @@
             <if test="insertParams.createTime != null">#{insertParams.createTime},</if>
             <if test="insertParams.creatorId != null">#{insertParams.creatorId},</if>
             <if test="insertParams.creatorName != null">#{insertParams.creatorName},</if>
+            <if test="insertParams.type != null">#{insertParams.type},</if>
         </trim>
     </insert>
 

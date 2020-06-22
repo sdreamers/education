@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sixing.education.packet.dao.PacketDAO">
+<mapper namespace="com.sixing.education.packetschool.dao.PacketSchoolDAO">
 
     <resultMap id="baseResultPO" type="com.sixing.base.domain.packetschool.PacketSchoolPO">
         <id column="id" property="id" jdbcType="BIGINT" />

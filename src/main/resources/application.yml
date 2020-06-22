@@ -1,0 +1,39 @@
+server:
+  port: 8767
+  max-session-num: 10
+spring:
+  application:
+    name: education
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+---
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/education?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+      username: root
+      password: 130327
+      driver-class-name: com.mysql.jdbc.Driver
+      filters: stat
+      maxActive: 5
+      initialSize: 2
+      maxWait: 6000
+      minIdle: 2
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM dual
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      maxOpenPreparedStatements: 100
+      removeAbandoned: false
+      logAbandoned: true
+
+---
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath*:com/sixing/**/mapper/*Mapper.xml
+---
+logging:
+  config: classpath:log4j/log4j2-test.xml

@@ -27,4 +27,5 @@ public class PacketPO implements Serializable {
 	private Date createTime;
 	private Long creatorId;
 	private String creatorName;
+	private Integer type;
 }

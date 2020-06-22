@@ -31,4 +31,7 @@ public class PacketQuery extends BaseVO implements Serializable {
 	private Long creatorId;
 	private String creatorName;
 	private String[] packets;
+	private Integer type;
+	private Integer inProgressStatus;
+	private Long[] packetIds;
 }

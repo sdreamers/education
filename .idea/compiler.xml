@@ -9,10 +9,8 @@
         <module name="education" />
       </profile>
     </annotationProcessing>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="education" options="-parameters" />
-    </option>
+    <bytecodeTargetLevel>
+      <module name="education" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

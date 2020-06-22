@@ -16,7 +16,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(value = "com.dongpinyun.**.dao*", sqlSessionFactoryRef = "sessionFactory")
+@MapperScan(value = "com.sixing.**.dao*", sqlSessionFactoryRef = "sessionFactory")
 public class SessionFactoryConfig {
 
     @Value("${mybatis.mapper-locations}")

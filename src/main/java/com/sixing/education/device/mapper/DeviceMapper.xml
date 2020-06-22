@@ -92,6 +92,9 @@
             <if test="insertParams.num != null"> `num`,</if>
             <if test="insertParams.excludingTaxPrice != null"> `excluding_tax_price`,</if>
             <if test="insertParams.tax != null"> `tax`,</if>
+            <if test="insertParams.inProgressStatus != null">`in_progress_status`</if>
+            <if test="insertParams.includingTaxPrice != null">`including_tax_price`</if>
+            <if test="insertParams.totalAmount != null">`total_amount`</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="insertParams.id != null">#{insertParams.id},</if>
@@ -107,6 +110,9 @@
             <if test="insertParams.num != null">#{insertParams.num},</if>
             <if test="insertParams.excludingTaxPrice != null">#{insertParams.excludingTaxPrice},</if>
             <if test="insertParams.tax != null">#{insertParams.tax},</if>
+            <if test="insertParams.inProgressStatus != null">#{insertParams.inProgressStatus},</if>
+            <if test="insertParams.includingTaxPrice != null">#{insertParams.includingTaxPrice},</if>
+            <if test="insertParams.totalAmount != null">#{insertParams.totalAmount},</if>
         </trim>
     </insert>
 
