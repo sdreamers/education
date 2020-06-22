@@ -6,6 +6,7 @@ import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.device.DevicePO;
 import com.sixing.base.domain.device.DeviceQuery;
 import com.dongpinyun.productmodule.shop.service.DeviceService;
+import com.sixing.base.domain.device.DeviceVO;
 import com.sixing.base.domain.device.ImportDeviceVO;
 import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.domain.packet.PacketQuery;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -407,6 +409,27 @@ public class DeviceServiceImpl implements DeviceService {
         this.savePacketSchool(packet, schools, currentYear);
         // 保存设备
         this.saveDevice(devices, packet, schools);
+    }
+
+    @Override
+    public PageRecords<DeviceVO> pagesWithVO(DeviceQuery param, PageVO pageParam) throws ServiceException {
+        PageRecords<DeviceVO> result = new PageRecords<>();
+        PageRecords<DevicePO> pageRecords = this.pages(param, pageParam);
+        if (pageRecords.getTotal() > 0) {
+            result.setTotal(pageRecords.getTotal());
+            result.setRecords(BeanUtils.copyProperties(pageRecords.getRecords(), DeviceVO.class));
+            for (DeviceVO record : result.getRecords()) {
+                record.setIncludingTaxPrice(record.getExcludingTaxPrice().add(record.getTax()));
+                record.setTotalAmount(record.getIncludingTaxPrice().multiply(new BigDecimal(record.getNum().toString())));
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void update(Long id, Integer status) throws ServiceException {
+        DevicePO setParams = new DevicePO();
+        this.update(setParams, id);
     }
 
     private void saveDevice(List<ImportDeviceVO> devices, PacketPO packet, List<SchoolPO> schools) throws ServiceException {

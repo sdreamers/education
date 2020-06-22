@@ -46,13 +46,13 @@ import java.io.PrintWriter;
  *
  * @author Administrator
  */
-@Configuration
-@EnableWebSecurity
+//@Configuration
+//@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final Log log = LogFactory.getLog(WebSecurityConfigurerAdapter.class);
 
-    private static final String REMEMBER_ME_KEY = "dongpinyun-remember-me";
+    private static final String REMEMBER_ME_KEY = "education-remember-me";
 
     @Autowired
     private UrlFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource;

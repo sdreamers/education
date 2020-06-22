@@ -23,6 +23,7 @@ public class PacketQuery extends BaseVO implements Serializable {
 
 	private Long id;
 	private String name;
+	private String nameLike;
 	private Long supplierId;
 	private String supplierName;
 	private Date createTime;

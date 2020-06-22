@@ -1,9 +1,5 @@
 package com.sixing.base.constant;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 静态变量
  * 

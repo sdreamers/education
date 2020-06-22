@@ -128,48 +128,13 @@ export const appRouter = [
         children: [
             {
                 path: 'index',
-                title: '单位收支统计',
+                title: '任务',
                 name: '/task/index',
                 meta: {
-                    title: '单位收支统计'
+                    title: '任务'
                 },
                 component: resolve => {
                     require.ensure([], () => resolve(require('@/views/task/index.vue')), 'taskIndex');
-                }
-            }
-        ]
-    },
-    {
-
-        path: '/order',
-        name: 'order',
-        title: '收支总账',
-        meta: {
-            title: '收支总账'
-        },
-        component: Main,
-        children: [
-            {
-                path: 'index',
-                title: '收支总账',
-                name: '/order/index',
-                meta: {
-                    title: '收支总账'
-                },
-                component: resolve => {
-                    require.ensure([], () => resolve(require('@/views/order/index.vue')), 'orderIndex');
-                }
-            },
-
-            {
-                path: 'separateOrder',
-                title: '流水分账',
-                name: '/order/separateOrder',
-                meta: {
-                    title: '流水分账'
-                },
-                component: resolve => {
-                    require.ensure([], () => resolve(require('@/views/separateOrder/index.vue')), 'separateOrder');
                 }
             }
         ]

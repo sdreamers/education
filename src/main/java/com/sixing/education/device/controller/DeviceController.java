@@ -1,28 +1,59 @@
 package com.sixing.education.device.controller;
 
 import com.sixing.base.constant.Constant;
+import com.sixing.base.domain.base.PageRecords;
+import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.base.ResultModel;
+import com.sixing.base.domain.device.DeviceQuery;
+import com.sixing.base.domain.device.DeviceVO;
 import com.sixing.base.domain.device.ImportDeviceVO;
 import com.sixing.base.utils.CollectionUtils;
 import com.sixing.base.utils.StringUtils;
 import com.sixing.education.device.utils.ExcelUtils;
 import com.dongpinyun.productmodule.shop.service.DeviceService;
+import com.sixing.education.packet.controller.PacketController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
+/**
+ * 设备控制器
+ *
+ * @author sixing
+ * */
 @RestController
 @RequestMapping("/device")
 public class DeviceController {
 
+    private static Logger logger = LoggerFactory.getLogger(DeviceController.class);
+
     @Autowired
     private DeviceService deviceService;
+
+    @GetMapping("/pages")
+    public PageRecords<DeviceVO> pages(DeviceQuery param, PageVO pageParam) {
+        try {
+            return deviceService.pagesWithVO(param, pageParam);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new PageRecords<>();
+        }
+    }
+
+    @PutMapping("/status/{id}")
+    public ResultModel<Void> updateStatus(@RequestParam Integer status, @PathVariable("id") Long id) {
+        try {
+            deviceService.update(id, status);
+            return ResultModel.ok();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResultModel.fail("系统异常");
+        }
+    }
 
     @PostMapping("/import")
     public ResultModel<Void> deviceImport(MultipartFile file, @RequestParam String packet, @RequestParam Integer currentYear) {

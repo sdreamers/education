@@ -51,6 +51,9 @@
             <if test="whereParams.createTimeEnd != null and whereParams.createTimeEnd != ''">
                 AND `create_time` &lt;= #{whereParams.createTimeEnd}
             </if>
+            <if test="whereParams.nameLike != null and whereParams.nameLike != ''">
+                AND `name` LIKE concat("%", #{whereParams.nameLike}, "%")
+            </if>
         </where>
     </sql>
     <sql id="sortAll">

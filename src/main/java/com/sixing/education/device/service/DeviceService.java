@@ -4,6 +4,7 @@ import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.device.DevicePO;
 import com.sixing.base.domain.device.DeviceQuery;
+import com.sixing.base.domain.device.DeviceVO;
 import com.sixing.base.domain.device.ImportDeviceVO;
 import com.sixing.base.utils.exception.ServiceException;
 
@@ -188,4 +189,23 @@ public interface DeviceService {
      * @throws ServiceException
      */
     void importDevice(List<ImportDeviceVO> devices, String packet, Integer currentYear) throws ServiceException;
+
+    /**
+     * 分页查询
+     *
+     * @param param     查询条件
+     * @param pageParam 分页参数
+     * @return 结果
+     * @throws ServiceException
+     */
+    PageRecords<DeviceVO> pagesWithVO(DeviceQuery param, PageVO pageParam) throws ServiceException;
+
+    /**
+     * 更新节点
+     *
+     * @param id 设备ID
+     * @param status 状态
+     * @throws ServiceException
+     * */
+    void update(Long id, Integer status) throws ServiceException;
 }
