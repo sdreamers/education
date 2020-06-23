@@ -34,4 +34,8 @@ public class DeviceQuery extends BaseVO implements Serializable {
 	private Integer num;
 	private BigDecimal excludingTaxPrice;
 	private BigDecimal tax;
+	private Integer inProgressStatus;
+	private Integer inProgressStatusGt;
+	private BigDecimal includingTaxPrice;
+	private BigDecimal totalAmount;
 }

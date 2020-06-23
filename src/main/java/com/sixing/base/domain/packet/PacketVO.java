@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -27,4 +28,13 @@ public class PacketVO implements Serializable {
 	private Date createTime;
 	private Long creatorId;
 	private String creatorName;
+	private Integer type;
+	/**
+	 * 任务数量进度
+	 * */
+	private BigDecimal deviceNumProgress;
+	/**
+	 * 金额进度
+	 * */
+	private BigDecimal deviceAmountProgress;
 }

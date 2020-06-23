@@ -6,8 +6,6 @@ import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.domain.packet.PacketQuery;
 import com.sixing.base.domain.packet.PacketVO;
 import com.sixing.education.packet.service.PacketService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +35,15 @@ public class PacketController {
             return packetService.pages(param, pageParam);
         } catch (Exception e) {
             logger.error(e.getMessage());
+            return new PageRecords<>();
+        }
+    }
+
+    @GetMapping("/pages")
+    public PageRecords<PacketVO> pages(PacketQuery param, PageVO pageParam) {
+        try {
+            return packetService.listPacketPaging(param, pageParam);
+        } catch (Exception e) {
             return new PageRecords<>();
         }
     }

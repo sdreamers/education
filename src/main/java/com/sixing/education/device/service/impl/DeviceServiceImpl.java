@@ -1,6 +1,8 @@
 package com.sixing.education.device.service.impl;
 
 import com.google.common.collect.Lists;
+import com.sixing.base.dict.device.DeviceTypeEnum;
+import com.sixing.base.dict.device.InProgressStatusEnum;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.device.DevicePO;
@@ -394,7 +396,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     @Transactional(rollbackFor = ServiceException.class)
-    public void importDevice(List<ImportDeviceVO> devices, String packetName, Integer currentYear) throws ServiceException {
+    public void importDevice(List<ImportDeviceVO> devices, String packetName, Integer currentYear, Integer type) throws ServiceException {
         if (CollectionUtils.isEmpty(devices)) {
             return;
         }
@@ -402,13 +404,13 @@ public class DeviceServiceImpl implements DeviceService {
         String supplier = devices.stream().map(ImportDeviceVO::getSupplier).findFirst().get();
         Long supplierId = this.saveSupplier(supplier);
         // 包
-        PacketPO packet = this.savePacket(packetName, supplierId, supplier, currentYear);
+        PacketPO packet = this.savePacket(packetName, supplierId, supplier, currentYear, type);
         // 学校
         List<SchoolPO> schools = this.saveSchool(devices.stream().map(ImportDeviceVO::getSchool).distinct().toArray(String[]::new), currentYear);
         // 包-学校中间表
         this.savePacketSchool(packet, schools, currentYear);
         // 保存设备
-        this.saveDevice(devices, packet, schools);
+        this.saveDevice(devices, packet, schools, type);
     }
 
     @Override
@@ -432,7 +434,7 @@ public class DeviceServiceImpl implements DeviceService {
         this.update(setParams, id);
     }
 
-    private void saveDevice(List<ImportDeviceVO> devices, PacketPO packet, List<SchoolPO> schools) throws ServiceException {
+    private void saveDevice(List<ImportDeviceVO> devices, PacketPO packet, List<SchoolPO> schools, Integer type) throws ServiceException {
         Map<String, Long> schoolMap = new HashMap<>(schools.size());
         schools.forEach(item -> schoolMap.put(item.getName(), item.getId()));
 
@@ -440,6 +442,13 @@ public class DeviceServiceImpl implements DeviceService {
         for (DevicePO insertParam : insertParams) {
             insertParam.setPacketId(packet.getId());
             insertParam.setSchoolId(schoolMap.get(insertParam.getName()));
+            insertParam.setIncludingTaxPrice(insertParam.getExcludingTaxPrice().add(insertParam.getTax()));
+            insertParam.setTotalAmount(insertParam.getIncludingTaxPrice().multiply(new BigDecimal(insertParam.getNum().toString())));
+            if (DeviceTypeEnum.NORMAL.getCode().equals(type)) {
+                insertParam.setInProgressStatus(InProgressStatusEnum.PRODUCING.getCode());
+            } else if (DeviceTypeEnum.INFORMATION.getCode().equals(type)) {
+                insertParam.setInProgressStatus(InProgressStatusEnum.INFORMATION_ARRIVING.getCode());
+            }
             this.insert(insertParam);
         }
     }
@@ -506,7 +515,7 @@ public class DeviceServiceImpl implements DeviceService {
         return schools;
     }
 
-    private PacketPO savePacket(String packetName, Long supplierId, String supplierName, Integer currentYear) throws ServiceException {
+    private PacketPO savePacket(String packetName, Long supplierId, String supplierName, Integer currentYear, Integer type) throws ServiceException {
         if (StringUtils.isBlank(packetName)) {
             throw new ServiceException("包名不能为空");
         }
@@ -519,6 +528,7 @@ public class DeviceServiceImpl implements DeviceService {
             insertParams.setCreateTime(new Date());
             insertParams.setSupplierId(supplierId);
             insertParams.setSupplierName(supplierName);
+            insertParams.setType(type);
             packetService.insert(insertParams);
             return insertParams;
         }

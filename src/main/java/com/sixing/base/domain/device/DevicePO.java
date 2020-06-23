@@ -33,4 +33,7 @@ public class DevicePO implements Serializable {
 	private Integer num;
 	private BigDecimal excludingTaxPrice;
 	private BigDecimal tax;
+	private Integer inProgressStatus;
+	private BigDecimal includingTaxPrice;
+	private BigDecimal totalAmount;
 }
