@@ -1,2 +1,12 @@
-# Project exclude paths
-/target/
+.idea/
+*/node_modules/*
+*.iml
+target/
+logs/
+channel-openapi/doc/
+.svn/
+.project
+*.prefs
+.classpath
+project/
+**/src/main/resources/rebel.xml
