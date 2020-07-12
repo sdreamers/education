@@ -4,6 +4,7 @@ import com.sixing.base.constant.Constant;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.base.ResultModel;
+import com.sixing.base.domain.device.DevicePO;
 import com.sixing.base.domain.device.DeviceQuery;
 import com.sixing.base.domain.device.DeviceVO;
 import com.sixing.base.domain.device.ImportDeviceVO;
@@ -56,33 +57,21 @@ public class DeviceController {
     }
 
     @PostMapping("/import")
-    public ResultModel<Void> deviceImport(MultipartFile file, @RequestParam String packet, @RequestParam Integer currentYear, @RequestParam Integer type) {
+    public ResultModel<Void> deviceImport(@RequestBody List<ImportDeviceVO> devices, String packet, Integer currentYear, Integer type, String supplierName) {
         try {
-            if (file == null || file.isEmpty()) {
-                return ResultModel.fail("请选择文件");
-            }
-            String fileName = file.getOriginalFilename();
-            if (StringUtils.isBlank(fileName)) {
-                return ResultModel.fail("文件名不能为空");
-            }
-            String fileEnd = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-            if (!Constant.EXCEL_END.equalsIgnoreCase(fileEnd)) {
-               return ResultModel.fail("只能上传Excel文件，扩展名为.xls");
-            }
-            List<ImportDeviceVO> devices = ExcelUtils.read(file.getInputStream());
-            ResultModel<Void> resultModel = this.check(devices, packet, currentYear);
+            ResultModel<Void> resultModel = this.check(devices, packet, currentYear, supplierName);
             if (resultModel.getCode() == Constant.RESPONSE_ERROR_CODE) {
                 return resultModel;
             }
             packet = packet.trim();
-            deviceService.importDevice(devices, packet, currentYear, type);
+            deviceService.importDevice(devices, packet, currentYear, type, supplierName);
             return ResultModel.ok();
         } catch (Exception e) {
             return ResultModel.fail("系统异常, 请联系管理员");
         }
     }
 
-    private ResultModel<Void> check(List<ImportDeviceVO> devices, String packet, Integer currentYear) {
+    private ResultModel<Void> check(List<ImportDeviceVO> devices, String packet, Integer currentYear, String supplierName) {
         if (CollectionUtils.isEmpty(devices)) {
             return ResultModel.fail("excel数据不能为空");
         }
@@ -91,6 +80,9 @@ public class DeviceController {
         }
         if (currentYear == null || currentYear < 1) {
             return ResultModel.fail("请输入正确的年份");
+        }
+        if (StringUtils.isBlank(supplierName)) {
+            return ResultModel.fail("请输入供应商");
         }
         for (int i = 0; i < devices.size(); i++) {
             int row = i + 1;

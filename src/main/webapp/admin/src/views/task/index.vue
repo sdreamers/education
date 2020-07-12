@@ -21,7 +21,7 @@
                     <el-button @click="handleClear">清除</el-button>
                 </el-col>
 
-                <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleExport">导入</el-button>
+                <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleImport">导入</el-button>
                 <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleExport">导出</el-button>
             </el-row>
             <el-row class="list-con clearfix">
@@ -77,13 +77,17 @@
             :form="supplierForm"
             @close="supplierDialogClose"/>
 
+        <importExcel
+            :dialogVisible="importDialogVisible"
+            @close="importDialogClose"/>
+
     </section>
 </template>
 <script>
     import schoolEdit from './schoolDetail'
     import appointSupplier from './supplier'
-    import api from '@/api/packet';
     import supplierApi from '@/api/supplier'
+    import importExcel from './importExcel';
 
     const merchantEditForm = {
         projectId: ''
@@ -101,14 +105,15 @@
     };
 
     const columns = [
-        {key: 'project', title: '包名'},
-        {key: 'supplier', title: '供应商'}
+        { key: 'project', title: '包名' },
+        { key: 'supplier', title: '供应商' }
     ];
 
     export default {
         components: {
             schoolEdit,
-            appointSupplier
+            appointSupplier,
+            importExcel
         },
 
         data() {
@@ -130,7 +135,10 @@
                 /* 指派供应商 */
                 supplierDialogVisible: false,
                 supplierForm: JSON.parse(JSON.stringify(supplierForm)),
-                suppliers: []
+                suppliers: [],
+
+                /* 导入 */
+                importDialogVisible: false
             }
         },
 
@@ -185,7 +193,7 @@
             },
 
             handleAppointSupplier(row) {
-                this.supplierForm = {projectId: row.id, oldSupplier: row.supplierName};
+                this.supplierForm = { projectId: row.id, oldSupplier: row.supplierName };
                 this.supplierDialogVisible = true;
             },
 
@@ -194,9 +202,17 @@
                 this.supplierForm = JSON.parse(JSON.stringify(supplierForm));
             },
 
+            importDialogClose() {
+                this.importDialogVisible = false;
+            },
+
             handleExport() {
                 const exportUrl = window.vars.URLApiBase + '/quota/export';
                 return location.href = exportUrl;
+            },
+
+            handleImport() {
+                this.importDialogVisible = true;
             },
 
             loadSuppliers() {

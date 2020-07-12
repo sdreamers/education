@@ -189,7 +189,7 @@ public interface DeviceService {
      * @param type        类型
      * @throws ServiceException
      */
-    void importDevice(List<ImportDeviceVO> devices, String packet, Integer currentYear, Integer type) throws ServiceException;
+    void importDevice(List<ImportDeviceVO> devices, String packet, Integer currentYear, Integer type, String supplierName) throws ServiceException;
 
     /**
      * 分页查询

@@ -396,15 +396,14 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     @Transactional(rollbackFor = ServiceException.class)
-    public void importDevice(List<ImportDeviceVO> devices, String packetName, Integer currentYear, Integer type) throws ServiceException {
+    public void importDevice(List<ImportDeviceVO> devices, String packetName, Integer currentYear, Integer type, String supplierName) throws ServiceException {
         if (CollectionUtils.isEmpty(devices)) {
             return;
         }
         // 供应商
-        String supplier = devices.stream().map(ImportDeviceVO::getSupplier).findFirst().get();
-        Long supplierId = this.saveSupplier(supplier);
+        Long supplierId = this.saveSupplier(supplierName);
         // 包
-        PacketPO packet = this.savePacket(packetName, supplierId, supplier, currentYear, type);
+        PacketPO packet = this.savePacket(packetName, supplierId, supplierName, currentYear, type);
         // 学校
         List<SchoolPO> schools = this.saveSchool(devices.stream().map(ImportDeviceVO::getSchool).distinct().toArray(String[]::new), currentYear);
         // 包-学校中间表

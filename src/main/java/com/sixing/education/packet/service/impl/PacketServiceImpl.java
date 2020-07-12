@@ -17,6 +17,7 @@ import com.sixing.base.utils.CollectionUtils;
 import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.packet.dao.PacketDAO;
 import com.sixing.education.packet.service.PacketService;
+import com.dongpinyun.productmodule.shop.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,9 @@ public class PacketServiceImpl implements PacketService {
 
     @Autowired
     private PacketDAO packetDAO;
+
+    @Autowired
+    private DeviceService deviceService;
 
     /**
      * 新增包
@@ -367,9 +371,6 @@ public class PacketServiceImpl implements PacketService {
         }
         return pageData;
     }
-
-    @Autowired
-    private com.dongpinyun.productmodule.shop.service.DeviceService deviceService;
 
     @Override
     public PageRecords<PacketVO> listPacketPaging(PacketQuery param, PageVO pageParam) throws ServiceException {
