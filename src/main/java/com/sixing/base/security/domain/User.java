@@ -19,14 +19,14 @@ public class User extends AbstractAuthenticationToken {
     /**
      * 用户手机号码 对应security的principal
      */
-    private String email;
+    private String name;
 
     private String password;
 
-    public User(Long id, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public User(Long id, String name, String password, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.id = id;
-        this.email = email;
+        this.name = name;
         this.password = password;
         this.setAuthenticated(true);
     }
@@ -38,15 +38,16 @@ public class User extends AbstractAuthenticationToken {
 
     @Override
     public Object getPrincipal() {
-        return email;
+        return name;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public String getName() {
+        return name;
     }
 
     public String getPassword() {

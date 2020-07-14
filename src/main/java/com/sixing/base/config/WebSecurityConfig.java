@@ -50,7 +50,7 @@ import java.io.PrintWriter;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    /*private static final Log log = LogFactory.getLog(WebSecurityConfigurerAdapter.class);
+    private static final Log log = LogFactory.getLog(WebSecurityConfigurerAdapter.class);
 
     private static final String REMEMBER_ME_KEY = "education-remember-me";
 
@@ -71,20 +71,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private LogoutSuccessHandler logoutSuccessHandler;
     @Autowired
-    private RememberMeServices rememberMeServices;*/
+    private RememberMeServices rememberMeServices;
 
-    /*@Value("${server.max-session-num}")
+    @Value("${server.max-session-num}")
     private Integer maxSessionNum;
 
     @Bean
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
-    }*/
+    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        /*// 禁用匿名账户
+        // 禁用匿名账户
         httpSecurity.anonymous().disable();
         // 防止跨站请求伪造
         httpSecurity.csrf().disable();
@@ -103,12 +103,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenValiditySeconds(30 * 24 * 60 * 60)
                 .key(REMEMBER_ME_KEY);
         // session管理
-        httpSecurity.sessionManagement().maximumSessions(maxSessionNum).sessionRegistry(this.sessionRegistry());*/
+        httpSecurity.sessionManagement().maximumSessions(maxSessionNum).sessionRegistry(this.sessionRegistry());
         // 跨域过滤器
         httpSecurity.addFilterBefore(new SimpleCrossDomainFilter(), ChannelProcessingFilter.class);
     }
 
-    /*@Bean
+    @Bean
     public UsernamePasswordCaptchaAuthenticationFilter loginFilter() throws Exception {
         UsernamePasswordCaptchaAuthenticationFilter loginFilter = new UsernamePasswordCaptchaAuthenticationFilter();
         loginFilter.setAuthenticationManager(this.authenticationManager());
@@ -120,20 +120,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         loginFilter.setAuthenticationSuccessHandler(loginSuccessHandler);
         loginFilter.setAuthenticationFailureHandler(loginFailureHandler);
         return loginFilter;
-    }*/
+    }
 
 
-    /*@Override
-    public void configure(WebSecurity web) throws Exception {*/
+    @Override
+    public void configure(WebSecurity web) throws Exception {
         // 拦截/**/admin、/authentication/**、/user/**请求，其余请求不进入security
-       /* web.ignoring().regexMatchers("^((?!((/admin.*)|/authentication/.*)).)+$").antMatchers(HttpMethod.OPTIONS);
+        web.ignoring().regexMatchers("^((?!((/admin.*)|/authentication/.*)).)+$").antMatchers(HttpMethod.OPTIONS);
         super.configure(web);
-    }*/
+    }
 
     /**
      * 资源、权限控制没有可访问的菜单权限，请联系客服
      */
-    /*private ObjectPostProcessor objectPostProcessor() {
+    private ObjectPostProcessor objectPostProcessor() {
         return new ObjectPostProcessor<FilterSecurityInterceptor>() {
             @Override
             public <O extends FilterSecurityInterceptor> O postProcess(O o) {
@@ -142,14 +142,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 return o;
             }
         };
-    }*/
+    }
 
     /**
      * 认证鉴权异常入口
-     *
+     * <p>
      * TODO  根据异常划分返回内容
      */
-   /* private AuthenticationEntryPoint authenticationEntryPoint() {
+    private AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, e) -> {
             log.error(e);
             response.setContentType("application/json;charset=utf-8");
@@ -179,5 +179,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices(REMEMBER_ME_KEY, userDetailsService);
         rememberMeServices.setParameter(SecurityConstant.KEY_REMEMBER_ME);
         return rememberMeServices;
-    }*/
+    }
 }

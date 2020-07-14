@@ -1,6 +1,12 @@
 package com.sixing.base.security.provider;
 
+import com.sixing.base.constant.ResponseMsgConstant;
+import com.sixing.base.domain.user.UserPO;
+import com.sixing.base.security.domain.User;
 import com.sixing.base.security.domain.UsernamePasswordCaptchaAuthToken;
+import com.sixing.base.security.utils.SecurityConstant;
+import com.sixing.base.utils.CollectionUtils;
+import com.sixing.education.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +24,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,47 +39,39 @@ public class CaptchaAuthenticationProvider implements AuthenticationProvider {
 
     private static final Log log = LogFactory.getLog(WebSecurityConfigurerAdapter.class);
 
-    /*@Autowired
-    private UserService userService;
     @Autowired
+    private UserService userService;
+    /*@Autowired
     private RoleService roleService;*/
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         try {
-            /*UsernamePasswordCaptchaAuthToken token = (UsernamePasswordCaptchaAuthToken) authentication;
-            String email = (String) token.getPrincipal();
+            UsernamePasswordCaptchaAuthToken token = (UsernamePasswordCaptchaAuthToken) authentication;
+            String name = (String) token.getPrincipal();
             String password = (String) token.getCredentials();
-            UserPO user = userService.getByEmail(email);
+            UserPO user = userService.getByName(name);
             if (user == null) {
                 throw new UsernameNotFoundException(ResponseMsgConstant.MerchantNotExistExceptionMsg);
             }
-            if (StringUtils.isEmpty(password) || !password.equals(user.getPswd())){
+            if (StringUtils.isEmpty(password) || !password.equals(user.getPassword())){
                 throw new BadCredentialsException(ResponseMsgConstant.AuthFailedExceptionMsg);
             }
             if ("0".equals(user.getStatus())) {
                 throw new DisabledException(ResponseMsgConstant.MerchantIsDisabledExceptionMsg);
             }
-            // 检查是否拥有权限
-            Set<String> roles = roleService.listRoleByUserId(user.getId());
-            if (CollectionUtils.isEmpty(roles)) {
-                throw new NotHoldRoleException(ResponseMsgConstant.NotHoldAnyRoleExceptionMsg);
-            }
-            roles.add(SecurityConstant.HAS_AUTHENTICATED_KEY);
-            List<GrantedAuthority> list = this.addRolePrefix(roles);
-            return this.generateAuthentication(user, list);*/
-            return null;
+            // 检查拥有哪些页面
+            Set<String> pages = new HashSet<>();
+            List<GrantedAuthority> list = this.addRolePrefix(pages);
+            return this.generateAuthentication(user, list);
         } catch (Exception e) {
             log.error(e);
             throw new InternalAuthenticationServiceException(e.getMessage());
-        } /*catch (AuthenticationException e) {
-            log.error(e.getMessage(), e);
-            throw e;
-        }*/
+        }
     }
 
-    /*private User generateAuthentication(UserPO user, List<GrantedAuthority> list) {
-        User token = new User(user.getId(), user.getEmail(), user.getPswd(), list);
+    private User generateAuthentication(UserPO user, List<GrantedAuthority> list) {
+        User token = new User(user.getId(), user.getName(), user.getPassword(), list);
         return token;
     }
 
@@ -83,7 +82,7 @@ public class CaptchaAuthenticationProvider implements AuthenticationProvider {
             return new ArrayList<>();
         }
         return roles.stream().map(item -> new SimpleGrantedAuthority(SecurityConstant.ROLE_PREFIX + item)).collect(Collectors.toList());
-    }*/
+    }
 
     @Override
     public boolean supports(Class<?> authentication) {

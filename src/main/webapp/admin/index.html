@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>冻品云</title>
+    <title>教育系统</title>
     <link rel="shortcut icon" href="http://dongpinyun.com/images/favicon.ico">
     <!-- <link href="./static/css/element-ui/2.4.0/theme-chalk/index.css" rel="stylesheet"> -->
     <link href="./static/css/theme.css" rel="stylesheet">
@@ -28,13 +28,11 @@
         </div>
     </div>
     <div id="app"></div>
-    <video id="videoWrapper" style="display:none">
-        <source src="http://package.dongpinyun.com/newOrder.wav" type="audio/mpeg"> 你的浏览器不支持音频播放
-    </video>
     <script>
         window.vars = window.vars || {};
         window.permission = [];
-        vars.URLApiBase = '/admin';
+        vars.URLApiBase = '/education';
+        window.vars.URLApiBase = 'http://localhost:8767'
     </script>
     <script src="./static/js/vue.js"></script>
     <script src="./static/js/vue-router.min.js"></script>

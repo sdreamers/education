@@ -35,21 +35,22 @@ public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocati
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         try {
             // 根据请求地址和http method获取该请求需要的角色
-            String requestUri = ((FilterInvocation) object).getHttpRequest().getRequestURI();
+            /*String requestUri = ((FilterInvocation) object).getHttpRequest().getRequestURI();
             if (NotNeedAuthenticationUrl.contain(requestUri)) {
                 return null;
             }
             if (requestUri.startsWith(SecurityConstant.KEY_ADMIN_PREFIX)) {
                 requestUri = requestUri.substring(SecurityConstant.KEY_ADMIN_PREFIX.length() - 1);
             }
-            /*List<RolePO> roles = roleService.listByUrl(requestUri);*/
+            *//*List<RolePO> roles = roleService.listByUrl(requestUri);*//*
             List<Object> roles = null;
             if (CollectionUtils.isEmpty(roles)) {
                 // 需要登录
                 return this.authenticatedAttribute();
             }
-            String[] rolesTypes = roles.stream().map(item -> SecurityConstant.ROLE_PREFIX /*+ item.getType()*/).toArray(String[]::new);
-            return SecurityConfig.createList(rolesTypes);
+            String[] rolesTypes = roles.stream().map(item -> SecurityConstant.ROLE_PREFIX *//*+ item.getType()*//*).toArray(String[]::new);
+            return SecurityConfig.createList(rolesTypes);*/
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());

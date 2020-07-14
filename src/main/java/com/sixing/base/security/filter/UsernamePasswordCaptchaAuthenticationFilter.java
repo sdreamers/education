@@ -45,7 +45,7 @@ public class UsernamePasswordCaptchaAuthenticationFilter extends UsernamePasswor
         return request.getParameter(this.captchaParameter);
     }
 
-    protected void setDetails(HttpServletRequest request, UsernamePasswordCaptchaAuthToken authRequest) {
+    private void setDetails(HttpServletRequest request, UsernamePasswordCaptchaAuthToken authRequest) {
         authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
     }
 

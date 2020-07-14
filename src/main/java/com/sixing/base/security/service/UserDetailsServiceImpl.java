@@ -1,7 +1,10 @@
 package com.sixing.base.security.service;
 
+import com.sixing.base.domain.user.UserPO;
 import com.sixing.base.security.utils.SecurityConstant;
 import com.sixing.base.utils.CollectionUtils;
+import com.sixing.base.utils.exception.ServiceException;
+import com.sixing.education.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,31 +23,31 @@ import java.util.stream.Collectors;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-   /* @Autowired
-    private UserService userService;
     @Autowired
+    private UserService userService;
+    /*@Autowired
     private RoleService roleService;*/
 
     /**
      * 用于RememberMeFilter通过cookie验证合法性
      *
-     * @param email 邮箱
+     * @param name 用户名
      * */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        /*try {
-            UserPO user = userService.getByEmail(email);
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        try {
+            UserPO user = userService.getByName(name);
             if (user == null) {
-                throw new UsernameNotFoundException("邮箱错误, 请检查");
+                throw new UsernameNotFoundException("用户名错误, 请检查");
             }
-            Set<String> role = roleService.listRoleByUserId(user.getId());
+            // 拥有的页面
+            Set<String> role = new HashSet<>();
             role.add(SecurityConstant.HAS_AUTHENTICATED_KEY);
             List<GrantedAuthority> list = this.addRolePrefix(role);
-            return new User(user.getEmail(), user.getPswd(), list);
+            return new User(user.getName(), user.getPassword(), list);
         } catch (ServiceException e) {
             throw new UsernameNotFoundException(e.getMessage());
-        }*/
-        return null;
+        }
     }
 
     private List<GrantedAuthority> addRolePrefix(Set<String> role) {

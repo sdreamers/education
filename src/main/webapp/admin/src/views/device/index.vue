@@ -43,10 +43,6 @@
                                 type="text"
                                 @click.stop="handleViewDevice(scope.row)">查看设备
                             </el-button>
-                            <el-button
-                                type="text"
-                                @click.stop="handleAppointSupplier(scope.row)">登记进度
-                            </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -151,7 +147,7 @@
             },
 
             handleClear() {
-                this.search = JSON.parse(JSON.stringify(search));
+                this.search = JSON.parse(JSON.stringify(search)); 
             },
 
             handlePagers() {

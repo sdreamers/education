@@ -23,8 +23,12 @@
                 <el-input v-model="form.currentYear" placeholder="请输入年份"></el-input>
             </el-form-item>
             <el-form-item label="设备">
-                <el-button
-                    type="text"><label for="import">导入</label><input id="import" type="file" @change="importExcel" style="display:none"></el-button>
+                <el-upload
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :limit="1"
+                    :http-request="modeUpload">
+                <el-button size="small" type="primary">上传</el-button>
+                </el-upload>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -56,7 +60,8 @@
                 supplierForm: {},
                 form: JSON.parse(JSON.stringify(form)),
                 types: JSON.parse(JSON.stringify(types)),
-                deviceImportVOList: []
+                deviceImportVOList: [],
+                excel: {}
             };
         },
         methods: {
@@ -64,7 +69,8 @@
             handleSubmit() {
                 this.$refs.ruleForm.validate(valid => {
                     if (valid) {
-                        if (!this.deviceImportVOList || this.deviceImportVOList.length < 1) {
+                        console.log(this.excel)
+                        if (!this.excel) {
                             return this.$notify.error('请导入文件');
                         }
                         const param = {
@@ -72,10 +78,11 @@
                             packet: this.form.packetName,
                             currentYear: this.form.currentYear,
                             type: this.form.type,
-                            supplierName: this.form.supplierName
+                            supplierName: this.form.supplierName,
+                            excelFile: this.excel
                         }
-                        const url = 'localhost:8767/device/import';
-                        axios.post(url, JSON.stringify(param)).then(res => {
+                        const url = 'http://localhost:8767/device/import';
+                        axios.post(url, JSON.stringify(param), {headers: { 'Content-Type': 'multipart/form-data'}}).then(res => {
                             if (res.code === 100) {
                                 this.$notify.success(res.message || '成功');
                             } else {
@@ -93,72 +100,10 @@
                 });
             },
 
-            async importExcel(obj) {
-                this.deviceImportVOList = [];
-                // js解析Excel相关操作
-                let wb; // 读取完成的数据
-                const rABS = false; // 是否将文件读取为二进制字符串
+            modeUpload(item) {
+                this.excel = item.file;
+            },
 
-                function fixData(data) { // 文件流转BinaryString
-                    let o = '', l = 0;
-                    const w = 10240;
-                    for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
-                    o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
-                    return o;
-                }
-                function importExcel(obj) { // 导入
-                    if (!obj.files) {
-                        return;
-                    }
-                    const f = obj.files[0];
-                    const reader = new FileReader();
-                    if (rABS) {
-                        reader.readAsArrayBuffer(f);
-                    } else {
-                        reader.readAsBinaryString(f);
-                    }
-                    return new Promise(resolve => {
-                        reader.onload = function(e) {
-                            const data = e.target.result;
-                            if (rABS) {
-                                wb = XLSX.read(btoa(fixData(data)), { // 手动转化
-                                    type: 'base64'
-                                });
-                            } else {
-                                wb = XLSX.read(data, {
-                                    type: 'binary'
-                                });
-                            }
-                            // wb.SheetNames[0]是获取Sheets中第一个Sheet的名字
-                            // wb.Sheets[Sheet名]获取第一个Sheet的数据
-                            // JSON.stringify( XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));  转换成json字符串
-                            const ExcelJson = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]); // 将Excel转换成一个数组
-                            // 创建一个参数对象，传给后台
-                            const deviceImportVOList = [];
-                            for (let i = 0; i < ExcelJson.length; i++) {
-                                const row = ExcelJson[i];
-                                const rowJson = eval('(' + JSON.stringify(row) + ')');
-                                const deviceImportVO = {
-                                    name: rowJson.设备名称,
-                                    technicalParamter: rowJson.技术参数,
-                                    specification: rowJson.规格,
-                                    model: rowJson.型号,
-                                    unit: rowJson.单位,
-                                    num: rowJson.数量,
-                                    includingTaxPrice: rowJson.含税单价,
-                                    excludingTaxPrice: rowJson.不含税单价,
-                                    tax: rowJson.税金,
-                                    totalAmount: rowJson.含税合价,
-                                    schoolName: rowJson.学校名称
-                                };
-                                deviceImportVOList.push(deviceImportVO);
-                            }
-                            resolve(deviceImportVOList);
-                        };
-                    })
-                }
-                this.deviceImportVOList = await importExcel(obj.target);
-            }
         }
     };
 </script>

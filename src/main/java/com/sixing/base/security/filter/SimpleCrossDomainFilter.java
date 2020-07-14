@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 全局跨域过滤器, 放在security过滤器链与ZuulFilter之前
+ * 全局跨域过滤器, 放在security过滤器链之前
  *
  * @author Administrator
  */

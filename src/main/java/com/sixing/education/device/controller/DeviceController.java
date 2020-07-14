@@ -57,8 +57,20 @@ public class DeviceController {
     }
 
     @PostMapping("/import")
-    public ResultModel<Void> deviceImport(@RequestBody List<ImportDeviceVO> devices, String packet, Integer currentYear, Integer type, String supplierName) {
+    public ResultModel<Void> deviceImport(MultipartFile excelFile, String packet, Integer currentYear, Integer type, String supplierName) {
         try {
+            if (excelFile == null || excelFile.isEmpty()) {
+                return ResultModel.fail("请选择文件");
+            }
+            String fileName = excelFile.getOriginalFilename();
+            if (StringUtils.isBlank(fileName)) {
+                return ResultModel.fail("文件名不能为空");
+            }
+            String fileEnd = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+            if (!Constant.EXCEL_END.equalsIgnoreCase(fileEnd)) {
+                return ResultModel.fail("只能上传Excel文件，扩展名为.xls");
+            }
+            List<ImportDeviceVO> devices = ExcelUtils.read(excelFile.getInputStream());
             ResultModel<Void> resultModel = this.check(devices, packet, currentYear, supplierName);
             if (resultModel.getCode() == Constant.RESPONSE_ERROR_CODE) {
                 return resultModel;

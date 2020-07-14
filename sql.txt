@@ -53,5 +53,12 @@ CREATE TABLE `t_school` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='学校';
 
-
+CREATE TABLE `t_user` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(100) NOT NULL COMMENT '姓名',
+  `password` varchar(100) NOT NULL comment '密码',
+  `nature` int(2) NOT NULL comment '属性，1-管理员 2-系统用户 3-供应商',
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '状态 1-正常 0-失效',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='系统用户';
 
