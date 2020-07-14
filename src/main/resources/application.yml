@@ -7,6 +7,14 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: true
+
+---
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 ---
 spring:
   datasource:

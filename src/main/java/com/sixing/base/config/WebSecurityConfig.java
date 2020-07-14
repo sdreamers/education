@@ -105,6 +105,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // session管理
         httpSecurity.sessionManagement().maximumSessions(maxSessionNum).sessionRegistry(this.sessionRegistry());
         // 跨域过滤器
+        httpSecurity.cors();
         httpSecurity.addFilterBefore(new SimpleCrossDomainFilter(), ChannelProcessingFilter.class);
     }
 
@@ -126,7 +127,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // 拦截/**/admin、/authentication/**、/user/**请求，其余请求不进入security
-        web.ignoring().regexMatchers("^((?!((/admin.*)|/authentication/.*)).)+$").antMatchers(HttpMethod.OPTIONS);
+        //web.ignoring().regexMatchers("^((?!((/admin.*)|/authentication/.*)).)+$").antMatchers(HttpMethod.OPTIONS);
         super.configure(web);
     }
 

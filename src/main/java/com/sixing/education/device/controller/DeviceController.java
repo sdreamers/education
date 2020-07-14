@@ -28,6 +28,7 @@ import java.util.List;
  * */
 @RestController
 @RequestMapping("/device")
+@CrossOrigin
 public class DeviceController {
 
     private static Logger logger = LoggerFactory.getLogger(DeviceController.class);
@@ -57,7 +58,7 @@ public class DeviceController {
     }
 
     @PostMapping("/import")
-    public ResultModel<Void> deviceImport(MultipartFile excelFile, String packet, Integer currentYear, Integer type, String supplierName) {
+    public ResultModel<Void> deviceImport(@RequestParam MultipartFile excelFile, String packet, Integer currentYear, Integer type, String supplierName) {
         try {
             if (excelFile == null || excelFile.isEmpty()) {
                 return ResultModel.fail("请选择文件");
@@ -79,6 +80,8 @@ public class DeviceController {
             deviceService.importDevice(devices, packet, currentYear, type, supplierName);
             return ResultModel.ok();
         } catch (Exception e) {
+            System.out.println(e.getMessage());
+            logger.error("导入设备excel报错", e);
             return ResultModel.fail("系统异常, 请联系管理员");
         }
     }
@@ -119,10 +122,6 @@ public class DeviceController {
             }
             device.setName(device.getName().trim());
             device.setSchool(device.getSchool().trim());
-        }
-        long supplierCount = devices.stream().map(ImportDeviceVO::getSupplier).map(String::trim).distinct().count();
-        if (supplierCount > 1) {
-            return ResultModel.fail("excel包含多个供应商, 请检查");
         }
         return ResultModel.ok();
     }

@@ -39,7 +39,7 @@
 </template>
 <script>
 
-    import XLSX from 'xlsx';
+    import axios from 'axios';
 
     const types = [{ label: '普通', value: '1' }, { label: '信息化', value: '2' }];
 
@@ -73,17 +73,16 @@
                         if (!this.excel) {
                             return this.$notify.error('请导入文件');
                         }
-                        const param = {
-                            devices: this.deviceImportVOList,
-                            packet: this.form.packetName,
-                            currentYear: this.form.currentYear,
-                            type: this.form.type,
-                            supplierName: this.form.supplierName,
-                            excelFile: this.excel
-                        }
+                        const formData = new FormData();
+                        formData.append('excelFile', this.excel);
+                        formData.append('packet', this.form.packetName);
+                        formData.append('currentYear', this.form.currentYear);
+                        formData.append('type', this.form.type);
+                        formData.append('supplierName', this.form.supplierName);
                         const url = 'http://localhost:8767/device/import';
-                        axios.post(url, JSON.stringify(param), {headers: { 'Content-Type': 'multipart/form-data'}}).then(res => {
-                            if (res.code === 100) {
+                        axios.post(url, formData).then(res => {
+                            console.log(res);
+                            if (res.data.code === 100) {
                                 this.$notify.success(res.message || '成功');
                             } else {
                                 this.$notify.success(res.message || '失败');
