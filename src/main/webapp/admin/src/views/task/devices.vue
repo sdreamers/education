@@ -27,9 +27,25 @@
                             <span>{{scope.row[column.key]}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="inProgressStatus" label="当前状态" align="center">
+                    <el-table-column prop="produce" label="生产/采购" align="center">
                         <template slot-scope="scope">
-                            <el-select v-model="scope.row.inProgressStatus" @change="handleStatusChange(scope.row)">
+                            <el-select v-model="scope.row.produce" @change="handleStatusChange(scope.row, 1)">
+                                <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="produce" label="到货" align="center">
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.arrival" @change="handleStatusChange(scope.row, 2)">
+                                <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="produce" label="安装" align="center">
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.install" @change="handleStatusChange(scope.row, 3)">
                                 <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
                                 </el-option>
                             </el-select>
@@ -72,19 +88,8 @@
 <script>
     import schoolEdit from './schoolDetail'
     import appointSupplier from './supplier'
-    import supplierApi from '@/api/supplier'
     import importExcel from './importExcel';
     import deviceApi from '@/api/device';
-
-    const merchantEditForm = {
-        projectId: ''
-    };
-
-    const supplierForm = {
-        projectId: '',
-        oldSupplier: '',
-        newSupplier: ''
-    };
 
     const search = {
         packetId: '',
@@ -92,8 +97,8 @@
         nameLike: ''
     };
 
-    const normalStatus = [{ label: '生产中', value: 1 }, { label: '到货中', value: 2 }, { label: '安装中', value: 3 }, { label: '已完成', value: 7 }]
-    const informationStatus = [{ label: '到货中', value: 4 }, { label: '安装中', value: 5 }, { label: '调试中', value: 6 }, { label: '已完成', value: 7 }]
+    const statusOptions = [{ label: '未完成', value: 0 }, { label: '已完成', value: 1 }];
+
 
     const columns = [
         { key: 'schoolName', title: '学校名称' },
@@ -121,7 +126,7 @@
                 pageSize: 10,
                 loading: false,
                 search: JSON.parse(JSON.stringify(search)),
-                statusOptions: []
+                statusOptions: statusOptions
             }
         },
 
@@ -164,8 +169,19 @@
                 })
             },
 
-            handleStatusChange(row) {
-                deviceApi.updateStatus({ status: row.inProgressStatus, id: row.id }).then(res => {
+            handleStatusChange(row, type) {
+                const param = { id: row.id, type: type };
+                if (type === 1) {
+                    param.status = row.produce;
+                } else if (type === 2) {
+                    param.status = row.arrival;
+                } else if (type === 3) {
+                    param.status = row.install;
+                } else {
+                    this.$notify.error('参数异常');
+                }
+
+                deviceApi.updateStatus(param).then(res => {
                     if (res.code === 100) {
                         this.$notify.success(res.message || '成功');
                     }
@@ -175,12 +191,6 @@
 
         created() {
             this.search.packetId = this.$route.params.packetId;
-            this.search.type = this.$route.params.type;
-            if (this.search.type === 1) {
-                this.statusOptions = JSON.parse(JSON.stringify(normalStatus));
-            } else {
-                 this.statusOptions = JSON.parse(JSON.stringify(informationStatus));
-            }
             this.handlePagers();
         }
     }

@@ -186,7 +186,7 @@ public interface DeviceService {
      * @param type        类型
      * @throws ServiceException
      */
-    void importDevice(List<ImportDeviceVO> devices, String packet, Integer currentYear, Integer type, String supplierName) throws ServiceException;
+    void importDevice(List<ImportDeviceVO> devices, String packet, Integer currentYear, String supplierName) throws ServiceException;
 
     /**
      * 分页查询
@@ -205,7 +205,7 @@ public interface DeviceService {
      * @param status 状态
      * @throws ServiceException
      * */
-    void update(Long id, Integer status) throws ServiceException;
+    void update(Long id, Integer type, Integer status) throws ServiceException;
 
     /**
      * 获取设备导出实体

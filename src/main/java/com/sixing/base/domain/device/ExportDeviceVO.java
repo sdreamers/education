@@ -47,9 +47,21 @@ public class ExportDeviceVO {
     @ExcelProperty(value = "含税总价" ,index = 10)
     private BigDecimal totalAmount;
 
-    @ExcelProperty(value = "当前状态" ,index = 11)
-    private String inProgressStatusStr;
+    @ExcelProperty(value = "生产/采购" ,index = 11)
+    private String produceStr;
+
+    @ExcelProperty(value = "到货" ,index = 12)
+    private String arriveStr;
+
+    @ExcelProperty(value = "安装" ,index = 13)
+    private String installStr;
 
     @ExcelIgnore
-    private Integer inProgressStatus;
+    private Integer produce;
+
+    @ExcelIgnore
+    private Integer arrival;
+
+    @ExcelIgnore
+    private Integer install;
 }

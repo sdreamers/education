@@ -33,11 +33,12 @@ public class DeviceVO implements Serializable {
 	private Integer num;
 	private BigDecimal excludingTaxPrice;
 	private BigDecimal tax;
-	private Integer inProgressStatus;
-	private String inProgressStatusStr;
 	private BigDecimal includingTaxPrice;
 	/**
 	 * 总价 数量*含税单价
 	 * */
 	private BigDecimal totalAmount;
+	private Integer produce;
+	private Integer arrival;
+	private Integer install;
 }

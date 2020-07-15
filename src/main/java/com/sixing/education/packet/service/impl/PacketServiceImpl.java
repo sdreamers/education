@@ -2,6 +2,7 @@ package com.sixing.education.packet.service.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -378,7 +379,7 @@ public class PacketServiceImpl implements PacketService {
         Long[] packetIds = null;
         if (param.getInProgressStatus() != null) {
             DeviceQuery whereParams = new DeviceQuery();
-            whereParams.setInProgressStatus(param.getInProgressStatus());
+            //whereParams.setInProgressStatus(param.getInProgressStatus());
             List<DevicePO> devices = deviceService.list(whereParams, new String[]{"packet_id"});
             if (CollectionUtils.isNotEmpty(devices)) {
                 packetIds = devices.stream().map(DevicePO::getPacketId).toArray(Long[]::new);
@@ -398,7 +399,8 @@ public class PacketServiceImpl implements PacketService {
             if (CollectionUtils.isNotEmpty(devices)) {
                 int totalNum = devices.stream().mapToInt(DevicePO::getNum).sum();
                 BigDecimal totalAmount = devices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-                List<DevicePO> completeDevices = devices.stream().filter(item -> item.getInProgressStatus().compareTo(param.getInProgressStatus()) >= 0).collect(Collectors.toList());
+                List<DevicePO> completeDevices = new ArrayList<>();
+                //List<DevicePO> completeDevices = devices.stream().filter(item -> item.getInProgressStatus().compareTo(param.getInProgressStatus()) >= 0).collect(Collectors.toList());
                 if (CollectionUtils.isNotEmpty(completeDevices)) {
                     int completeNum = completeDevices.stream().mapToInt(DevicePO::getNum).sum();
                     BigDecimal completeAmount = completeDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);

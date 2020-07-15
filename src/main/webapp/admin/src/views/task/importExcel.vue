@@ -11,16 +11,6 @@
             <el-form-item label="年份" prop="currentYear">
                 <el-input v-model="form.currentYear" placeholder="请输入年份"></el-input>
             </el-form-item>
-            <el-form-item label="类型" prop="type">
-                <el-select v-model="form.type" placeholder="请选择包类型">
-                    <el-option
-                        v-for="item in types"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
             <el-form-item label="设备明细">
                 <el-upload
                     action="https://jsonplaceholder.typicode.com/posts/"
@@ -39,8 +29,6 @@
 <script>
 
     import axios from 'axios';
-
-    const types = [{ label: '普通', value: '1' }, { label: '信息化', value: '2' }];
 
     const form = { packetName: '', supplierName: '', type: '', currentYear: '' };
 
@@ -65,7 +53,6 @@
                 },
                 supplierForm: {},
                 form: JSON.parse(JSON.stringify(form)),
-                types: JSON.parse(JSON.stringify(types)),
                 deviceImportVOList: [],
                 excel: {}
             };
@@ -83,7 +70,6 @@
                         formData.append('excelFile', this.excel);
                         formData.append('packet', this.form.packetName);
                         formData.append('currentYear', this.form.currentYear);
-                        formData.append('type', this.form.type);
                         formData.append('supplierName', this.form.supplierName);
                         const url = 'http://localhost:8767/device/import';
                         axios.post(url, formData).then(res => {
@@ -109,7 +95,7 @@
 
             modeUpload(item) {
                 this.excel = item.file;
-            },
+            }
 
         }
     };

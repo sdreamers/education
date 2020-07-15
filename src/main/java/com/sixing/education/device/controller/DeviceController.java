@@ -52,9 +52,9 @@ public class DeviceController {
     }
 
     @PutMapping("/status")
-    public ResultModel<Void> updateStatus(Integer status, Long id) {
+    public ResultModel<Void> updateStatus(Integer status, Integer type, Long id) {
         try {
-            deviceService.update(id, status);
+            deviceService.update(id, type, status);
             return ResultModel.ok();
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -83,7 +83,7 @@ public class DeviceController {
     }
 
     @PostMapping("/import")
-    public ResultModel<Void> deviceImport(@RequestParam MultipartFile excelFile, String packet, Integer currentYear, Integer type, String supplierName) {
+    public ResultModel<Void> deviceImport(@RequestParam MultipartFile excelFile, String packet, Integer currentYear, String supplierName) {
         try {
             if (excelFile == null || excelFile.isEmpty()) {
                 return ResultModel.fail("请选择文件");
@@ -102,7 +102,7 @@ public class DeviceController {
                 return resultModel;
             }
             packet = packet.trim();
-            deviceService.importDevice(devices, packet, currentYear, type, supplierName);
+            deviceService.importDevice(devices, packet, currentYear, supplierName);
             return ResultModel.ok();
         } catch (Exception e) {
             System.out.println(e.getMessage());
