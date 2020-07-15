@@ -2,10 +2,7 @@ package com.dongpinyun.productmodule.shop.service;
 
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
-import com.sixing.base.domain.device.DevicePO;
-import com.sixing.base.domain.device.DeviceQuery;
-import com.sixing.base.domain.device.DeviceVO;
-import com.sixing.base.domain.device.ImportDeviceVO;
+import com.sixing.base.domain.device.*;
 import com.sixing.base.utils.exception.ServiceException;
 
 import java.util.List;
@@ -209,4 +206,12 @@ public interface DeviceService {
      * @throws ServiceException
      * */
     void update(Long id, Integer status) throws ServiceException;
+
+    /**
+     * 获取设备导出实体
+     *
+     * @param packetId 包ID
+     * @return 设备
+     * */
+    List<ExportDeviceVO> listExportDevices(Long packetId) throws ServiceException;
 }

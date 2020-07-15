@@ -187,5 +187,5 @@ public interface PacketService {
      * @return 分页结果
      * @throws ServiceException 业务异常
      */
-    PageRecords<PacketVO> listPacketPaging(PacketQuery param, PageVO pageParam) throws ServiceException;
+    PageRecords<PacketVO> progressPages(PacketQuery param, PageVO pageParam) throws ServiceException;
 }

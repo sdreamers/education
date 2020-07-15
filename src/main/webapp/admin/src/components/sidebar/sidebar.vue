@@ -14,7 +14,7 @@
                 text-color="#fff">
 
                 <router-link :to="{name: '/project/index'}"><el-menu-item  index="/project/index"><img class="menu-icon" :src="iconYonghu" /><span class="sidebar-title">项目进度</span></el-menu-item></router-link>
-                <router-link :to="{name: '/task/index'}"><el-menu-item  index="/task/index"><img class="menu-icon" :src="iconYonghu" /><span class="sidebar-title">任务</span></el-menu-item></router-link>
+                <router-link :to="{name: '/task/index'}"><el-menu-item  index="/task/index"><img class="menu-icon" :src="iconYonghu" /><span class="sidebar-title">设备明细</span></el-menu-item></router-link>
 
             </el-menu>
         </div>

@@ -3,7 +3,7 @@
         <el-card shadow="none">
             <el-row class="mb20" :gutter="20">
                 <el-col :span="3">
-                    <el-select v-model="search.supplierId" filterable placeholder="请选择">
+                    <el-select v-model="search.supplierId" filterable placeholder="请选择供应商">
                         <el-option
                             v-for="item in suppliers"
                             :key="item.id"
@@ -25,8 +25,9 @@
                 <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleExport">导出</el-button>
             </el-row>
             <el-row class="list-con clearfix">
-                <el-table :data="tableData" ref="table" border v-loading="loading" @select="select" @selection-change="handleSelectionChange" >
-                    <el-table-column type="selection"  width="50" ></el-table-column>
+                <el-table :data="tableData" ref="table" border v-loading="loading" @select="select"
+                          @selection-change="handleSelectionChange">
+                    <el-table-column type="selection" width="50"></el-table-column>
                     <el-table-column v-for="(column,key) in columns" :label="column.title" :key="key" align="center">
                         <el-table-column v-for="(subColumn,subKey) in column.columns" :prop="subColumn.key" width="120%"
                                          :label="subColumn.title" align="center" :key="subKey">
@@ -44,7 +45,7 @@
                                 type="text"
                                 @click.stop="handleViewDevice(scope.row)">查看设备
                             </el-button>
-                           
+
                         </template>
                     </el-table-column>
                 </el-table>
@@ -77,7 +78,8 @@
 
         <importExcel
             :dialogVisible="importDialogVisible"
-            @close="importDialogClose"/>
+            @close="importDialogClose"
+            @importSuccess="importSuccess"/>
 
     </section>
 </template>
@@ -166,7 +168,7 @@
             handlePagers() {
                 const param = {
                     page: this.currentPage,
-                    limit: this.pageSize,
+                    limit: this.pageSize
                 };
                 if (this.search.nameLike) {
                     param.nameLike = this.search.nameLike;
@@ -204,8 +206,18 @@
                 this.importDialogVisible = false;
             },
 
+            importSuccess() {
+                this.importDialogVisible = false;
+                this.handlePagers();
+            },
+
             handleExport() {
-                const exportUrl = window.vars.URLApiBase + '/quota/export';
+                if (!this.selections || this.selections.length !== 1) {
+                    this.$notify.error('请选择一条记录导出');
+                    return;
+                }
+                const row = this.selections[0];
+                const exportUrl = window.vars.URLApiBase + '/device/export?packetId=' + row.id;
                 return location.href = exportUrl;
             },
 
@@ -218,15 +230,17 @@
                     if (res.code === 100 && res.content) {
                         this.suppliers = res.content;
                     }
-                    this.suppliers.unshift({ id: '', name: '全部' });
+                    this.suppliers.unshift({ id: '', name: '全部供应商' });
                 })
             },
 
-            select(selection, row){	
-			    this.$refs.table.clearSelection();
-			    if(selection.length == 0) return ;
-			    this.$refs.table.toggleRowSelection(row, true);
-		    },
+            select(selection, row) {
+                this.$refs.table.clearSelection();
+                if (selection.length === 0) {
+                    return;
+                }
+                this.$refs.table.toggleRowSelection(row, true);
+            },
 
             handleSelectionChange(row) {
                 this.selections = row;

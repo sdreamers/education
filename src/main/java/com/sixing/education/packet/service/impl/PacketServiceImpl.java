@@ -373,7 +373,7 @@ public class PacketServiceImpl implements PacketService {
     }
 
     @Override
-    public PageRecords<PacketVO> listPacketPaging(PacketQuery param, PageVO pageParam) throws ServiceException {
+    public PageRecords<PacketVO> progressPages(PacketQuery param, PageVO pageParam) throws ServiceException {
         PageRecords<PacketVO> result = new PageRecords<>();
         Long[] packetIds = null;
         if (param.getInProgressStatus() != null) {

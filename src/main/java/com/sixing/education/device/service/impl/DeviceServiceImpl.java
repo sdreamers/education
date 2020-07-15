@@ -5,11 +5,8 @@ import com.sixing.base.dict.device.DeviceTypeEnum;
 import com.sixing.base.dict.device.InProgressStatusEnum;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
-import com.sixing.base.domain.device.DevicePO;
-import com.sixing.base.domain.device.DeviceQuery;
+import com.sixing.base.domain.device.*;
 import com.dongpinyun.productmodule.shop.service.DeviceService;
-import com.sixing.base.domain.device.DeviceVO;
-import com.sixing.base.domain.device.ImportDeviceVO;
 import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.domain.packet.PacketQuery;
 import com.sixing.base.domain.packetschool.PacketSchoolPO;
@@ -432,6 +429,19 @@ public class DeviceServiceImpl implements DeviceService {
         DevicePO setParams = new DevicePO();
         setParams.setInProgressStatus(status);
         this.update(setParams, id);
+    }
+
+    @Override
+    public List<ExportDeviceVO> listExportDevices(Long packetId) throws ServiceException {
+        DeviceQuery whereParams = new DeviceQuery();
+        whereParams.setPacketId(packetId);
+        List<DevicePO> list = this.list(whereParams);
+
+        List<ExportDeviceVO> devices = BeanUtils.copyProperties(list, ExportDeviceVO.class);
+        if (CollectionUtils.isNotEmpty(devices)) {
+            devices.forEach(item -> item.setInProgressStatusStr(InProgressStatusEnum.findName(item.getInProgressStatus())));
+        }
+        return devices;
     }
 
     private void saveDevice(List<ImportDeviceVO> devices, PacketPO packet, List<SchoolPO> schools, Integer type) throws ServiceException {

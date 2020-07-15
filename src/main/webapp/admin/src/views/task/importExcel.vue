@@ -2,15 +2,17 @@
     <el-dialog :close-on-click-modal="false" title="导入设备" :visible="dialogVisible" width="30%" @close="$emit('close')">
         <el-form :model="form" label-position="left" ref="ruleForm" label-width="90px" :rules="rules">
             <el-form-item label="包名" prop="packetName">
-                <el-input
-                    v-model="form.packetName">
+                <el-input v-model="form.packetName" placeholder="请输入包名">
                 </el-input>
             </el-form-item>
             <el-form-item label="供应商" prop="supplierName">
                 <el-input v-model="form.supplierName" placeholder="请输入供应商"></el-input>
             </el-form-item>
+            <el-form-item label="年份" prop="currentYear">
+                <el-input v-model="form.currentYear" placeholder="请输入年份"></el-input>
+            </el-form-item>
             <el-form-item label="类型" prop="type">
-                <el-select v-model="form.type" placeholder="请选择">
+                <el-select v-model="form.type" placeholder="请选择包类型">
                     <el-option
                         v-for="item in types"
                         :key="item.value"
@@ -18,9 +20,6 @@
                         :value="item.value">
                     </el-option>
                 </el-select>
-            </el-form-item>
-            <el-form-item label="年份" prop="currentYear">
-                <el-input v-model="form.currentYear" placeholder="请输入年份"></el-input>
             </el-form-item>
             <el-form-item label="设备明细">
                 <el-upload
@@ -90,10 +89,10 @@
                         axios.post(url, formData).then(res => {
                             console.log(res);
                             if (res.data.code === 100) {
-                                this.$notify.success(res.message || '成功');
+                                this.$notify.success(res.message || '导入成功');
                                 this.form = JSON.parse(JSON.stringify(form));
                                 this.excel = {};
-                                this.dialogVisible = false;
+                                this.$emit('importSuccess')
                             } else {
                                 this.$notify.success(res.data.message || '失败');
                             }

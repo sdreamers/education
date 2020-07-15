@@ -44,7 +44,7 @@ public class PacketController {
     @GetMapping("/progressPages")
     public PageRecords<PacketVO> progressPages(PacketQuery param, PageVO pageParam) {
         try {
-            return packetService.listPacketPaging(param, pageParam);
+            return packetService.progressPages(param, pageParam);
         } catch (Exception e) {
             return new PageRecords<>();
         }

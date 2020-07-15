@@ -5,11 +5,13 @@ import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.base.ResultModel;
 import com.sixing.base.domain.device.*;
+import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.utils.CollectionUtils;
 import com.sixing.base.utils.StringUtils;
 import com.sixing.education.device.utils.ExcelUtils;
 import com.dongpinyun.productmodule.shop.service.DeviceService;
 import com.sixing.education.packet.controller.PacketController;
+import com.sixing.education.packet.service.PacketService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -34,6 +37,9 @@ public class DeviceController {
 
     @Autowired
     private DeviceService deviceService;
+
+    @Autowired
+    private PacketService packetService;
 
     @GetMapping("/pages")
     public PageRecords<DeviceVO> pages(DeviceQuery param, PageVO pageParam) {
@@ -57,10 +63,23 @@ public class DeviceController {
     }
 
     @GetMapping("/export")
-    public void export(@RequestParam Long packetId, HttpServletResponse response) {
-        ServletOutputStream outputStream = response.getOutputStream();
-        List<ExportDeviceVO> devices = deviceService.listExportDeivces(packetId);
-        ExcelUtils.export(response.getOutputStream(), devices);
+    public void export(@RequestParam Long packetId, HttpServletResponse response) throws Exception{
+        if (packetId == null) {
+            return;
+        }
+        PacketPO packet = packetService.get(packetId);
+        if (packet == null) {
+            return;
+        }
+        List<ExportDeviceVO> devices = deviceService.listExportDevices(packetId);
+        if (CollectionUtils.isNotEmpty(devices)) {
+            String filename = new String((packet.getName() + "_" + packet.getSupplierName() + ".xls").getBytes(), StandardCharsets.ISO_8859_1);
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment;filename=" + filename);
+            ServletOutputStream out = response.getOutputStream();
+            ExcelUtils.export(out, devices);
+            out.close();
+        }
     }
 
     @PostMapping("/import")

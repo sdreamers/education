@@ -1,5 +1,6 @@
 package com.sixing.base.domain.device;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
 
@@ -48,4 +49,7 @@ public class ExportDeviceVO {
 
     @ExcelProperty(value = "当前状态" ,index = 11)
     private String inProgressStatusStr;
+
+    @ExcelIgnore
+    private Integer inProgressStatus;
 }

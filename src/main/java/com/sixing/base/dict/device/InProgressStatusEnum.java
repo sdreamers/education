@@ -1,5 +1,8 @@
 package com.sixing.base.dict.device;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 /**
  * 正在进行中的状态枚举
  *
@@ -39,5 +42,10 @@ public enum InProgressStatusEnum {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static String findName(Integer code) {
+        Optional<InProgressStatusEnum> optional = Arrays.stream(InProgressStatusEnum.values()).filter(item -> item.getCode() == code).findFirst();
+        return optional.map(InProgressStatusEnum::getName).orElse(null);
     }
 }

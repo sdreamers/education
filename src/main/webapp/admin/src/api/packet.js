@@ -8,6 +8,13 @@ export default {
             params: data
         });
     },
+    progressPages(data) {
+        return fetch({
+            url: '/packet/progressPages',
+            method: 'get',
+            params: data
+        });
+    },
     updatePurchasingCycle(data) {
         return fetch({
             url: '/product/cityProductSpecification/updatePurchasingCycle',
