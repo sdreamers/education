@@ -4,10 +4,7 @@ import com.sixing.base.constant.Constant;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.base.ResultModel;
-import com.sixing.base.domain.device.DevicePO;
-import com.sixing.base.domain.device.DeviceQuery;
-import com.sixing.base.domain.device.DeviceVO;
-import com.sixing.base.domain.device.ImportDeviceVO;
+import com.sixing.base.domain.device.*;
 import com.sixing.base.utils.CollectionUtils;
 import com.sixing.base.utils.StringUtils;
 import com.sixing.education.device.utils.ExcelUtils;
@@ -19,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -46,8 +45,8 @@ public class DeviceController {
         }
     }
 
-    @PutMapping("/status/{id}")
-    public ResultModel<Void> updateStatus(@RequestParam Integer status, @PathVariable("id") Long id) {
+    @PutMapping("/status")
+    public ResultModel<Void> updateStatus(Integer status, Long id) {
         try {
             deviceService.update(id, status);
             return ResultModel.ok();
@@ -55,6 +54,13 @@ public class DeviceController {
             logger.error(e.getMessage());
             return ResultModel.fail("系统异常");
         }
+    }
+
+    @GetMapping("/export")
+    public void export(@RequestParam Long packetId, HttpServletResponse response) {
+        ServletOutputStream outputStream = response.getOutputStream();
+        List<ExportDeviceVO> devices = deviceService.listExportDeivces(packetId);
+        ExcelUtils.export(response.getOutputStream(), devices);
     }
 
     @PostMapping("/import")
@@ -117,11 +123,11 @@ public class DeviceController {
             if (device.getTax() == null) {
                 return ResultModel.fail("第" + row + "行税金为空, 请检查");
             }
-            if (StringUtils.isBlank(device.getSchool())) {
+            if (StringUtils.isBlank(device.getSchoolName())) {
                 return ResultModel.fail("第" + row + "行学校为空, 请检查");
             }
             device.setName(device.getName().trim());
-            device.setSchool(device.getSchool().trim());
+            device.setSchoolName(device.getSchoolName().trim());
         }
         return ResultModel.ok();
     }

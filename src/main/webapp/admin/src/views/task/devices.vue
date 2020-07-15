@@ -3,17 +3,7 @@
         <el-card shadow="none">
             <el-row class="mb20" :gutter="20">
                 <el-col :span="3">
-                    <el-select v-model="search.supplierId" filterable placeholder="请选择">
-                        <el-option
-                            v-for="item in suppliers"
-                            :key="item.id"
-                            :label="item.name"
-                            :value="item.id">
-                        </el-option>
-                    </el-select>
-                </el-col>
-                <el-col :span="3">
-                    <el-input v-model="search.nameLike" placeholder="包名">
+                    <el-input v-model="search.nameLike" placeholder="设备名称">
                     </el-input>
                 </el-col>
                 <el-col :span="4">
@@ -21,12 +11,11 @@
                     <el-button @click="handleClear">清除</el-button>
                 </el-col>
 
-                <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleImport">导入</el-button>
-                <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleExport">导出</el-button>
+               <!--  <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleImport">导入</el-button>
+                <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleExport">导出</el-button> -->
             </el-row>
             <el-row class="list-con clearfix">
-                <el-table :data="tableData" ref="table" border v-loading="loading" @select="select" @selection-change="handleSelectionChange" >
-                    <el-table-column type="selection"  width="50" ></el-table-column>
+                <el-table :data="tableData" border v-loading="loading">
                     <el-table-column v-for="(column,key) in columns" :label="column.title" :key="key" align="center">
                         <el-table-column v-for="(subColumn,subKey) in column.columns" :prop="subColumn.key" width="120%"
                                          :label="subColumn.title" align="center" :key="subKey">
@@ -38,13 +27,12 @@
                             <span>{{scope.row[column.key]}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center" width="400%">
+                    <el-table-column prop="inProgressStatus" label="当前状态" align="center">
                         <template slot-scope="scope">
-                            <el-button
-                                type="text"
-                                @click.stop="handleViewDevice(scope.row)">查看设备
-                            </el-button>
-                           
+                            <el-select v-model="scope.row.inProgressStatus" @change="handleStatusChange(scope.row)">
+                                <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
+                                </el-option>
+                            </el-select>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -86,7 +74,7 @@
     import appointSupplier from './supplier'
     import supplierApi from '@/api/supplier'
     import importExcel from './importExcel';
-    import packetApi from '@/api/packet';
+    import deviceApi from '@/api/device';
 
     const merchantEditForm = {
         projectId: ''
@@ -99,13 +87,22 @@
     };
 
     const search = {
-        supplierId: '',
+        packetId: '',
+        type: '',
         nameLike: ''
     };
 
+    const normalStatus = [{ label: '生产中', value: 1 }, { label: '到货中', value: 2 }, { label: '安装中', value: 3 }, { label: '已完成', value: 7 }]
+    const informationStatus = [{ label: '到货中', value: 4 }, { label: '安装中', value: 5 }, { label: '调试中', value: 6 }, { label: '已完成', value: 7 }]
+
     const columns = [
-        { key: 'name', title: '包名' },
-        { key: 'supplierName', title: '供应商' }
+        { key: 'schoolName', title: '学校名称' },
+        { key: 'name', title: '设备名称' },
+        { key: 'num', title: '数量' },
+        { key: 'unit', title: '单位' },
+        { key: 'excludingTaxPrice', title: '不含税单价(元)' },
+        { key: 'tax', title: '税金(元)' },
+        { key: 'totalAmount', title: '含税总价(元)' }
     ];
 
     export default {
@@ -123,23 +120,8 @@
                 totalSize: 0,
                 pageSize: 10,
                 loading: false,
-                quotaYearArr: [],
                 search: JSON.parse(JSON.stringify(search)),
-
-                /* 添加商户 */
-                merchantEditDialogVisible: false,
-                merchantEditType: '',
-                merchantEditForm: JSON.parse(JSON.stringify(merchantEditForm)),
-
-                /* 指派供应商 */
-                supplierDialogVisible: false,
-                supplierForm: JSON.parse(JSON.stringify(supplierForm)),
-                suppliers: [],
-
-                /* 导入 */
-                importDialogVisible: false,
-
-                selections: []
+                statusOptions: []
             }
         },
 
@@ -164,77 +146,41 @@
             },
 
             handlePagers() {
+                if (!this.search.packetId) {
+                    this.$notify.error('异常');
+                    return;
+                }
                 const param = {
                     page: this.currentPage,
                     limit: this.pageSize,
+                    packetId: this.search.packetId
                 };
                 if (this.search.nameLike) {
                     param.nameLike = this.search.nameLike;
                 }
-                if (this.search.supplierId) {
-                    param.supplierId = this.search.supplierId;
-                }
-                packetApi.pages(param).then(res => {
+                deviceApi.pages(param).then(res => {
                     this.tableData = res.records;
                     this.totalSize = res.total;
                 })
             },
 
-            handleViewDevice(row) {
-                this.$router.push({ name: '/task/devices', params: { packetId: row.id, type: row.type } });
-            },
-
-            merchantEditClose() {
-                this.merchantEditDialogVisible = false;
-                this.merchantEditForm = JSON.parse(JSON.stringify(merchantEditForm));
-                this.handlePagers();
-            },
-
-            handleAppointSupplier(row) {
-                this.supplierForm = { projectId: row.id, oldSupplier: row.supplierName };
-                this.supplierDialogVisible = true;
-            },
-
-            supplierDialogClose() {
-                this.supplierDialogVisible = false;
-                this.supplierForm = JSON.parse(JSON.stringify(supplierForm));
-            },
-
-            importDialogClose() {
-                this.importDialogVisible = false;
-            },
-
-            handleExport() {
-                const exportUrl = window.vars.URLApiBase + '/quota/export';
-                return location.href = exportUrl;
-            },
-
-            handleImport() {
-                this.importDialogVisible = true;
-            },
-
-            loadSuppliers() {
-                supplierApi.list().then(res => {
-                    if (res.code === 100 && res.content) {
-                        this.suppliers = res.content;
+            handleStatusChange(row) {
+                deviceApi.updateStatus({ status: row.inProgressStatus, id: row.id }).then(res => {
+                    if (res.code === 100) {
+                        this.$notify.success(res.message || '成功');
                     }
-                    this.suppliers.unshift({ id: '', name: '全部' });
                 })
-            },
-
-            select(selection, row){	
-			    this.$refs.table.clearSelection();
-			    if(selection.length == 0) return ;
-			    this.$refs.table.toggleRowSelection(row, true);
-		    },
-
-            handleSelectionChange(row) {
-                this.selections = row;
             }
         },
 
         created() {
-            this.loadSuppliers();
+            this.search.packetId = this.$route.params.packetId;
+            this.search.type = this.$route.params.type;
+            if (this.search.type === 1) {
+                this.statusOptions = JSON.parse(JSON.stringify(normalStatus));
+            } else {
+                 this.statusOptions = JSON.parse(JSON.stringify(informationStatus));
+            }
             this.handlePagers();
         }
     }

@@ -405,7 +405,7 @@ public class DeviceServiceImpl implements DeviceService {
         // 包
         PacketPO packet = this.savePacket(packetName, supplierId, supplierName, currentYear, type);
         // 学校
-        List<SchoolPO> schools = this.saveSchool(devices.stream().map(ImportDeviceVO::getSchool).distinct().toArray(String[]::new), currentYear);
+        List<SchoolPO> schools = this.saveSchool(devices.stream().map(ImportDeviceVO::getSchoolName).distinct().toArray(String[]::new), currentYear);
         // 包-学校中间表
         this.savePacketSchool(packet, schools, currentYear);
         // 保存设备
@@ -430,6 +430,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public void update(Long id, Integer status) throws ServiceException {
         DevicePO setParams = new DevicePO();
+        setParams.setInProgressStatus(status);
         this.update(setParams, id);
     }
 
@@ -440,7 +441,8 @@ public class DeviceServiceImpl implements DeviceService {
         List<DevicePO> insertParams = BeanUtils.copyProperties(devices, DevicePO.class);
         for (DevicePO insertParam : insertParams) {
             insertParam.setPacketId(packet.getId());
-            insertParam.setSchoolId(schoolMap.get(insertParam.getName()));
+            insertParam.setPacketName(packet.getName());
+            insertParam.setSchoolId(schoolMap.get(insertParam.getSchoolName()));
             insertParam.setIncludingTaxPrice(insertParam.getExcludingTaxPrice().add(insertParam.getTax()));
             insertParam.setTotalAmount(insertParam.getIncludingTaxPrice().multiply(new BigDecimal(insertParam.getNum().toString())));
             if (DeviceTypeEnum.NORMAL.getCode().equals(type)) {

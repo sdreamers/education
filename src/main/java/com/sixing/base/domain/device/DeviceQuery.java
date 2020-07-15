@@ -27,6 +27,7 @@ public class DeviceQuery extends BaseVO implements Serializable {
 	private Long schoolId;
 	private String schoolName;
 	private String name;
+	private String nameLike;
 	private String technicalParamter;
 	private String specification;
 	private String model;

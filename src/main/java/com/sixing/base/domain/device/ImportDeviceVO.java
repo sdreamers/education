@@ -41,5 +41,5 @@ public class ImportDeviceVO {
     private BigDecimal tax;
 
     @ExcelProperty("学校名称")
-    private String school;
+    private String schoolName;
 }

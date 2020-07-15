@@ -45,6 +45,7 @@
             <if test="setParams.num != null">`num`=#{setParams.num},</if>
             <if test="setParams.excludingTaxPrice != null">`excluding_tax_price`=#{setParams.excludingTaxPrice},</if>
             <if test="setParams.tax != null">`tax`=#{setParams.tax},</if>
+            <if test="setParams.inProgressStatus != null">`in_progress_status`=#{setParams.inProgressStatus},</if>
         </set>
     </sql>
 
@@ -63,6 +64,9 @@
             <if test="whereParams.num != null">AND `num`=#{whereParams.num}</if>
             <if test="whereParams.excludingTaxPrice != null">AND `excluding_tax_price`=#{whereParams.excludingTaxPrice}</if>
             <if test="whereParams.tax != null">AND `tax`=#{whereParams.tax}</if>
+            <if test="whereParams.nameLike != null and whereParams.nameLike != ''">
+                AND `name` like concat("%", #{whereParams.nameLike}, "%")
+            </if>
         </where>
     </sql>
     <sql id="sortAll">

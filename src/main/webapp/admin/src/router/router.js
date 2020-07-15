@@ -128,15 +128,27 @@ export const appRouter = [
         children: [
             {
                 path: 'index',
-                title: '任务',
+                title: '设备',
                 name: '/task/index',
                 meta: {
-                    title: '任务'
+                    title: '设备'
                 },
                 component: resolve => {
                     require.ensure([], () => resolve(require('@/views/task/index.vue')), 'taskIndex');
                 }
-            }
+            },
+
+            {
+                path: 'devices',
+                title: '设备明细',
+                name: '/task/devices',
+                meta: {
+                    title: '设备明细'
+                },
+                component: resolve => {
+                    require.ensure([], () => resolve(require('@/views/task/devices.vue')), 'devicesIndex');
+                }
+            },
         ]
     }
 ];
