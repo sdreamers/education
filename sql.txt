@@ -12,7 +12,7 @@ CREATE TABLE `t_device` (
   `school_name` varchar(100) DEFAULT NULL COMMENT '学校名称',
   `name` varchar(100) NOT NULL DEFAULT '' COMMENT '设备名称',
   `technical_paramter` text COMMENT '技术参数',
-  `specification` varchar(50) NOT NULL DEFAULT '' COMMENT '规格',
+  `specification` varchar(1000) NOT NULL DEFAULT '' COMMENT '规格',
   `model` varchar(100) NOT NULL DEFAULT '' COMMENT '型号',
   `unit` varchar(10) NOT NULL DEFAULT '' COMMENT '单位',
   `num` int(11) DEFAULT '0' COMMENT '数量',
@@ -20,21 +20,25 @@ CREATE TABLE `t_device` (
   `tax` decimal(11,2) DEFAULT NULL COMMENT '税金',
   `including_tax_price` decimal(11,2) DEFAULT NULL COMMENT '含税单价',
   `total_amount` decimal(11,2) DEFAULT NULL COMMENT '总价',
-  `in_progress_status` int(2) NOT NULL COMMENT '正在进行中的状态',
+  `produce` int(2) NOT NULL DEFAULT '0' COMMENT '生产',
+  `arrival` int(2) NOT NULL DEFAULT '0' COMMENT '到货',
+  `install` int(2) NOT NULL DEFAULT '0' COMMENT '安装',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='设备';
+) ENGINE=InnoDB AUTO_INCREMENT=244 DEFAULT CHARSET=utf8 COMMENT='设备';
+
 
 CREATE TABLE `t_packet` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL DEFAULT '' COMMENT '项目名、包名',
   `supplier_id` bigint(11) DEFAULT NULL COMMENT '供应商ID',
   `supplier_name` varchar(100) NOT NULL DEFAULT '' COMMENT '供应商名称',
-  `type` int(2) NOT NULL COMMENT '包类型，1：普通 2：信息化',
+  `type` int(2) NOT NULL DEFAULT '0' COMMENT '包类型，1：普通 2：信息化',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `creator_id` bigint(11) DEFAULT NULL COMMENT '创建人ID',
   `creator_name` varchar(20) NOT NULL DEFAULT '' COMMENT '创建人姓名',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目、包';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='项目、包';
+
 
 CREATE TABLE `t_packet_school` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT,
