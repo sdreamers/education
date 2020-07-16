@@ -10,8 +10,8 @@ import java.util.Optional;
  * */
 public enum DeviceStatusEnum {
 
-    PRODUCING(0, "未完成"),
-    ARRIVING(1, "已完成"),
+    UNFINISHED(0, "未完成"),
+    FINISHED(1, "已完成"),
     ;
 
 

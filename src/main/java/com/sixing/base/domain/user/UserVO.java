@@ -21,6 +21,8 @@ public class UserVO implements Serializable {
 
 	private Long id;
 	private String name;
+	private String account;
+	private String telephone;
 	private String password;
 	private Integer nature;
 	private Integer status;

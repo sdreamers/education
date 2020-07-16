@@ -29,12 +29,13 @@ public class PacketVO implements Serializable {
 	private Long creatorId;
 	private String creatorName;
 	private Integer type;
-	/**
-	 * 任务数量进度
-	 * */
-	private BigDecimal deviceNumProgress;
-	/**
-	 * 金额进度
-	 * */
-	private BigDecimal deviceAmountProgress;
+
+	private BigDecimal unStartDeviceNumProgress;
+	private BigDecimal unStartDeviceAmountProgress;
+    private BigDecimal produceDeviceNumProgress;
+    private BigDecimal produceDeviceAmountProgress;
+    private BigDecimal arrivalDeviceNumProgress;
+    private BigDecimal arrivalDeviceAmountProgress;
+    private BigDecimal installDeviceNumProgress;
+    private BigDecimal installDeviceAmountProgress;
 }

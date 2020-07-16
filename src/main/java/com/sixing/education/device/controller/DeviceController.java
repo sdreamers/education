@@ -58,7 +58,7 @@ public class DeviceController {
             return ResultModel.ok();
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return ResultModel.fail("系统异常");
+            return ResultModel.fail(e.getMessage());
         }
     }
 

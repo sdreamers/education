@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
 * 学校VO 值对象
@@ -21,4 +23,16 @@ public class SchoolVO implements Serializable {
 
 	private Long id;
 	private String name;
+	private Date createTime;
+	private Long creatorId;
+	private String creatorName;
+
+	private BigDecimal unStartDeviceNumProgress;
+	private BigDecimal unStartDeviceAmountProgress;
+	private BigDecimal produceDeviceNumProgress;
+	private BigDecimal produceDeviceAmountProgress;
+	private BigDecimal arrivalDeviceNumProgress;
+	private BigDecimal arrivalDeviceAmountProgress;
+	private BigDecimal installDeviceNumProgress;
+	private BigDecimal installDeviceAmountProgress;
 }

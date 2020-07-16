@@ -362,7 +362,7 @@ public class UserServiceImpl implements com.sixing.education.user.service.UserSe
     @Override
     public UserPO getByName(String name) throws ServiceException{
         UserQuery whereParams = new UserQuery();
-        whereParams.setName(name);
+        whereParams.setAccount(name);
         return this.get(whereParams);
     }
 }

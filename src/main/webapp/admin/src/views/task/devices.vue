@@ -179,11 +179,20 @@
                     param.status = row.install;
                 } else {
                     this.$notify.error('参数异常');
+                    return;
                 }
 
                 deviceApi.updateStatus(param).then(res => {
                     if (res.code === 100) {
                         this.$notify.success(res.message || '成功');
+                    } else {
+                        if (type === 1) {
+                            row.produce = row.produce === 0 ? 1 : 0;
+                        } else if (type === 2) {
+                             row.arrival = row.arrival === 0 ? 1 : 0;
+                        } else if (type === 3) {
+                            row.install = row.install === 0 ? 1 : 0;
+                        }
                     }
                 })
             }

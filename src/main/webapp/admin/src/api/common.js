@@ -218,7 +218,7 @@ export default {
         }
         const data = { timestamp: new Date().getTime() }
         return axios({
-            url: window.vars.URLApiBase + '/user',
+            url: window.vars.URLApiBase + '/user/currentUser',
             method: 'get',
             params: data,
             withCredentials: true

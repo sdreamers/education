@@ -71,7 +71,7 @@
                         formData.append('packet', this.form.packetName);
                         formData.append('currentYear', this.form.currentYear);
                         formData.append('supplierName', this.form.supplierName);
-                        const url = 'http://localhost:8767/device/import';
+                        const url = window.vars.URLApiBase + '/device/import';
                         axios.post(url, formData).then(res => {
                             console.log(res);
                             if (res.data.code === 100) {

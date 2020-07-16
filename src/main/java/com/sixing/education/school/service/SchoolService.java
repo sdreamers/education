@@ -2,8 +2,10 @@ package com.sixing.education.school.service;
 
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
+import com.sixing.base.domain.packet.PacketVO;
 import com.sixing.base.domain.school.SchoolPO;
 import com.sixing.base.domain.school.SchoolQuery;
+import com.sixing.base.domain.school.SchoolVO;
 import com.sixing.base.utils.exception.ServiceException;
 
 import java.util.List;
@@ -176,4 +178,14 @@ public interface SchoolService {
     * @throws ServiceException 业务异常
     */
     PageRecords<SchoolPO> pages(SchoolQuery whereParams, PageVO pageParams, String[] selectFields) throws ServiceException;
+
+    /**
+     * 进度查询
+     *
+     * @param param 查询条件
+     * @param pageParam 分页参数
+     * @return 进度列表
+     * @throws ServiceException 业务异常
+     * */
+    PageRecords<SchoolVO> progressPages(SchoolQuery param, PageVO pageParam) throws ServiceException;
 }

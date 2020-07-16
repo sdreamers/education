@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 
 public class UsernamePasswordCaptchaAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private boolean postOnly = true;
+    private static final boolean POST_ONLY = true;
     private String captchaParameter = "captcha";
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        if (this.postOnly && !request.getMethod().equals("POST")) {
+        if (POST_ONLY && !request.getMethod().equals("POST")) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         } else {
             String username = this.obtainUsername(request);

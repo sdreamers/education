@@ -93,7 +93,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 登录设置
         httpSecurity.addFilter(this.loginFilter()).authenticationProvider(captchaAuthenticationProvider).formLogin().disable();
         // 登出设置
-        httpSecurity.logout().logoutUrl("/admin/authentication/logout").logoutSuccessHandler(logoutSuccessHandler);
+        httpSecurity.logout().logoutUrl("/authentication/logout").logoutSuccessHandler(logoutSuccessHandler);
         // 异常捕捉
         httpSecurity.exceptionHandling().accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(this.authenticationEntryPoint());
         // 记住我
@@ -114,7 +114,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UsernamePasswordCaptchaAuthenticationFilter loginFilter = new UsernamePasswordCaptchaAuthenticationFilter();
         loginFilter.setAuthenticationManager(this.authenticationManager());
         loginFilter.setRememberMeServices(rememberMeServices);
-        loginFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/admin/authentication/login", "POST"));
+        loginFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/authentication/login", "POST"));
         loginFilter.setUsernameParameter(SecurityConstant.KEY_USERNAME);
         loginFilter.setPasswordParameter(SecurityConstant.KEY_PASSWORD);
         loginFilter.setCaptchaParameter(SecurityConstant.KEY_CAPTCHA);

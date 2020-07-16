@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
 * 学校的持久对象
@@ -21,4 +22,7 @@ public class SchoolPO implements Serializable {
 
 	private Long id;
 	private String name;
+    private Date createTime;
+    private Long creatorId;
+    private String creatorName;
 }

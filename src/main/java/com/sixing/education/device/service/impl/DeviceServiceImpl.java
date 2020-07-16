@@ -427,6 +427,20 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public void update(Long id, Integer type, Integer status) throws ServiceException {
+        DevicePO device = this.get(id);
+        if (status == DeviceStatusEnum.FINISHED.getCode()) {
+            if (type == 2 && device.getProduce() != DeviceStatusEnum.FINISHED.getCode()) {
+                throw new ServiceException("生产/采购 未完成");
+            } else if (type == 3 && device.getArrival() != DeviceStatusEnum.FINISHED.getCode()) {
+                throw new ServiceException("到货 未完成");
+            }
+        } else {
+            if (type == 2 && device.getInstall() != DeviceStatusEnum.UNFINISHED.getCode()) {
+                throw new ServiceException("安装 已完成");
+            } else if (type == 1 && device.getArrival() != DeviceStatusEnum.UNFINISHED.getCode()) {
+                throw new ServiceException("到货 已完成");
+            }
+        }
         DevicePO setParams = new DevicePO();
         switch (type) {
             case 1: setParams.setProduce(status); break;

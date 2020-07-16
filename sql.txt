@@ -24,8 +24,7 @@ CREATE TABLE `t_device` (
   `arrival` int(2) NOT NULL DEFAULT '0' COMMENT '到货',
   `install` int(2) NOT NULL DEFAULT '0' COMMENT '安装',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=244 DEFAULT CHARSET=utf8 COMMENT='设备';
-
+) ENGINE=InnoDB AUTO_INCREMENT=271 DEFAULT CHARSET=utf8 COMMENT='设备'
 
 CREATE TABLE `t_packet` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT,
@@ -37,8 +36,7 @@ CREATE TABLE `t_packet` (
   `creator_id` bigint(11) DEFAULT NULL COMMENT '创建人ID',
   `creator_name` varchar(20) NOT NULL DEFAULT '' COMMENT '创建人姓名',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='项目、包';
-
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='项目、包'
 
 CREATE TABLE `t_packet_school` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT,
@@ -49,21 +47,29 @@ CREATE TABLE `t_packet_school` (
   `current_year` varchar(10) NOT NULL DEFAULT '' COMMENT '当前年份',
   `control_amount` decimal(11,2) NOT NULL DEFAULT '0.00' COMMENT '学校控制金额',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='包-学校中间表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='包-学校中间表'
 
 CREATE TABLE `t_school` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL DEFAULT '' COMMENT '学校名',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='学校';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='学校'
 
 CREATE TABLE `t_user` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(100) NOT NULL COMMENT '姓名',
-  `password` varchar(100) NOT NULL comment '密码',
-  `nature` int(2) NOT NULL comment '属性，1-管理员 2-系统用户 3-供应商',
+  `account` varchar(50) NOT NULL COMMENT '账户',
+  `telephone` varchar(20) NOT NULL COMMENT '手机号码',
+  `password` varchar(100) NOT NULL COMMENT '密码',
+  `nature` int(2) NOT NULL COMMENT '属性，1-管理员 2-系统用户 3-供应商',
   `status` int(1) NOT NULL DEFAULT '0' COMMENT '状态 1-正常 0-失效',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='系统用户';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统用户'
 
-1：普通 2：信息化
+CREATE TABLE `t_supplier` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(400) NOT NULL COMMENT '供应商名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='供应商'
+
+1：

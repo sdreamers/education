@@ -1,11 +1,20 @@
 package com.sixing.education.school.service.impl;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
+import com.sixing.base.domain.device.DevicePO;
+import com.sixing.base.domain.device.DeviceQuery;
+import com.sixing.base.domain.packet.PacketPO;
+import com.sixing.base.domain.packet.PacketVO;
 import com.sixing.base.domain.school.SchoolPO;
 import com.sixing.base.domain.school.SchoolQuery;
+import com.sixing.base.domain.school.SchoolVO;
+import com.sixing.base.utils.BeanUtils;
 import com.sixing.base.utils.CollectionUtils;
 import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.school.dao.SchoolDAO;
@@ -16,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
 * 学校的业务实现类
-* @author 
+* @author
 * @date 2020年6月20日
 */
 @Service("schoolBaseService")
@@ -25,12 +34,15 @@ public class SchoolServiceImpl implements SchoolService {
     @Autowired
     private SchoolDAO schoolDAO;
 
+    @Autowired
+    private com.dongpinyun.productmodule.shop.service.DeviceService deviceService;
+
     /**
     * 新增学校
     *
     * @param insertParams 待新增的学校实例
     * @return 装填了自增型主键的学校对象
-    * @throws ServiceException 业务异常 
+    * @throws ServiceException 业务异常
     */
     @Override
     public SchoolPO insert(SchoolPO insertParams) throws ServiceException {
@@ -359,4 +371,57 @@ public class SchoolServiceImpl implements SchoolService {
         }
         return pageData;
      }
+
+    @Override
+    public PageRecords<SchoolVO> progressPages(SchoolQuery param, PageVO pageParam) throws ServiceException {
+        PageRecords<SchoolVO> result = new PageRecords<>();
+
+        PageRecords<SchoolPO> pageRecords = this.pages(param, pageParam);
+        if (pageRecords.getTotal() < 1) {
+            return result;
+        }
+        result.setTotal(pageRecords.getTotal());
+        result.setRecords(BeanUtils.copyProperties(pageRecords.getRecords(), SchoolVO.class));
+        for (SchoolVO record : result.getRecords()) {
+            DeviceQuery whereParams = new DeviceQuery();
+            whereParams.setSchoolId(record.getId());
+            List<DevicePO> devices = deviceService.list(whereParams);
+            if (CollectionUtils.isNotEmpty(devices)) {
+                int totalNum = devices.stream().mapToInt(DevicePO::getNum).sum();
+                BigDecimal totalAmount = devices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+                List<DevicePO> unStartDevices = devices.stream().filter(item -> item.getProduce() == 0 && item.getArrival() == 0 && item.getInstall() == 0).collect(Collectors.toList());
+                List<DevicePO> produceDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 0 && item.getInstall() == 0).collect(Collectors.toList());
+                List<DevicePO> arrivalDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 1 && item.getInstall() == 0).collect(Collectors.toList());
+                List<DevicePO> installDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 1 && item.getInstall() == 1).collect(Collectors.toList());
+                if (CollectionUtils.isNotEmpty(unStartDevices)) {
+                    int completeNum = unStartDevices.stream().mapToInt(DevicePO::getNum).sum();
+                    BigDecimal completeAmount = unStartDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+                    record.setUnStartDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                    record.setUnStartDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                }
+
+                if (CollectionUtils.isNotEmpty(produceDevices)) {
+                    int completeNum = produceDevices.stream().mapToInt(DevicePO::getNum).sum();
+                    BigDecimal completeAmount = produceDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+                    record.setProduceDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                    record.setProduceDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                }
+
+                if (CollectionUtils.isNotEmpty(arrivalDevices)) {
+                    int completeNum = arrivalDevices.stream().mapToInt(DevicePO::getNum).sum();
+                    BigDecimal completeAmount = arrivalDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+                    record.setArrivalDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                    record.setArrivalDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                }
+
+                if (CollectionUtils.isNotEmpty(installDevices)) {
+                    int completeNum = installDevices.stream().mapToInt(DevicePO::getNum).sum();
+                    BigDecimal completeAmount = installDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+                    record.setInstallDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                    record.setInstallDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                }
+            }
+        }
+        return result;
+    }
 }

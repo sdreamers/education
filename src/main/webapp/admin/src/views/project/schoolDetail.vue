@@ -56,28 +56,34 @@
         },
         methods: {
             // 提交表单
-            handleSubmit() {
+            
+            handlePagers() {
                 const param = {
-                    name: this.form.name,
-                    memberNumber: this.form.memberNumber
+                    page: this.currentPage,
+                    limit: this.pageSize,
+                    packetId: this.form.packetId
                 };
-                if (this.type === 'add') {
-                    api.insertMerchant(param).then(res => {
-                        if (res.code === 100) {
-                            this.$notify.success('添加成功');
-                            this.$emit('close');
+                packetApi.progressPages(param).then(res => {
+                    this.tableData = res.records;
+                    if (this.tableData && this.tableData.length > 0) {
+                        for (let data of this.tableData) {
+                            data.unStartDeviceNumProgress = data.unStartDeviceNumProgress ? (data.unStartDeviceNumProgress) + '%' : '0%';
+                            data.unStartDeviceAmountProgress = data.unStartDeviceAmountProgress ? (data.unStartDeviceAmountProgress) + '%' : '0%';
+                            data.produceDeviceNumProgress = data.produceDeviceNumProgress ? (data.produceDeviceNumProgress) + '%' : '0%';
+                            data.produceDeviceAmountProgress = data.produceDeviceAmountProgress ? (data.produceDeviceAmountProgress) + '%' : '0%';
+                            data.arrivalDeviceNumProgress = data.arrivalDeviceNumProgress ? (data.arrivalDeviceNumProgress) + '%' : '0%';
+                            data.arrivalDeviceAmountProgress = data.arrivalDeviceAmountProgress ? (data.arrivalDeviceAmountProgress) + '%' : '0%';
+                            data.installDeviceNumProgress = data.installDeviceNumProgress ? (data.installDeviceNumProgress) + '%' : '0%';
+                            data.installDeviceAmountProgress = data.installDeviceAmountProgress ? (data.installDeviceAmountProgress) + '%' : '0%';
                         }
-                    });
-                } else {
-                    param.id = this.form.id;
-                    api.updateMerchant(param).then(res => {
-                        if (res.code === 100) {
-                            this.$notify.success('添加成功');
-                            this.$emit('close');
-                        }
-                    });
-                }
-            }
+                    }
+                    this.totalSize = res.total;
+                });
+            },
+        },
+
+        created() {
+
         }
     };
 </script>

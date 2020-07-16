@@ -126,6 +126,19 @@ export const appRouter = [
         },
         component: Main,
         children: [
+
+            {
+                path: 'updatePswd',
+                title: '更新密码',
+                name: '/user/updatePswd',
+                meta: {
+                    title: '更新密码'
+                },
+                component: resolve => {
+                    require.ensure([], () => resolve(require('@/views/user/updatePswd.vue')), 'updatePswd');
+                }
+            },
+
             {
                 path: 'index',
                 title: '设备',
@@ -135,6 +148,18 @@ export const appRouter = [
                 },
                 component: resolve => {
                     require.ensure([], () => resolve(require('@/views/task/index.vue')), 'taskIndex');
+                }
+            },
+
+            {
+                path: 'index',
+                title: '学校进度',
+                name: '/school/index',
+                meta: {
+                    title: '学校进度'
+                },
+                component: resolve => {
+                    require.ensure([], () => resolve(require('@/views/school/index.vue')), 'schoolIndex');
                 }
             },
 

@@ -55,10 +55,9 @@ function handleRouter(router) {
 router.beforeEach(async (to, from, next) => {
     // 停止自动扫描定时器
     clearInterval(window.autoScan);
-    return next();
     // 每次路由跳转，都会验证当前是否登录，如果没登录，跳转登录页
     // 但是跳转登录页也算路由跳转操作，所以要判断跳转去的页面不是登录页，才跳转登陆页，避免死循环
-    /* const hasCookie = !!Util.getCookie('dpy_manager');
+    const hasCookie = !!Util.getCookie('education_user');
 
     if (to.name === 'login' || to.name === 'reg') {
         return next();
@@ -75,7 +74,22 @@ router.beforeEach(async (to, from, next) => {
         }
     })
     let toName = to.name;
-    api.listPermissionsByUserId().then(res => {
+
+    if (!hasCookie) {
+        next({ name: 'login' });
+    } else if (to.name === 'index') {
+        window.LOG('index');
+        next({ name: 'home' });
+    } else {
+        window.LOG('any');
+        if (to.matched.length) {
+            // 否则，愿意跳哪就跳哪
+            next();
+        } else {
+            next({ name: 'error_404' });
+        }
+    }
+   /*api.listPermissionsByUserId().then(res => {
         // 如果没登录，跳到登录页
         window.LOG(res);
         if (res === undefined) {
@@ -113,7 +127,7 @@ router.beforeEach(async (to, from, next) => {
             duration: 2 * 1000
         });
         next({ name: 'login' });
-    });*/
+    }); */
 });
 
 export default router;

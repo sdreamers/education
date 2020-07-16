@@ -3,41 +3,10 @@
         <el-card shadow="none">
             <el-row class="mb20" :gutter="20">
                 <el-col :span="3">
-                    <el-select v-model="search.supplierId" filterable placeholder="请选择供应商">
-                        <el-option
-                            v-for="item in suppliers"
-                            :key="item.id"
-                            :label="item.name"
-                            :value="item.id">
-                        </el-option>
-                    </el-select>
-                </el-col>
-                <el-col :span="3">
-                    <el-input v-model="search.nameLike" placeholder="包名">
+                    <el-input v-model="search.nameLike" placeholder="学校名称">
                     </el-input>
                 </el-col>
 
-                <el-col :span="3">
-                    <el-select v-model="search.inProgressStatus" placeholder="请选择节点">
-                        <el-option v-for="item in deviceStatuses" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-col>
-
-                <!--<el-col :span="6">
-                    <el-date-picker
-                        v-model="search.dateArr"
-                        @change="handlePagers"
-                        type="daterange"
-                        align="right"
-                        unlink-panels
-                        :picker-options="pickerOptions"
-                        value-format="yyyy-MM-dd"
-                        range-separator="至"
-                        start-placeholder="项目完成开始日期"
-                        end-placeholder="项目完成结束日期">
-                    </el-date-picker>
-                </el-col>-->
                 <el-col :span="4">
                     <el-button type="primary" @click="handleSearch">搜索</el-button>
                     <el-button @click="handleClear">清除</el-button>
@@ -65,11 +34,6 @@
                                 type="text"
                                 @click.stop="handleEditMerchant(scope.row)">查看任务明细
                             </el-button>
-
-                            <!-- <el-button
-                                type="text"
-                                @click.stop="handleAppointSupplier(scope.row)">指派供应商
-                            </el-button> -->
                         </template>
                     </el-table-column>
                 </el-table>
@@ -89,24 +53,11 @@
             </el-row>
         </el-card>
 
-        <schoolEdit
-            :dialogVisible="merchantEditDialogVisible"
-            :form="merchantEditForm"
-            :type="merchantEditType"
-            @close="merchantEditClose"/>
-
-        <appointSupplier
-            :dialogVisible="supplierDialogVisible"
-            :form="supplierForm"
-            @close="supplierDialogClose"/>
-
     </section>
 </template>
 <script>
-    import schoolEdit from './schoolDetail'
-    import appointSupplier from './supplier'
     import supplierApi from '@/api/supplier'
-    import packetApi from '@/api/packet';
+    import schoolApi from '@/api/school';
 
     const merchantEditForm = {
         packetId: ''
@@ -125,8 +76,7 @@
     };
 
     const columns = [
-        { key: 'name', title: '包名' }, 
-        { key: 'supplierName', title: '供应商' },
+        { key: 'name', title: '学校名称' }, 
         { key: 'unStart', title: '未开始', columns: [{ key: 'unStartDeviceNumProgress', title: '数量进度' }, { key: 'unStartDeviceAmountProgress', title: '金额进度' }]}, 
         { key: 'produce', title: '生产/采购', columns: [{ key: 'produceDeviceNumProgress', title: '数量进度' }, { key: 'produceDeviceAmountProgress', title: '金额进度' }]}, 
         { key: 'arrival', title: '到货', columns: [{ key: 'arrivalDeviceNumProgress', title: '数量进度' }, { key: 'arrivalDeviceAmountProgress', title: '金额进度' }]}, 
@@ -136,10 +86,6 @@
 
 
     export default {
-        components: {
-            schoolEdit,
-            appointSupplier
-        },
 
         data() {
             return {
@@ -152,7 +98,6 @@
                 quotaYearArr: [],
                 search: JSON.parse(JSON.stringify(search)),
 
-                suppliers: [],
                 deviceStatuses: deviceStatuses,
                 inProgressStatuses: [],
 
@@ -201,7 +146,7 @@
                /*  if (this.search.inProgressStatus) {
                     param.inProgressStatus = this.search.inProgressStatus;
                 } */
-                packetApi.progressPages(param).then(res => {
+                schoolApi.progressPages(param).then(res => {
                     this.tableData = res.records;
                     if (this.tableData && this.tableData.length > 0) {
                         for (let data of this.tableData) {
@@ -255,19 +200,9 @@
                 const exportUrl = window.vars.URLApiBase + '/quota/export';
                 return location.href = exportUrl;
             },
-
-            loadSuppliers() {
-                supplierApi.list().then(res => {
-                    if (res.code === 100 && res.content) {
-                        this.suppliers = res.content;
-                    }
-                    this.suppliers.unshift({ id: '', name: '全部供应商' });
-                })
-            },
         },
 
         created() {
-            this.loadSuppliers();
             this.handlePagers();
         }
     }

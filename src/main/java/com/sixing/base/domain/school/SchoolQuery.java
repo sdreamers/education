@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
 * 学校VO 值对象
@@ -22,5 +23,8 @@ public class SchoolQuery extends BaseVO implements Serializable {
 
 	private Long id;
 	private String name;
+	private Date createTime;
+	private Long creatorId;
+	private String creatorName;
 	private String[] schools;
 }

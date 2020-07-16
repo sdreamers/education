@@ -8,6 +8,8 @@
         <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="nature" property="nature" jdbcType="INTEGER" />
         <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="account" property="account" />
+        <result column="telephone" property="telephone" />
     </resultMap>
 
     <sql id="selectAll">
@@ -29,6 +31,8 @@
             <if test="setParams.password != null">`password`=#{setParams.password},</if>
             <if test="setParams.nature != null">`nature`=#{setParams.nature},</if>
             <if test="setParams.status != null">`status`=#{setParams.status},</if>
+            <if test="setParams.account != null">`account`=#{setParams.account},</if>
+            <if test="setParams.telephone != null">`telephone`=#{setParams.telephone},</if>
         </set>
     </sql>
 
@@ -39,6 +43,8 @@
             <if test="whereParams.password != null">AND `password`=#{whereParams.password}</if>
             <if test="whereParams.nature != null">AND `nature`=#{whereParams.nature}</if>
             <if test="whereParams.status != null">AND `status`=#{whereParams.status}</if>
+            <if test="whereParams.account != null">AND `account`=#{whereParams.account}</if>
+            <if test="whereParams.telephone != null">AND `telephone`=#{whereParams.telephone}</if>
         </where>
     </sql>
     <sql id="sortAll">
@@ -60,6 +66,8 @@
             <if test="insertParams.password != null"> `password`,</if>
             <if test="insertParams.nature != null"> `nature`,</if>
             <if test="insertParams.status != null"> `status`,</if>
+            <if test="insertParams.account != null"> `account`,</if>
+            <if test="insertParams.telephone != null"> `telephone`,</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="insertParams.id != null">#{insertParams.id},</if>
@@ -67,6 +75,8 @@
             <if test="insertParams.password != null">#{insertParams.password},</if>
             <if test="insertParams.nature != null">#{insertParams.nature},</if>
             <if test="insertParams.status != null">#{insertParams.status},</if>
+            <if test="insertParams.account != null">#{insertParams.account},</if>
+            <if test="insertParams.telephone != null">#{insertParams.telephone},</if>
         </trim>
     </insert>
 

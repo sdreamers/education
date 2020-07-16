@@ -23,8 +23,8 @@
                 </div>
                 <div class="form-con">
                     <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px">
-                        <el-form-item prop="userName" label="账号：">
-                            <el-input v-model="form.userName" placeholder="请输入邮箱" @keyup.enter.native="login">
+                        <el-form-item prop="account" label="账号：">
+                            <el-input v-model="form.account" placeholder="请输入账号" @keyup.enter.native="login">
                                 <!-- <template slot="prepend"><i class="el-icon-message"></i></template> -->
                             </el-input>
                         </el-form-item>
@@ -189,8 +189,8 @@
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
                         const param = {
-                            email: this.form.userName,
-                            password: md5(this.form.userName + '#' + this.form.password)
+                            account: this.form.account,
+                            password: md5(this.form.password)
                         };
                         if (this.sendCode === 'true') {
                             user.checkPasswordAndSendCaptcha(param).then(res => {
@@ -201,8 +201,8 @@
                             });
                         } else {
                             const param = {
-                                email: this.form.userName,
-                                password: md5(this.form.userName + '#' + this.form.password),
+                                account: this.form.account,
+                                password: md5(this.form.password),
                                 rememberMe: this.form.rememberMe
                             };
                             api.login(param).then(res => {
@@ -210,15 +210,14 @@
                                     const userInfo = {};
                                     userInfo.name = this.form.userName;
                                     const userInfoStr = JSON.stringify(userInfo);
-                                    Util.setCookie('dpy_manager', userInfoStr);
-                                    Util.delCookie('cityId');
-                                    Util.delCookie('cityName');
+                                    Util.setCookie('education_user', userInfoStr);
                                     if (res.content) {
                                         this.showNumberAndSend(res.content);
                                     } else {
-                                        apiCommon.listPermissionsByUserId().then(() => {
+                                        /* apiCommon.listPermissionsByUserId().then(() => {
                                             this.$router.push({ name: '/account/merchant/index' });
-                                        })
+                                        }) */
+                                        this.$router.push({ name: '/task/index' })
                                     }
                                 }
                             }).catch(err => {

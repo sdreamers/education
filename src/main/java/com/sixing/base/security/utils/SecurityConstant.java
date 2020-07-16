@@ -20,7 +20,7 @@ public class SecurityConstant {
     /**
      * 后台登陆用户名参数名
      * */
-    public static final String KEY_USERNAME = "email";
+    public static final String KEY_USERNAME = "account";
 
     /**
      * 后台登陆密码参数名

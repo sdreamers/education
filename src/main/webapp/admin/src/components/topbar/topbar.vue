@@ -19,8 +19,8 @@
                         <el-submenu index="myCenter">
                             <template slot="title">{{nickname || '个人中心'}}</template>
                             <!-- <el-menu-item index="myMSG" @click="dialogMsgVisible=true">我的消息</el-menu-item> -->
-                            <router-link :to="{name: '/account/user/updatePswd'}">
-                                <el-menu-item index="/account/user/updatePswd">修改密码</el-menu-item>
+                            <router-link :to="{name: '/user/updatePswd'}">
+                                <el-menu-item index="/user/updatePswd">修改密码</el-menu-item>
                             </router-link>
                             <el-menu-item index="logout" @click="logout">安全退出</el-menu-item>
                         </el-submenu>
@@ -96,19 +96,6 @@
                 this.$router.push({ name: 'login' });
             },
 
-            handleQuotaYear() {
-                quotaYear.list().then(res => {
-                    if (res.code === 100) {
-                        if (res.content) {
-                            this.quotaYearArr = res.content.map(item => ({ id: item.year, name: item.year + '财务年' }));
-                            this.dialogFormVisible = true;
-                        } else {
-                            this.$notify.error('请在数据库初始化年份');
-                        }
-                    }
-                })
-            },
-
             handleProvinceChange(data) {
                 this.form.province = data;
                 this.getCity();
@@ -169,19 +156,16 @@
                 Util.setCookie('cityId', cityId, 30);
                 Util.setCookie('provinceId', provinceId, 30);
                 this.quotaYear = Util.getCookie('quotaYear');
-                if (!this.quotaYear) {
-                    this.handleQuotaYear();
-                }
             },
             getToken() {
-                /*return api.getToken().then(res => {
+                return api.getToken().then(res => {
                     if (res.code === 100) {
                         const data = res.content;
                         this.userId = data.id;
                         window.userinfo = data;
-                        this.nickname = data.nickname;
+                        this.nickname = data.name;
                     }
-                })*/
+                })
             },
 
             handleInitQuotaYear() {
