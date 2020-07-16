@@ -174,6 +174,18 @@ export const appRouter = [
                     require.ensure([], () => resolve(require('@/views/task/devices.vue')), 'devicesIndex');
                 }
             },
+
+            {
+                path: 'schoolDevices',
+                title: '设备明细',
+                name: '/school/devices',
+                meta: {
+                    title: '设备明细'
+                },
+                component: resolve => {
+                    require.ensure([], () => resolve(require('@/views/school/devices.vue')), 'schoolDevices');
+                }
+            },
         ]
     }
 ];
