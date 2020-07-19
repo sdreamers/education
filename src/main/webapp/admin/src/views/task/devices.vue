@@ -92,7 +92,6 @@
     import deviceApi from '@/api/device';
 
     const search = {
-        packetId: '',
         type: '',
         nameLike: ''
     };
@@ -126,7 +125,8 @@
                 pageSize: 10,
                 loading: false,
                 search: JSON.parse(JSON.stringify(search)),
-                statusOptions: statusOptions
+                statusOptions: statusOptions,
+                packetId: ''
             }
         },
 
@@ -151,14 +151,14 @@
             },
 
             handlePagers() {
-                if (!this.search.packetId) {
+                if (!this.packetId) {
                     this.$notify.error('异常');
                     return;
                 }
                 const param = {
                     page: this.currentPage,
                     limit: this.pageSize,
-                    packetId: this.search.packetId
+                    packetId: this.packetId
                 };
                 if (this.search.nameLike) {
                     param.nameLike = this.search.nameLike;
@@ -199,7 +199,7 @@
         },
 
         created() {
-            this.search.packetId = this.$route.params.packetId;
+            this.packetId = this.$route.params.packetId;
             this.handlePagers();
         }
     }

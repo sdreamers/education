@@ -105,10 +105,10 @@ export const appRouter = [
         children: [
             {
                 path: 'index',
-                title: '项目进度',
+                title: '包进度',
                 name: '/project/index',
                 meta: {
-                    title: '项目进度'
+                    title: '包进度'
                 },
                 component: resolve => {
                     require.ensure([], () => resolve(require('@/views/project/index.vue')), 'projectIndex');
@@ -140,11 +140,11 @@ export const appRouter = [
             },
 
             {
-                path: 'index',
-                title: '设备',
+                path: 'taskIndex',
+                title: '供货明细',
                 name: '/task/index',
                 meta: {
-                    title: '设备'
+                    title: '供货明细'
                 },
                 component: resolve => {
                     require.ensure([], () => resolve(require('@/views/task/index.vue')), 'taskIndex');
@@ -152,7 +152,7 @@ export const appRouter = [
             },
 
             {
-                path: 'index',
+                path: 'schoolIndex',
                 title: '学校进度',
                 name: '/school/index',
                 meta: {
@@ -184,6 +184,18 @@ export const appRouter = [
                 },
                 component: resolve => {
                     require.ensure([], () => resolve(require('@/views/school/devices.vue')), 'schoolDevices');
+                }
+            },
+
+            {
+                path: 'packetDevices',
+                title: '设备明细',
+                name: '/project/devices',
+                meta: {
+                    title: '设备明细'
+                },
+                component: resolve => {
+                    require.ensure([], () => resolve(require('@/views/project/devices.vue')), 'packetDevices');
                 }
             },
         ]

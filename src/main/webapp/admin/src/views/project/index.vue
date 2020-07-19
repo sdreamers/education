@@ -17,13 +17,6 @@
                     </el-input>
                 </el-col>
 
-                <el-col :span="3">
-                    <el-select v-model="search.inProgressStatus" placeholder="请选择节点">
-                        <el-option v-for="item in deviceStatuses" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-col>
-
                 <!--<el-col :span="6">
                     <el-date-picker
                         v-model="search.dateArr"
@@ -125,11 +118,11 @@
     };
 
     const columns = [
-        { key: 'name', title: '包名' }, 
+        { key: 'name', title: '包名' },
         { key: 'supplierName', title: '供应商' },
-        { key: 'unStart', title: '未开始', columns: [{ key: 'unStartDeviceNumProgress', title: '数量进度' }, { key: 'unStartDeviceAmountProgress', title: '金额进度' }]}, 
-        { key: 'produce', title: '生产/采购', columns: [{ key: 'produceDeviceNumProgress', title: '数量进度' }, { key: 'produceDeviceAmountProgress', title: '金额进度' }]}, 
-        { key: 'arrival', title: '到货', columns: [{ key: 'arrivalDeviceNumProgress', title: '数量进度' }, { key: 'arrivalDeviceAmountProgress', title: '金额进度' }]}, 
+        { key: 'unStart', title: '未开始', columns: [{ key: 'unStartDeviceNumProgress', title: '数量进度' }, { key: 'unStartDeviceAmountProgress', title: '金额进度' }]},
+        { key: 'produce', title: '生产/采购', columns: [{ key: 'produceDeviceNumProgress', title: '数量进度' }, { key: 'produceDeviceAmountProgress', title: '金额进度' }]},
+        { key: 'arrival', title: '到货', columns: [{ key: 'arrivalDeviceNumProgress', title: '数量进度' }, { key: 'arrivalDeviceAmountProgress', title: '金额进度' }]},
         { key: 'install', title: '安装', columns: [{ key: 'installDeviceNumProgress', title: '数量进度' }, { key: 'installDeviceAmountProgress', title: '金额进度' }]}, ];
 
     const deviceStatuses = [{ label: '生产/采购', value: 1 }, { label: '到货', value: 2 }, { label: '安装', value: 3 }]
@@ -219,20 +212,8 @@
                 });
             },
 
-            handleTypeChange() {
-                if (this.search.type === 1) {
-                    this.inProgressStatuses = normalStatus;
-                    this.search.inProgressStatus = 1;
-                } else if (this.search.type === 2) {
-                    this.inProgressStatuses = informationStatus;
-                    this.search.inProgressStatus = 4;
-                }
-            },
-
             handleEditMerchant(row) {
-                /* this.merchantEditForm = { packetId: row.id };
-                this.merchantEditDialogVisible = true; */
-                this.$router.push({ name: '/task/devices', params: { packetId: row.id, type: row.type } });
+                this.$router.push({ name: '/project/devices', params: { packetId: row.id, type: row.type, title: `${row.name}-供货明细` } });
             },
 
             merchantEditClose() {
@@ -263,7 +244,7 @@
                     }
                     this.suppliers.unshift({ id: '', name: '全部供应商' });
                 })
-            },
+            }
         },
 
         created() {

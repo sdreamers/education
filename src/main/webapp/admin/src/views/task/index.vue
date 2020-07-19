@@ -43,7 +43,7 @@
                         <template slot-scope="scope">
                             <el-button
                                 type="text"
-                                @click.stop="handleViewDevice(scope.row)">查看设备
+                                @click.stop="handleViewDevice(scope.row)">查看供货明细
                             </el-button>
 
                         </template>

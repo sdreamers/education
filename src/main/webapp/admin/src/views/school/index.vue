@@ -164,20 +164,8 @@
                 });
             },
 
-            handleTypeChange() {
-                if (this.search.type === 1) {
-                    this.inProgressStatuses = normalStatus;
-                    this.search.inProgressStatus = 1;
-                } else if (this.search.type === 2) {
-                    this.inProgressStatuses = informationStatus;
-                    this.search.inProgressStatus = 4;
-                }
-            },
-
             handleEditMerchant(row) {
-                /* this.merchantEditForm = { packetId: row.id };
-                this.merchantEditDialogVisible = true; */
-                this.$router.push({ name: '/school/devices', params: { schoolId: row.id, type: row.type } });
+                this.$router.push({ name: '/school/devices', params: { schoolId: row.id, type: row.type, title: `${row.name}-供货明细` } });
             },
 
             merchantEditClose() {
@@ -199,7 +187,7 @@
             handleExport() {
                 const exportUrl = window.vars.URLApiBase + '/quota/export';
                 return location.href = exportUrl;
-            },
+            }
         },
 
         created() {

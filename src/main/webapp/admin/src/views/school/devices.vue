@@ -27,30 +27,6 @@
                             <span>{{scope.row[column.key]}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="produce" label="生产/采购" align="center">
-                        <template slot-scope="scope">
-                            <el-select v-model="scope.row.produce" @change="handleStatusChange(scope.row, 1)">
-                                <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="produce" label="到货" align="center">
-                        <template slot-scope="scope">
-                            <el-select v-model="scope.row.arrival" @change="handleStatusChange(scope.row, 2)">
-                                <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="produce" label="安装" align="center">
-                        <template slot-scope="scope">
-                            <el-select v-model="scope.row.install" @change="handleStatusChange(scope.row, 3)">
-                                <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </template>
-                    </el-table-column>
                 </el-table>
                 <div class="pager-wrapper">
                     <el-pagination
@@ -68,54 +44,33 @@
             </el-row>
         </el-card>
 
-        <schoolEdit
-            :dialogVisible="merchantEditDialogVisible"
-            :form="merchantEditForm"
-            :type="merchantEditType"
-            @close="merchantEditClose"/>
-
-        <appointSupplier
-            :dialogVisible="supplierDialogVisible"
-            :form="supplierForm"
-            @close="supplierDialogClose"/>
-
-        <importExcel
-            :dialogVisible="importDialogVisible"
-            @close="importDialogClose"/>
-
     </section>
 </template>
 <script>
-    import schoolEdit from './schoolDetail'
-    import appointSupplier from './supplier'
-    import importExcel from './importExcel';
     import deviceApi from '@/api/device';
 
     const search = {
-        packetId: '',
-        type: '',
         nameLike: ''
     };
 
-    const statusOptions = [{ label: '未完成', value: 0 }, { label: '已完成', value: 1 }];
+    const statusMap = { 0: '未完成', 1: '完成' };
 
 
     const columns = [
+        { key: 'schoolName', title: '学校名' },
         { key: 'packetName', title: '包名' },
         { key: 'name', title: '设备名称' },
         { key: 'num', title: '数量' },
         { key: 'unit', title: '单位' },
         { key: 'excludingTaxPrice', title: '不含税单价(元)' },
         { key: 'tax', title: '税金(元)' },
-        { key: 'totalAmount', title: '含税总价(元)' }
+        { key: 'totalAmount', title: '含税总价(元)' },
+        { key: 'produce', title: '生产/采购' },
+        { key: 'arrival', title: '到货' },
+        { key: 'install', title: '安装' }
     ];
 
     export default {
-        components: {
-            schoolEdit,
-            appointSupplier,
-            importExcel
-        },
 
         data() {
             return {
@@ -126,7 +81,9 @@
                 pageSize: 10,
                 loading: false,
                 search: JSON.parse(JSON.stringify(search)),
-                statusOptions: statusOptions
+                statusMap: statusMap,
+
+                schoolId: ''
             }
         },
 
@@ -151,55 +108,35 @@
             },
 
             handlePagers() {
-                if (!this.search.packetId) {
-                    this.$notify.error('异常');
+                if (!this.schoolId) {
+                    this.$notify.error('缺少学校ID');
                     return;
                 }
                 const param = {
                     page: this.currentPage,
                     limit: this.pageSize,
-                    packetId: this.search.packetId
+                    schoolId: this.schoolId
                 };
                 if (this.search.nameLike) {
                     param.nameLike = this.search.nameLike;
                 }
                 deviceApi.pages(param).then(res => {
                     this.tableData = res.records;
+                    if (this.tableData && this.tableData.length > 0) {
+                        this.tableData.forEach(item => {
+                            item.produce = statusMap[item.produce];
+                            item.arrival = statusMap[item.arrival];
+                            item.install = statusMap[item.install];
+                        });
+                    }
                     this.totalSize = res.total;
                 })
-            },
-
-            handleStatusChange(row, type) {
-                const param = { id: row.id, type: type };
-                if (type === 1) {
-                    param.status = row.produce;
-                } else if (type === 2) {
-                    param.status = row.arrival;
-                } else if (type === 3) {
-                    param.status = row.install;
-                } else {
-                    this.$notify.error('参数异常');
-                    return;
-                }
-
-                deviceApi.updateStatus(param).then(res => {
-                    if (res.code === 100) {
-                        this.$notify.success(res.message || '成功');
-                    } else {
-                        if (type === 1) {
-                            row.produce = row.produce === 0 ? 1 : 0;
-                        } else if (type === 2) {
-                            row.arrival = row.arrival === 0 ? 1 : 0;
-                        } else if (type === 3) {
-                            row.install = row.install === 0 ? 1 : 0;
-                        }
-                    }
-                })
             }
+
         },
 
         created() {
-            this.search.packetId = this.$route.params.packetId;
+            this.schoolId = this.$route.params.schoolId;
             this.handlePagers();
         }
     }

@@ -54,6 +54,7 @@ function handleRouter(router) {
  */
 router.beforeEach(async (to, from, next) => {
     // 停止自动扫描定时器
+    document.title = '教育系统';
     clearInterval(window.autoScan);
     // 每次路由跳转，都会验证当前是否登录，如果没登录，跳转登录页
     // 但是跳转登录页也算路由跳转操作，所以要判断跳转去的页面不是登录页，才跳转登陆页，避免死循环
@@ -72,8 +73,12 @@ router.beforeEach(async (to, from, next) => {
             // 将用户信息存到全局，方便随时调取
             Vue.prototype.G.userInfo = res.content;
         }
-    })
+    });
     let toName = to.name;
+    console.log(to);
+    if (to.params.title) {
+        to.meta.title = to.params.title;
+    }
 
     if (!hasCookie) {
         next({ name: 'login' });

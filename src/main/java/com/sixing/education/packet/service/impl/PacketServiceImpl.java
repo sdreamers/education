@@ -388,35 +388,35 @@ public class PacketServiceImpl implements PacketService {
             whereParams.setPacketId(record.getId());
             List<DevicePO> devices = deviceService.list(whereParams);
             if (CollectionUtils.isNotEmpty(devices)) {
-                int totalNum = devices.stream().mapToInt(DevicePO::getNum).sum();
+                int totalNum = devices.size();
                 BigDecimal totalAmount = devices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
                 List<DevicePO> unStartDevices = devices.stream().filter(item -> item.getProduce() == 0 && item.getArrival() == 0 && item.getInstall() == 0).collect(Collectors.toList());
                 List<DevicePO> produceDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 0 && item.getInstall() == 0).collect(Collectors.toList());
                 List<DevicePO> arrivalDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 1 && item.getInstall() == 0).collect(Collectors.toList());
                 List<DevicePO> installDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 1 && item.getInstall() == 1).collect(Collectors.toList());
                 if (CollectionUtils.isNotEmpty(unStartDevices)) {
-                    int completeNum = unStartDevices.stream().mapToInt(DevicePO::getNum).sum();
+                    int completeNum = unStartDevices.size();
                     BigDecimal completeAmount = unStartDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
                     record.setUnStartDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
                     record.setUnStartDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
                 }
 
                 if (CollectionUtils.isNotEmpty(produceDevices)) {
-                    int completeNum = produceDevices.stream().mapToInt(DevicePO::getNum).sum();
+                    int completeNum = produceDevices.size();
                     BigDecimal completeAmount = produceDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
                     record.setProduceDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
                     record.setProduceDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
                 }
 
                 if (CollectionUtils.isNotEmpty(arrivalDevices)) {
-                    int completeNum = arrivalDevices.stream().mapToInt(DevicePO::getNum).sum();
+                    int completeNum = arrivalDevices.size();
                     BigDecimal completeAmount = arrivalDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
                     record.setArrivalDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
                     record.setArrivalDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
                 }
 
                 if (CollectionUtils.isNotEmpty(installDevices)) {
-                    int completeNum = installDevices.stream().mapToInt(DevicePO::getNum).sum();
+                    int completeNum = installDevices.size();
                     BigDecimal completeAmount = installDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
                     record.setInstallDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
                     record.setInstallDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
