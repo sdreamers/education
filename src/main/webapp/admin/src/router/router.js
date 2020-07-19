@@ -198,6 +198,18 @@ export const appRouter = [
                     require.ensure([], () => resolve(require('@/views/project/devices.vue')), 'packetDevices');
                 }
             },
+
+            {
+                path: 'overallProgress',
+                title: '整体进度',
+                name: '/overallProgress/index',
+                meta: {
+                    title: '整体进度'
+                },
+                component: resolve => {
+                    require.ensure([], () => resolve(require('@/views/overallProgress/index.vue')), 'overallProgressIndex');
+                }
+            }
         ]
     }
 ];

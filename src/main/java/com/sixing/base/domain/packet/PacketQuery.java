@@ -35,6 +35,7 @@ public class PacketQuery extends BaseVO implements Serializable {
 	private Integer type;
 	private Integer inProgressStatus;
 	private Long[] packetIds;
+	private Integer currentYear;
 
 	private Integer finishedStatuses;
 }

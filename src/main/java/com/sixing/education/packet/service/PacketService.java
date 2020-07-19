@@ -1,5 +1,6 @@
 package com.sixing.education.packet.service;
 
+import com.sixing.base.domain.base.HartsResult;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.packet.PacketPO;
@@ -188,4 +189,12 @@ public interface PacketService {
      * @throws ServiceException 业务异常
      */
     PageRecords<PacketVO> progressPages(PacketQuery param, PageVO pageParam) throws ServiceException;
+
+    /**
+     * 包整体进度
+     *
+     * @param param 查询参数
+     * @return 进度
+     */
+    HartsResult numProgress(PacketQuery param) throws ServiceException;
 }

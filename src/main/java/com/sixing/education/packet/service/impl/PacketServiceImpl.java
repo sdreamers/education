@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.sixing.base.domain.base.HartsResult;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.device.DevicePO;
@@ -424,5 +425,35 @@ public class PacketServiceImpl implements PacketService {
             }
         }
         return result;
+    }
+
+    @Override
+    public HartsResult numProgress(PacketQuery param) throws ServiceException{
+
+        List<PacketPO> list = this.list(param);
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+
+        HartsResult hartsResult = new HartsResult();
+
+        List<PacketVO> packets = BeanUtils.copyProperties(list, PacketVO.class);
+        hartsResult.setX(packets.stream().map(PacketVO::getName).collect(Collectors.toList()));
+        List<BigDecimal> data = new ArrayList<>();
+        for (PacketVO record : packets) {
+            DeviceQuery whereParams = new DeviceQuery();
+            whereParams.setPacketId(record.getId());
+            List<DevicePO> devices = deviceService.list(whereParams);
+            if (CollectionUtils.isNotEmpty(devices)) {
+                int totalNum = devices.size();
+                List<DevicePO> installDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 1 && item.getInstall() == 1).collect(Collectors.toList());
+                if (CollectionUtils.isNotEmpty(installDevices)) {
+                    int completeNum = installDevices.size();
+                    data.add(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                }
+            }
+        }
+        hartsResult.setData(data);
+        return hartsResult;
     }
 }

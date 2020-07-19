@@ -1,10 +1,13 @@
 package com.sixing.education.packet.controller;
 
+import com.sixing.base.domain.base.HartsResult;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
+import com.sixing.base.domain.base.ResultModel;
 import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.domain.packet.PacketQuery;
 import com.sixing.base.domain.packet.PacketVO;
+import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.packet.service.PacketService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 包控制器
@@ -47,6 +52,16 @@ public class PacketController {
             return packetService.progressPages(param, pageParam);
         } catch (Exception e) {
             return new PageRecords<>();
+        }
+    }
+
+    @GetMapping("/numProgress")
+    public HartsResult numProgress(PacketQuery param) {
+        try {
+            return packetService.numProgress(param);
+        } catch (ServiceException e) {
+            logger.error("获取包任务整体进度报错", e);
+            return HartsResult.error(e.getMessage());
         }
     }
 
