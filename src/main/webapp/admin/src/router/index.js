@@ -76,8 +76,8 @@ router.beforeEach(async (to, from, next) => {
     });
     let toName = to.name;
     console.log(to);
-    if (to.params.title) {
-        to.meta.title = to.params.title;
+    if (to.query.title) {
+        to.meta.title = to.query.title;
     }
 
     if (!hasCookie) {

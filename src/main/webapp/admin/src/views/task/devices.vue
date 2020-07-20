@@ -199,7 +199,7 @@
         },
 
         created() {
-            this.packetId = this.$route.params.packetId;
+            this.packetId = this.$route.query.packetId;
             this.handlePagers();
         }
     }

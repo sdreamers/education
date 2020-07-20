@@ -183,7 +183,8 @@
             },
 
             handleViewDevice(row) {
-                this.$router.push({ name: '/task/devices', params: { packetId: row.id, type: row.type } });
+                const link = this.$router.resolve({ path: '/task/devices', query: { packetId: row.id, type: row.type, title: `${row.name}-供货明细` } });
+                window.open(link.href, '_blank');
             },
 
             merchantEditClose() {
