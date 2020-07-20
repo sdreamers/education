@@ -65,6 +65,16 @@ public class PacketController {
         }
     }
 
+    @GetMapping("/amountProgress")
+    public HartsResult amountProgress(PacketQuery param) {
+        try {
+            return packetService.amountProgress(param);
+        } catch (ServiceException e) {
+            logger.error("获取包任务整体进度报错", e);
+            return HartsResult.error(e.getMessage());
+        }
+    }
+
     @GetMapping("/export")
     public void export() {
         System.out.println(1);

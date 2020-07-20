@@ -1,5 +1,6 @@
 package com.sixing.education.school.service;
 
+import com.sixing.base.domain.base.HartsResult;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.packet.PacketVO;
@@ -188,4 +189,22 @@ public interface SchoolService {
      * @throws ServiceException 业务异常
      * */
     PageRecords<SchoolVO> progressPages(SchoolQuery param, PageVO pageParam) throws ServiceException;
+
+    /**
+     * 学校任务完成数量进度
+     *
+     * @param param 查询参数
+     * @return 进度
+     * @throws ServiceException 业务异常
+     */
+    HartsResult numProgress(SchoolQuery param) throws ServiceException;
+
+    /**
+     * 学校金额完成进度
+     *
+     * @param param 查询参数
+     * @return 进度
+     * @throws ServiceException 业务异常
+     */
+    HartsResult amountProgress(SchoolQuery param) throws ServiceException;
 }

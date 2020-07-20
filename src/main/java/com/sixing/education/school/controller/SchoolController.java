@@ -1,12 +1,14 @@
 package com.sixing.education.school.controller;
 
+import com.sixing.base.domain.base.HartsResult;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
-import com.sixing.base.domain.packet.PacketQuery;
-import com.sixing.base.domain.packet.PacketVO;
 import com.sixing.base.domain.school.SchoolQuery;
 import com.sixing.base.domain.school.SchoolVO;
+import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.school.service.SchoolService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/school")
 public class SchoolController {
 
+    private static Logger logger = LoggerFactory.getLogger(SchoolController.class);
+
     @Autowired
     private SchoolService schoolService;
 
@@ -30,6 +34,26 @@ public class SchoolController {
             return schoolService.progressPages(param, pageParam);
         } catch (Exception e) {
             return new PageRecords<>();
+        }
+    }
+
+    @GetMapping("/numProgress")
+    public HartsResult numProgress(SchoolQuery param) {
+        try {
+            return schoolService.numProgress(param);
+        } catch (ServiceException e) {
+            logger.error("获取包任务整体进度报错", e);
+            return HartsResult.error(e.getMessage());
+        }
+    }
+
+    @GetMapping("/amountProgress")
+    public HartsResult amountProgress(SchoolQuery param) {
+        try {
+            return schoolService.amountProgress(param);
+        } catch (ServiceException e) {
+            logger.error("获取包任务整体进度报错", e);
+            return HartsResult.error(e.getMessage());
         }
     }
 
