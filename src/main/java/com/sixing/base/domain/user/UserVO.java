@@ -27,4 +27,5 @@ public class UserVO implements Serializable {
 	private Integer nature;
 	private Integer status;
 	private Long supplierId;
+	private String supplierName;
 }

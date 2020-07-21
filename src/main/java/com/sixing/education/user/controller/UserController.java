@@ -1,10 +1,13 @@
 package com.sixing.education.user.controller;
 
 import com.sixing.base.domain.base.PageRecords;
+import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.base.ResultModel;
 import com.sixing.base.domain.user.UserPO;
+import com.sixing.base.domain.user.UserQuery;
 import com.sixing.base.domain.user.UserVO;
 import com.sixing.base.security.utils.TokenManager;
+import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.device.controller.DeviceController;
 import com.sixing.education.user.service.UserService;
 import org.slf4j.Logger;
@@ -36,6 +39,16 @@ public class UserController {
         } catch (Exception e) {
             logger.error("获取当前登录用户报错", e);
             return ResultModel.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/pages")
+    public PageRecords<UserVO> pages(UserQuery param, PageVO pageParam) {
+        try {
+            return userService.viewPages(param, pageParam);
+        } catch (ServiceException e) {
+            logger.error("获取用户分页报错", e);
+            return new PageRecords<>();
         }
     }
 }

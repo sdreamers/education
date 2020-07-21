@@ -196,4 +196,14 @@ public interface UserService {
      * @throws ServiceException 业务异常
      */
     UserVO getUser(Long userId) throws ServiceException;
+
+    /**
+     * 获取用户分页
+     *
+     * @param param     查询参数
+     * @param pageParam 分页参数
+     * @return 用户分页
+     * @throws ServiceException 业务异常
+     */
+    PageRecords<UserVO> viewPages(UserQuery param, PageVO pageParam) throws ServiceException;
 }

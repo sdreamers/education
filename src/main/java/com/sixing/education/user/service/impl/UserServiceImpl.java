@@ -1,15 +1,20 @@
 package com.sixing.education.user.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import com.sixing.base.constant.UserNatureConstant;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
+import com.sixing.base.domain.supplier.SupplierPO;
 import com.sixing.base.domain.user.UserPO;
 import com.sixing.base.domain.user.UserQuery;
 import com.sixing.base.domain.user.UserVO;
 import com.sixing.base.utils.BeanCopierUtil;
 import com.sixing.base.utils.CollectionUtils;
 import com.sixing.base.utils.exception.ServiceException;
+import com.sixing.education.supplier.service.SupplierService;
 import com.sixing.education.user.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +30,9 @@ public class UserServiceImpl implements com.sixing.education.user.service.UserSe
 
     @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    private SupplierService supplierService;
 
     /**
     * 新增系统用户
@@ -376,5 +384,29 @@ public class UserServiceImpl implements com.sixing.education.user.service.UserSe
         }
         UserVO userVO = BeanCopierUtil.copy(user, UserVO.class);
         return userVO;
+    }
+
+    @Override
+    public PageRecords<UserVO> viewPages(UserQuery param, PageVO pageParam) throws ServiceException {
+        PageRecords<UserVO> result = new PageRecords<>();
+
+        PageRecords<UserPO> pages = this.pages(param, pageParam);
+        result.setTotal(pages.getTotal());
+        if (CollectionUtils.isNotEmpty(pages.getRecords())) {
+            List<UserVO> users = new ArrayList<>();
+            for (UserPO record : pages.getRecords()) {
+                UserVO user = BeanCopierUtil.copy(record, UserVO.class);
+                if (user == null) {
+                    continue;
+                }
+                if (UserNatureConstant.SUPPLIER.equals(user.getNature()) && user.getSupplierId() != null) {
+                    SupplierPO supplier = supplierService.get(user.getSupplierId());
+                    Optional.of(supplier).ifPresent(item -> user.setSupplierName(supplier.getName()));
+                }
+                users.add(user);
+            }
+            result.setRecords(users);
+        }
+        return result;
     }
 }

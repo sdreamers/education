@@ -28,4 +28,7 @@ public class UserQuery extends BaseVO implements Serializable {
 	private Integer nature;
 	private Integer status;
 	private Long supplierId;
+
+	private String nameLike;
+	private String accountLike;
 }

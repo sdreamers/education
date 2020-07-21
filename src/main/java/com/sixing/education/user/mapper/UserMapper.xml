@@ -45,6 +45,12 @@
             <if test="whereParams.status != null">AND `status`=#{whereParams.status}</if>
             <if test="whereParams.account != null">AND `account`=#{whereParams.account}</if>
             <if test="whereParams.telephone != null">AND `telephone`=#{whereParams.telephone}</if>
+            <if test="whereParams.nameLike != null and whereParams.nameLike != ''">
+                AND `name` like concat("%", #{whereParams.nameLike}, "%")
+            </if>
+            <if test="whereParams.accountLike != null and whereParams.accountLike != ''">
+                AND `account` like concat("%", #{whereParams.accountLike}, "%")
+            </if>
         </where>
     </sql>
     <sql id="sortAll">
