@@ -28,10 +28,6 @@
                 </div>
             </el-col>
         </el-row>
-
-        <msgList
-            v-if="dialogMsgVisible"
-            @close="dialogMsgVisible=false"></msgList>
     </div>
 </template>merchantArr.push
 <script>
@@ -39,14 +35,12 @@
     import Util from '@/libs/util';
     import api from '@/api/common';
     import login from '@/api/login';
-    import msgList from '@/components/msg/list';
     import user from '@/api/user';
 
     import breadcrumb from '@/components/breadcrumb/index'
 
     export default {
         components: {
-            msgList,
             breadcrumb
         },
         watch: {
@@ -77,11 +71,7 @@
                 quotaYear: '',
                 quotaYearArr: [],
 
-                quotaYearForm: {},
-                quotaYearDialogVisible: false,
-
-
-
+                quotaYearForm: {}
             };
         },
         methods: {
@@ -184,11 +174,6 @@
                         this.handleCloseQuotaYearForm();
                     }
                 });
-            },
-
-            handleCloseQuotaYearForm() {
-                this.quotaYearForm = {};
-                this.quotaYearDialogVisible = false;
             }
         },
         async created() {

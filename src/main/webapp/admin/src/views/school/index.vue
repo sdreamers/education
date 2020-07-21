@@ -56,7 +56,6 @@
     </section>
 </template>
 <script>
-    import supplierApi from '@/api/supplier'
     import schoolApi from '@/api/school';
 
     const merchantEditForm = {
@@ -77,10 +76,10 @@
 
     const columns = [
         { key: 'name', title: '学校名称' },
-        { key: 'unStart', title: '未开始', columns: [{ key: 'unStartDeviceNumProgress', title: '数量进度' }, { key: 'unStartDeviceAmountProgress', title: '金额进度' }]},
-        { key: 'produce', title: '生产/采购', columns: [{ key: 'produceDeviceNumProgress', title: '数量进度' }, { key: 'produceDeviceAmountProgress', title: '金额进度' }]},
-        { key: 'arrival', title: '到货', columns: [{ key: 'arrivalDeviceNumProgress', title: '数量进度' }, { key: 'arrivalDeviceAmountProgress', title: '金额进度' }]},
-        { key: 'install', title: '安装', columns: [{ key: 'installDeviceNumProgress', title: '数量进度' }, { key: 'installDeviceAmountProgress', title: '金额进度' }]}, ];
+        { key: 'unStart', title: '未开始', columns: [{ key: 'unStartDeviceNumProgress', title: '数量进度' }, { key: 'unStartDeviceAmountProgress', title: '金额进度' }] },
+        { key: 'produce', title: '生产/采购', columns: [{ key: 'produceDeviceNumProgress', title: '数量进度' }, { key: 'produceDeviceAmountProgress', title: '金额进度' }] },
+        { key: 'arrival', title: '到货', columns: [{ key: 'arrivalDeviceNumProgress', title: '数量进度' }, { key: 'arrivalDeviceAmountProgress', title: '金额进度' }] },
+        { key: 'install', title: '安装', columns: [{ key: 'installDeviceNumProgress', title: '数量进度' }, { key: 'installDeviceAmountProgress', title: '金额进度' }] }];
 
     const deviceStatuses = [{ label: '生产/采购', value: 1 }, { label: '到货', value: 2 }, { label: '安装', value: 3 }]
 
@@ -149,15 +148,15 @@
                 schoolApi.progressPages(param).then(res => {
                     this.tableData = res.records;
                     if (this.tableData && this.tableData.length > 0) {
-                        for (let data of this.tableData) {
-                            data.unStartDeviceNumProgress = data.unStartDeviceNumProgress ? (data.unStartDeviceNumProgress) + '%' : '0%';
-                            data.unStartDeviceAmountProgress = data.unStartDeviceAmountProgress ? (data.unStartDeviceAmountProgress) + '%' : '0%';
-                            data.produceDeviceNumProgress = data.produceDeviceNumProgress ? (data.produceDeviceNumProgress) + '%' : '0%';
-                            data.produceDeviceAmountProgress = data.produceDeviceAmountProgress ? (data.produceDeviceAmountProgress) + '%' : '0%';
-                            data.arrivalDeviceNumProgress = data.arrivalDeviceNumProgress ? (data.arrivalDeviceNumProgress) + '%' : '0%';
-                            data.arrivalDeviceAmountProgress = data.arrivalDeviceAmountProgress ? (data.arrivalDeviceAmountProgress) + '%' : '0%';
-                            data.installDeviceNumProgress = data.installDeviceNumProgress ? (data.installDeviceNumProgress) + '%' : '0%';
-                            data.installDeviceAmountProgress = data.installDeviceAmountProgress ? (data.installDeviceAmountProgress) + '%' : '0%';
+                        for (const data of this.tableData) {
+                            data.unStartDeviceNumProgress = data.unStartDeviceNumProgress ? data.unStartDeviceNumProgress + '%' : '0%';
+                            data.unStartDeviceAmountProgress = data.unStartDeviceAmountProgress ? data.unStartDeviceAmountProgress + '%' : '0%';
+                            data.produceDeviceNumProgress = data.produceDeviceNumProgress ? data.produceDeviceNumProgress + '%' : '0%';
+                            data.produceDeviceAmountProgress = data.produceDeviceAmountProgress ? data.produceDeviceAmountProgress + '%' : '0%';
+                            data.arrivalDeviceNumProgress = data.arrivalDeviceNumProgress ? data.arrivalDeviceNumProgress + '%' : '0%';
+                            data.arrivalDeviceAmountProgress = data.arrivalDeviceAmountProgress ? data.arrivalDeviceAmountProgress + '%' : '0%';
+                            data.installDeviceNumProgress = data.installDeviceNumProgress ? data.installDeviceNumProgress + '%' : '0%';
+                            data.installDeviceAmountProgress = data.installDeviceAmountProgress ? data.installDeviceAmountProgress + '%' : '0%';
                         }
                     }
                     this.totalSize = res.total;
@@ -172,11 +171,6 @@
                 this.merchantEditDialogVisible = false;
                 this.merchantEditForm = JSON.parse(JSON.stringify(merchantEditForm));
                 this.handlePagers();
-            },
-
-            handleAppointSupplier(row) {
-                this.supplierForm = { projectId: row.id, oldSupplier: row.supplierName };
-                this.supplierDialogVisible = true;
             },
 
             supplierDialogClose() {

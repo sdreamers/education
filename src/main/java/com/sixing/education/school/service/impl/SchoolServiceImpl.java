@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Lists;
 import com.sixing.base.domain.base.HartsResult;
+import com.sixing.base.domain.base.HartsValue;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.device.DevicePO;
@@ -438,21 +440,27 @@ public class SchoolServiceImpl implements SchoolService {
 
         List<SchoolVO> schools = BeanUtils.copyProperties(list, SchoolVO.class);
         hartsResult.setX(schools.stream().map(SchoolVO::getName).collect(Collectors.toList()));
-        List<BigDecimal> data = new ArrayList<>();
+        List<BigDecimal> numData = new ArrayList<>();
+        List<BigDecimal> amountData = new ArrayList<>();
         for (SchoolVO record : schools) {
             DeviceQuery whereParams = new DeviceQuery();
             whereParams.setSchoolId(record.getId());
             List<DevicePO> devices = deviceService.list(whereParams);
             if (CollectionUtils.isNotEmpty(devices)) {
                 int totalNum = devices.size();
+                BigDecimal totalAmount = devices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
                 List<DevicePO> installDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 1 && item.getInstall() == 1).collect(Collectors.toList());
                 if (CollectionUtils.isNotEmpty(installDevices)) {
                     int completeNum = installDevices.size();
-                    data.add(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                    BigDecimal completeAmount = installDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+                    numData.add(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                    amountData.add(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
                 }
             }
         }
-        hartsResult.setData(data);
+        HartsValue numHartsValue = new HartsValue(1, numData);
+        HartsValue amountHartsValue = new HartsValue(2, amountData);
+        hartsResult.setData(Lists.newArrayList(numHartsValue, amountHartsValue));
         return hartsResult;
     }
 }

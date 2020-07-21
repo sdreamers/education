@@ -83,11 +83,7 @@ export const main = {
     children: [
         {
             path: '/home', title: '首页', name: 'home', component: resolve => { require.ensure([], () => resolve(require('@/views/home/index.vue')), 'home'); }, meta: { title: '首页' }
-        },
-        {
-            path: '/mywork', title: '我的工作', name: '/myWork/index', component: resolve => { require.ensure([], () => resolve(require('@/views/mywork/index.vue')), 'mywork'); }, meta: { title: '我的工作' }
         }
-
     ]
 };
 
@@ -95,11 +91,11 @@ export const main = {
 export const appRouter = [
     {
 
-        path: '/project',
-        name: 'project',
-        title: '商户列表',
+        path: '/packet',
+        name: 'packet',
+        title: '包',
         meta: {
-            title: '商户列表'
+            title: '包'
         },
         component: Main,
         children: [
@@ -111,48 +107,34 @@ export const appRouter = [
                     title: '包进度'
                 },
                 component: resolve => {
-                    require.ensure([], () => resolve(require('@/views/project/index.vue')), 'projectIndex');
+                    require.ensure([], () => resolve(require('@/views/packet/index.vue')), 'projectIndex');
+                }
+            },
+            {
+                path: 'devices',
+                title: '设备明细',
+                name: '/packet/devices',
+                meta: {
+                    title: '设备明细'
+                },
+                component: resolve => {
+                    require.ensure([], () => resolve(require('@/views/packet/devices.vue')), 'packetDevices');
                 }
             }
         ]
     },
-
     {
-        path: '/task',
-        name: 'task',
-        title: '统计',
+
+        path: '/school',
+        name: 'school',
+        title: '学校',
         meta: {
-            title: ''
+            title: '学校'
         },
         component: Main,
         children: [
-
             {
-                path: 'updatePswd',
-                title: '更新密码',
-                name: '/user/updatePswd',
-                meta: {
-                    title: '更新密码'
-                },
-                component: resolve => {
-                    require.ensure([], () => resolve(require('@/views/user/updatePswd.vue')), 'updatePswd');
-                }
-            },
-
-            {
-                path: 'taskIndex',
-                title: '供货明细',
-                name: '/task/index',
-                meta: {
-                    title: '供货明细'
-                },
-                component: resolve => {
-                    require.ensure([], () => resolve(require('@/views/task/index.vue')), 'taskIndex');
-                }
-            },
-
-            {
-                path: 'schoolIndex',
+                path: 'index',
                 title: '学校进度',
                 name: '/school/index',
                 meta: {
@@ -162,7 +144,40 @@ export const appRouter = [
                     require.ensure([], () => resolve(require('@/views/school/index.vue')), 'schoolIndex');
                 }
             },
+            {
+                path: 'devices',
+                title: '供货明细',
+                name: '/school/devices',
+                meta: {
+                    title: '供货明细'
+                },
+                component: resolve => {
+                    require.ensure([], () => resolve(require('@/views/school/devices.vue')), 'schoolDevices');
+                }
+            }
+        ]
+    },
 
+    {
+        path: '/task',
+        name: 'task',
+        title: '供货',
+        meta: {
+            title: '供货'
+        },
+        component: Main,
+        children: [
+            {
+                path: 'index',
+                title: '供货明细',
+                name: '/task/index',
+                meta: {
+                    title: '供货明细'
+                },
+                component: resolve => {
+                    require.ensure([], () => resolve(require('@/views/task/index.vue')), 'taskIndex');
+                }
+            },
             {
                 path: 'devices',
                 title: '设备明细',
@@ -171,36 +186,23 @@ export const appRouter = [
                     title: '设备明细'
                 },
                 component: resolve => {
-                    require.ensure([], () => resolve(require('@/views/task/devices.vue')), 'devicesIndex');
+                    require.ensure([], () => resolve(require('@/views/task/devices.vue')), 'taskDevices');
                 }
-            },
+            }
+        ]
+    },
+    {
 
+        path: '/overallProgress',
+        name: 'overallProgress',
+        title: '整体进度',
+        meta: {
+            title: '整体进度'
+        },
+        component: Main,
+        children: [
             {
-                path: 'schoolDevices',
-                title: '设备明细',
-                name: '/school/devices',
-                meta: {
-                    title: '设备明细'
-                },
-                component: resolve => {
-                    require.ensure([], () => resolve(require('@/views/school/devices.vue')), 'schoolDevices');
-                }
-            },
-
-            {
-                path: 'packetDevices',
-                title: '设备明细',
-                name: '/packet/devices',
-                meta: {
-                    title: '设备明细'
-                },
-                component: resolve => {
-                    require.ensure([], () => resolve(require('@/views/packet/devices.vue')), 'packetDevices');
-                }
-            },
-
-            {
-                path: 'overallProgress',
+                path: 'index',
                 title: '整体进度',
                 name: '/overallProgress/index',
                 meta: {
@@ -208,6 +210,29 @@ export const appRouter = [
                 },
                 component: resolve => {
                     require.ensure([], () => resolve(require('@/views/overallProgress/index.vue')), 'overallProgressIndex');
+                }
+            }
+        ]
+    },
+    {
+
+        path: '/user',
+        name: 'system',
+        title: '用户',
+        meta: {
+            title: '用户'
+        },
+        component: Main,
+        children: [
+            {
+                path: 'updatePswd',
+                title: '更新密码',
+                name: '/user/updatePswd',
+                meta: {
+                    title: '更新密码'
+                },
+                component: resolve => {
+                    require.ensure([], () => resolve(require('@/views/user/updatePswd.vue')), 'updatePswd');
                 }
             }
         ]

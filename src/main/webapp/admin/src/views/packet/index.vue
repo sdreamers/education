@@ -58,11 +58,6 @@
                                 type="text"
                                 @click.stop="handleEditMerchant(scope.row)">查看任务明细
                             </el-button>
-
-                            <!-- <el-button
-                                type="text"
-                                @click.stop="handleAppointSupplier(scope.row)">指派供应商
-                            </el-button> -->
                         </template>
                     </el-table-column>
                 </el-table>
@@ -82,22 +77,9 @@
             </el-row>
         </el-card>
 
-        <schoolEdit
-            :dialogVisible="merchantEditDialogVisible"
-            :form="merchantEditForm"
-            :type="merchantEditType"
-            @close="merchantEditClose"/>
-
-        <appointSupplier
-            :dialogVisible="supplierDialogVisible"
-            :form="supplierForm"
-            @close="supplierDialogClose"/>
-
     </section>
 </template>
 <script>
-    import schoolEdit from './schoolDetail'
-    import appointSupplier from './supplier'
     import supplierApi from '@/api/supplier'
     import packetApi from '@/api/packet';
 
@@ -120,20 +102,15 @@
     const columns = [
         { key: 'name', title: '包名' },
         { key: 'supplierName', title: '供应商' },
-        { key: 'unStart', title: '未开始', columns: [{ key: 'unStartDeviceNumProgress', title: '数量进度' }, { key: 'unStartDeviceAmountProgress', title: '金额进度' }]},
-        { key: 'produce', title: '生产/采购', columns: [{ key: 'produceDeviceNumProgress', title: '数量进度' }, { key: 'produceDeviceAmountProgress', title: '金额进度' }]},
-        { key: 'arrival', title: '到货', columns: [{ key: 'arrivalDeviceNumProgress', title: '数量进度' }, { key: 'arrivalDeviceAmountProgress', title: '金额进度' }]},
-        { key: 'install', title: '安装', columns: [{ key: 'installDeviceNumProgress', title: '数量进度' }, { key: 'installDeviceAmountProgress', title: '金额进度' }]}, ];
+        { key: 'unStart', title: '未开始', columns: [{ key: 'unStartDeviceNumProgress', title: '数量进度' }, { key: 'unStartDeviceAmountProgress', title: '金额进度' }] },
+        { key: 'produce', title: '生产/采购', columns: [{ key: 'produceDeviceNumProgress', title: '数量进度' }, { key: 'produceDeviceAmountProgress', title: '金额进度' }] },
+        { key: 'arrival', title: '到货', columns: [{ key: 'arrivalDeviceNumProgress', title: '数量进度' }, { key: 'arrivalDeviceAmountProgress', title: '金额进度' }] },
+        { key: 'install', title: '安装', columns: [{ key: 'installDeviceNumProgress', title: '数量进度' }, { key: 'installDeviceAmountProgress', title: '金额进度' }] }];
 
     const deviceStatuses = [{ label: '生产/采购', value: 1 }, { label: '到货', value: 2 }, { label: '安装', value: 3 }]
 
 
     export default {
-        components: {
-            schoolEdit,
-            appointSupplier
-        },
-
         data() {
             return {
                 tableData: [],
@@ -191,13 +168,10 @@
                 if (this.search.nameLike) {
                     param.nameLike = this.search.nameLike;
                 }
-               /*  if (this.search.inProgressStatus) {
-                    param.inProgressStatus = this.search.inProgressStatus;
-                } */
                 packetApi.progressPages(param).then(res => {
                     this.tableData = res.records;
                     if (this.tableData && this.tableData.length > 0) {
-                        for (let data of this.tableData) {
+                        for (const data of this.tableData) {
                             data.unStartDeviceNumProgress = data.unStartDeviceNumProgress ? data.unStartDeviceNumProgress + '%' : '0%';
                             data.unStartDeviceAmountProgress = data.unStartDeviceAmountProgress ? data.unStartDeviceAmountProgress + '%' : '0%';
                             data.produceDeviceNumProgress = data.produceDeviceNumProgress ? data.produceDeviceNumProgress + '%' : '0%';
@@ -220,11 +194,6 @@
                 this.merchantEditDialogVisible = false;
                 this.merchantEditForm = JSON.parse(JSON.stringify(merchantEditForm));
                 this.handlePagers();
-            },
-
-            handleAppointSupplier(row) {
-                this.supplierForm = { projectId: row.id, oldSupplier: row.supplierName };
-                this.supplierDialogVisible = true;
             },
 
             supplierDialogClose() {

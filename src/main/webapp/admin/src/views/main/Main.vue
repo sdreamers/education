@@ -57,7 +57,7 @@ export default {
             document.title = title;
             if (title) {
                 this.G.pageTitle = title.split('-')[0];
-            } 
+            }
         },
         /**
          * 路由变化
@@ -65,7 +65,7 @@ export default {
          * @param {Object} from 路由导航起点
          * @description 路由变化时：1、如果两次路由为同一个视图，刷新页面；2、设置侧边栏；3、设置标题
          */
-        routeChange(to) {
+        routeChange() {
             this.setPageTitle();
         }
     },

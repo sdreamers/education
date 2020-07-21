@@ -65,17 +65,6 @@
             </el-row>
         </el-card>
 
-        <schoolEdit
-            :dialogVisible="merchantEditDialogVisible"
-            :form="merchantEditForm"
-            :type="merchantEditType"
-            @close="merchantEditClose"/>
-
-        <appointSupplier
-            :dialogVisible="supplierDialogVisible"
-            :form="supplierForm"
-            @close="supplierDialogClose"/>
-
         <importExcel
             :dialogVisible="importDialogVisible"
             @close="importDialogClose"
@@ -84,8 +73,6 @@
     </section>
 </template>
 <script>
-    import schoolEdit from './schoolDetail'
-    import appointSupplier from './supplier'
     import supplierApi from '@/api/supplier'
     import importExcel from './importExcel';
     import packetApi from '@/api/packet';
@@ -112,8 +99,6 @@
 
     export default {
         components: {
-            schoolEdit,
-            appointSupplier,
             importExcel
         },
 
@@ -190,11 +175,6 @@
                 this.merchantEditDialogVisible = false;
                 this.merchantEditForm = JSON.parse(JSON.stringify(merchantEditForm));
                 this.handlePagers();
-            },
-
-            handleAppointSupplier(row) {
-                this.supplierForm = { projectId: row.id, oldSupplier: row.supplierName };
-                this.supplierDialogVisible = true;
             },
 
             supplierDialogClose() {

@@ -13,41 +13,19 @@ const RouterConfig = {
 
 const router = new VueRouter(RouterConfig);
 
-const whiteList = [
+/* const whiteList = [
     'home',
     'index',
     'error_404',
     'help',
-    'helpIndex',
-    '_order/separateOrder',
-    '_stat/monthlyStat',
-
-    // // 后台没有设置权限，所以单独给白名单
-
-    // 商品分组设置，
-    '_productGroup/index',
-    // 菜系和品牌分组
-    '_productBrandOrMerchantTypeGroup/index',
-
-    '_order/edit',
-    '_order/editSelfPick',
-    '_order/editBranchCompany',
-    '_user/index',
-    '_account/role/mypermission',
-    '_account/user/index',
-    '_account/user/updateSelf',
-    '_account/user/updatePswd',
-    '_new/index',
-    '_cut/index',
-    '_order/index',
-    '_account/merchant/index'
+    'helpIndex'
 ];
-
-function handleRouter(router) {
+ */
+/* function handleRouter(router) {
     whiteList.forEach(item => {
         router[item] = true;
     });
-}
+} */
 
 /**
  * 路由前置守卫
@@ -75,7 +53,7 @@ router.beforeEach(async (to, from, next) => {
             Vue.prototype.G.userInfo.insider = res.content.nature === 1 || res.content.nature === 2;
         }
     });
-    let toName = to.name;
+    /* let toName = to.name; */
 
     if (!hasCookie) {
         next({ name: 'login' });
@@ -91,7 +69,7 @@ router.beforeEach(async (to, from, next) => {
             next({ name: 'error_404' });
         }
     }
-   /*api.listPermissionsByUserId().then(res => {
+   /* api.listPermissionsByUserId().then(res => {
         // 如果没登录，跳到登录页
         window.LOG(res);
         if (res === undefined) {

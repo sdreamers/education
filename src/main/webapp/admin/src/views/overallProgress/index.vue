@@ -4,7 +4,7 @@
             <el-row class="list-con clearfix">
                 <el-row class="mb20" :gutter="20">
                     <el-col :lg="3" :xl="2">
-                        <el-select v-model="currentYear" filterable placeholder="请选择供应商">
+                        <el-select v-model="currentYear" filterable placeholder="请选择年份">
                             <el-option
                                 v-for="item in years"
                                 :key="item.id"
@@ -12,7 +12,6 @@
                                 :value="item.id">
                             </el-option>
                         </el-select>
-                        <el-input v-model="currentYear" placeholder="当前年份"></el-input>
                     </el-col>
                     <el-col :lg="3" :xl="3">
                         <el-button type="primary" @click="search">搜索</el-button>
@@ -21,7 +20,7 @@
                 </el-row>
             </el-row>
             <el-row class="list-con clearfix">
-                <el-radio-group v-model="type">
+                <el-radio-group v-model="type" @change="drawLine">
                     <el-radio-button label="包"></el-radio-button>
                     <el-radio-button label="学校"></el-radio-button>
                 </el-radio-group>
@@ -116,7 +115,7 @@
         align: app.config.align,
         verticalAlign: app.config.verticalAlign,
         rotate: app.config.rotate,
-        formatter: '{c}  {name|{a}}',
+        formatter: '{c}%',
         fontSize: 16,
         rich: {
             name: {
@@ -143,9 +142,6 @@
             top: 'center',
             feature: {
                 mark: { show: true },
-                dataView: { show: true, readOnly: false },
-                magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
-                restore: { show: true },
                 saveAsImage: { show: true }
             }
         },

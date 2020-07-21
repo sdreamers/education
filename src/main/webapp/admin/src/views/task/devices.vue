@@ -70,9 +70,6 @@
     </section>
 </template>
 <script>
-    import schoolEdit from './schoolDetail'
-    import appointSupplier from './supplier'
-    import importExcel from './importExcel';
     import deviceApi from '@/api/device';
 
     const search = {
@@ -168,7 +165,7 @@
                         if (type === 1) {
                             row.produce = row.produce === 0 ? 1 : 0;
                         } else if (type === 2) {
-                             row.arrival = row.arrival === 0 ? 1 : 0;
+                            row.arrival = row.arrival === 0 ? 1 : 0;
                         } else if (type === 3) {
                             row.install = row.install === 0 ? 1 : 0;
                         }

@@ -35,12 +35,12 @@
     export default {
         props: ['dialogVisible'],
         data() {
-            const validateInt = (rule, value, callback) => {
+            /* const validateInt = (rule, value, callback) => {
                 if (Number.isInteger(Number(value)) && Number(value) >= 0) {
                     callback();
                 }
                 callback(new Error('必须为正整数'));
-            };
+            }; */
 
             return {
                /*  rules: {

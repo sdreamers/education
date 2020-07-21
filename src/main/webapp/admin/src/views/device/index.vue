@@ -62,22 +62,9 @@
             </el-row>
         </el-card>
 
-        <schoolEdit
-            :dialogVisible="merchantEditDialogVisible"
-            :form="merchantEditForm"
-            :type="merchantEditType"
-            @close="merchantEditClose"/>
-
-        <appointSupplier
-            :dialogVisible="supplierDialogVisible"
-            :form="supplierForm"
-            @close="supplierDialogClose"/>
-
     </section>
 </template>
 <script>
-    import schoolEdit from './schoolDetail'
-    import appointSupplier from './supplier'
     import api from '@/api/packet';
     import supplierApi from '@/api/supplier'
 
@@ -102,11 +89,6 @@
     ];
 
     export default {
-        components: {
-            schoolEdit,
-            appointSupplier
-        },
-
         data() {
             return {
                 tableData: [],
@@ -178,11 +160,6 @@
                 this.merchantEditDialogVisible = false;
                 this.merchantEditForm = JSON.parse(JSON.stringify(merchantEditForm));
                 this.handlePagers();
-            },
-
-            handleAppointSupplier(row) {
-                this.supplierForm = {projectId: row.id, oldSupplier: row.supplierName};
-                this.supplierDialogVisible = true;
             },
 
             supplierDialogClose() {
