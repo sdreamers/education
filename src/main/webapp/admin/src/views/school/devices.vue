@@ -135,9 +135,18 @@
 
         },
 
-        created() {
-            this.schoolId = this.$route.params.schoolId;
-            this.handlePagers();
+        activated() {
+            if (this.$store.state.tagsView.visitedViews) {
+                for (const view of this.$store.state.tagsView.visitedViews) {
+                    if (view.fullPath === this.$route.name && this.$route.params.title) {
+                        view.title = this.$route.params.title;
+                    }
+                }
+            }
+            if (this.$route.params.schoolId) {
+                this.schoolId = this.$route.params.schoolId;
+                this.handlePagers();
+            }
         }
     }
 </script>

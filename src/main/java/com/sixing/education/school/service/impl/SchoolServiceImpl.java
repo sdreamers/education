@@ -428,7 +428,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public HartsResult numProgress(SchoolQuery param) throws ServiceException {
+    public HartsResult overallProgress(SchoolQuery param) throws ServiceException {
         List<SchoolPO> list = this.list(param);
         if (CollectionUtils.isEmpty(list)) {
             return null;
@@ -449,34 +449,6 @@ public class SchoolServiceImpl implements SchoolService {
                 if (CollectionUtils.isNotEmpty(installDevices)) {
                     int completeNum = installDevices.size();
                     data.add(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
-                }
-            }
-        }
-        hartsResult.setData(data);
-        return hartsResult;
-    }
-
-    @Override
-    public HartsResult amountProgress(SchoolQuery param) throws ServiceException {
-        List<SchoolPO> list = this.list(param);
-        if (CollectionUtils.isEmpty(list)) {
-            return null;
-        }
-
-        HartsResult hartsResult = new HartsResult();
-        List<SchoolVO> schools = BeanUtils.copyProperties(list, SchoolVO.class);
-        hartsResult.setX(schools.stream().map(SchoolVO::getName).collect(Collectors.toList()));
-        List<BigDecimal> data = new ArrayList<>();
-        for (SchoolVO record : schools) {
-            DeviceQuery whereParams = new DeviceQuery();
-            whereParams.setSchoolId(record.getId());
-            List<DevicePO> devices = deviceService.list(whereParams);
-            if (CollectionUtils.isNotEmpty(devices)) {
-                BigDecimal totalAmount = devices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-                List<DevicePO> installDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 1 && item.getInstall() == 1).collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(installDevices)) {
-                    BigDecimal completeAmount = installDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-                    data.add(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
                 }
             }
         }

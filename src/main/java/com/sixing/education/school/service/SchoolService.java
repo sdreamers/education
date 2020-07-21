@@ -197,14 +197,5 @@ public interface SchoolService {
      * @return 进度
      * @throws ServiceException 业务异常
      */
-    HartsResult numProgress(SchoolQuery param) throws ServiceException;
-
-    /**
-     * 学校金额完成进度
-     *
-     * @param param 查询参数
-     * @return 进度
-     * @throws ServiceException 业务异常
-     */
-    HartsResult amountProgress(SchoolQuery param) throws ServiceException;
+    HartsResult overallProgress(SchoolQuery param) throws ServiceException;
 }

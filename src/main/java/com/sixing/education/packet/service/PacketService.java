@@ -191,20 +191,11 @@ public interface PacketService {
     PageRecords<PacketVO> progressPages(PacketQuery param, PageVO pageParam) throws ServiceException;
 
     /**
-     * 包任务完成数量进度
+     * 包整体进度
      *
      * @param param 查询参数
      * @return 进度
      * @throws ServiceException 业务异常
      */
-    HartsResult numProgress(PacketQuery param) throws ServiceException;
-
-    /**
-     * 包金额完成进度
-     *
-     * @param param 查询参数
-     * @return 进度
-     * @throws ServiceException 业务异常
-     */
-    HartsResult amountProgress(PacketQuery param) throws ServiceException;
+    HartsResult overallProgress(PacketQuery param) throws ServiceException;
 }

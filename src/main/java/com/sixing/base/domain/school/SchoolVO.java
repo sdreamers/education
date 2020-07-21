@@ -26,6 +26,7 @@ public class SchoolVO implements Serializable {
 	private Date createTime;
 	private Long creatorId;
 	private String creatorName;
+	private String currentYear;
 
 	private BigDecimal unStartDeviceNumProgress;
 	private BigDecimal unStartDeviceAmountProgress;

@@ -25,4 +25,5 @@ public class SchoolPO implements Serializable {
     private Date createTime;
     private Long creatorId;
     private String creatorName;
+    private String currentYear;
 }

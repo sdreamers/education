@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 学校控制器
  *
- * @author hz19104557
+ * @author sixing
  * */
 @RestController
 @RequestMapping("/school")
@@ -37,24 +37,13 @@ public class SchoolController {
         }
     }
 
-    @GetMapping("/numProgress")
+    @GetMapping("/overallProgress")
     public HartsResult numProgress(SchoolQuery param) {
         try {
-            return schoolService.numProgress(param);
+            return schoolService.overallProgress(param);
         } catch (ServiceException e) {
             logger.error("获取包任务整体进度报错", e);
             return HartsResult.error(e.getMessage());
         }
     }
-
-    @GetMapping("/amountProgress")
-    public HartsResult amountProgress(SchoolQuery param) {
-        try {
-            return schoolService.amountProgress(param);
-        } catch (ServiceException e) {
-            logger.error("获取包任务整体进度报错", e);
-            return HartsResult.error(e.getMessage());
-        }
-    }
-
 }

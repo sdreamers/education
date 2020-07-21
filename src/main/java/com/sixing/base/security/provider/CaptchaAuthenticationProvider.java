@@ -5,6 +5,7 @@ import com.sixing.base.domain.user.UserPO;
 import com.sixing.base.security.domain.User;
 import com.sixing.base.security.domain.UsernamePasswordCaptchaAuthToken;
 import com.sixing.base.security.utils.SecurityConstant;
+import com.sixing.base.utils.BeanCopierUtil;
 import com.sixing.base.utils.CollectionUtils;
 import com.sixing.education.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
@@ -71,7 +72,8 @@ public class CaptchaAuthenticationProvider implements AuthenticationProvider {
     }
 
     private User generateAuthentication(UserPO user, List<GrantedAuthority> list) {
-        User token = new User(user.getId(), user.getName(), user.getPassword(), list);
+        User token = new User(list);
+        BeanCopierUtil.copy(user, token);
         return token;
     }
 

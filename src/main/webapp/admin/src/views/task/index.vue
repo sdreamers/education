@@ -21,7 +21,7 @@
                     <el-button @click="handleClear">清除</el-button>
                 </el-col>
 
-                <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleImport">导入</el-button>
+                <el-button style="float: right;margin-right: 30px;" type="primary" v-if="G.userInfo.insider" @click="handleImport">导入</el-button>
                 <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleExport">导出</el-button>
             </el-row>
             <el-row class="list-con clearfix">
@@ -183,8 +183,7 @@
             },
 
             handleViewDevice(row) {
-                const link = this.$router.resolve({ path: '/task/devices', query: { packetId: row.id, type: row.type, title: `${row.name}-供货明细` } });
-                window.open(link.href, '_blank');
+                this.$router.push({ name: '/task/devices', params: { packetId: row.id, type: row.type, title: `${row.name}-供货明细` } });
             },
 
             merchantEditClose() {

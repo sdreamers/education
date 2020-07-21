@@ -1,5 +1,7 @@
 package com.sixing.base.security.domain;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -10,24 +12,21 @@ import java.util.Collection;
  *
  * @author Administrator
  */
+@Getter
+@Setter
 public class User extends AbstractAuthenticationToken {
 
-    /**
-     * 用户ID
-     */
     private Long id;
-    /**
-     * 用户手机号码 对应security的principal
-     */
     private String name;
-
+    private String account;
+    private String telephone;
     private String password;
+    private Integer nature;
+    private Integer status;
+    private Long supplierId;
 
-    public User(Long id, String name, String password, Collection<? extends GrantedAuthority> authorities) {
+    public User(Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
-        this.id = id;
-        this.name = name;
-        this.password = password;
         this.setAuthenticated(true);
     }
 
@@ -41,17 +40,10 @@ public class User extends AbstractAuthenticationToken {
         return name;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     @Override
     public String getName() {
         return name;
     }
 
-    public String getPassword() {
-        return password;
-    }
 }
 

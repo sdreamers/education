@@ -109,6 +109,7 @@
             <if test="insertParams.produce != null">`produce`,</if>
             <if test="insertParams.arrival != null">`arrival`,</if>
             <if test="insertParams.install != null">`install`,</if>
+            <if test="insertParams.currentYear != null"> `current_year`,</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="insertParams.id != null">#{insertParams.id},</if>
@@ -129,6 +130,7 @@
             <if test="insertParams.produce != null">#{insertParams.produce},</if>
             <if test="insertParams.arrival != null">#{insertParams.arrival},</if>
             <if test="insertParams.install != null">#{insertParams.install},</if>
+            <if test="insertParams.currentYear != null">#{insertParams.currentYear},</if>
         </trim>
     </insert>
 

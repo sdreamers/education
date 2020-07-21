@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 /**
  * 导出设备实体
  *
- * @author hz19104557
+ * @author sixing
  * */
 @Data
 public class ExportDeviceVO {

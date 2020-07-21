@@ -198,14 +198,14 @@
                     this.tableData = res.records;
                     if (this.tableData && this.tableData.length > 0) {
                         for (let data of this.tableData) {
-                            data.unStartDeviceNumProgress = data.unStartDeviceNumProgress ? (data.unStartDeviceNumProgress) + '%' : '0%';
-                            data.unStartDeviceAmountProgress = data.unStartDeviceAmountProgress ? (data.unStartDeviceAmountProgress) + '%' : '0%';
-                            data.produceDeviceNumProgress = data.produceDeviceNumProgress ? (data.produceDeviceNumProgress) + '%' : '0%';
-                            data.produceDeviceAmountProgress = data.produceDeviceAmountProgress ? (data.produceDeviceAmountProgress) + '%' : '0%';
-                            data.arrivalDeviceNumProgress = data.arrivalDeviceNumProgress ? (data.arrivalDeviceNumProgress) + '%' : '0%';
-                            data.arrivalDeviceAmountProgress = data.arrivalDeviceAmountProgress ? (data.arrivalDeviceAmountProgress) + '%' : '0%';
-                            data.installDeviceNumProgress = data.installDeviceNumProgress ? (data.installDeviceNumProgress) + '%' : '0%';
-                            data.installDeviceAmountProgress = data.installDeviceAmountProgress ? (data.installDeviceAmountProgress) + '%' : '0%';
+                            data.unStartDeviceNumProgress = data.unStartDeviceNumProgress ? data.unStartDeviceNumProgress + '%' : '0%';
+                            data.unStartDeviceAmountProgress = data.unStartDeviceAmountProgress ? data.unStartDeviceAmountProgress + '%' : '0%';
+                            data.produceDeviceNumProgress = data.produceDeviceNumProgress ? data.produceDeviceNumProgress + '%' : '0%';
+                            data.produceDeviceAmountProgress = data.produceDeviceAmountProgress ? data.produceDeviceAmountProgress + '%' : '0%';
+                            data.arrivalDeviceNumProgress = data.arrivalDeviceNumProgress ? data.arrivalDeviceNumProgress + '%' : '0%';
+                            data.arrivalDeviceAmountProgress = data.arrivalDeviceAmountProgress ? data.arrivalDeviceAmountProgress + '%' : '0%';
+                            data.installDeviceNumProgress = data.installDeviceNumProgress ? data.installDeviceNumProgress + '%' : '0%';
+                            data.installDeviceAmountProgress = data.installDeviceAmountProgress ? data.installDeviceAmountProgress + '%' : '0%';
                         }
                     }
                     this.totalSize = res.total;

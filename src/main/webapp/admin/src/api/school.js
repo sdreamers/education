@@ -14,5 +14,12 @@ export default {
             method: 'get',
             params: data
         });
+    },
+    overallProgress(data) {
+        return fetch({
+            url: '/school/overallProgress',
+            method: 'get',
+            params: data
+        });
     }
 };

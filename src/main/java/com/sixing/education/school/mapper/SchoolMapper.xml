@@ -36,6 +36,9 @@
                     #{item}
                 </foreach>
             </if>
+            <if test="whereParams.currentYear != null and whereParams.currentYear != ''">
+                AND `current_year` = #{whereParams.currentYear}
+            </if>
         </where>
     </sql>
     <sql id="sortAll">
@@ -54,10 +57,12 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="insertParams.id != null"> `id`,</if>
             <if test="insertParams.name != null"> `name`,</if>
+            <if test="insertParams.currentYear != null"> `current_year`,</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="insertParams.id != null">#{insertParams.id},</if>
             <if test="insertParams.name != null">#{insertParams.name},</if>
+            <if test="insertParams.currentYear != null">#{insertParams.currentYear},</if>
         </trim>
     </insert>
 

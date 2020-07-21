@@ -38,4 +38,5 @@ public class DevicePO implements Serializable {
 	private Integer produce;
 	private Integer arrival;
 	private Integer install;
+	private String currentYear;
 }

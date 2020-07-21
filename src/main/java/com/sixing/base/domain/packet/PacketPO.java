@@ -28,4 +28,5 @@ public class PacketPO implements Serializable {
 	private Long creatorId;
 	private String creatorName;
 	private Integer type;
+	private String currentYear;
 }

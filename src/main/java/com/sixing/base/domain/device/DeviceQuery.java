@@ -41,4 +41,5 @@ public class DeviceQuery extends BaseVO implements Serializable {
 	private Integer produce;
 	private Integer arrival;
 	private Integer install;
+	private String currentYear;
 }

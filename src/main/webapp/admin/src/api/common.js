@@ -226,6 +226,7 @@ export default {
             const res = data.data;
             if (res.code === 100) {
                 Vue.prototype.G.userToken = res;
+                
                 return res;
             } else {
                 return undefined;

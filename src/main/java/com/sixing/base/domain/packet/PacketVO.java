@@ -29,6 +29,7 @@ public class PacketVO implements Serializable {
 	private Long creatorId;
 	private String creatorName;
 	private Integer type;
+	private String currentYear;
 
 	private BigDecimal unStartDeviceNumProgress;
 	private BigDecimal unStartDeviceAmountProgress;

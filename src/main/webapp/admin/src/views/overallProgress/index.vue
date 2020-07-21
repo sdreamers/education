@@ -6,7 +6,7 @@
                     <el-col :lg="3" :xl="2">
                         <el-input v-model="currentYear" placeholder="当前年份"></el-input>
                     </el-col>
-                    <el-col :lg="3" :xl="2">
+                    <el-col :lg="3" :xl="3">
                         <el-button type="primary" @click="search">搜索</el-button>
                         <el-button @click="clear">清除</el-button>
                     </el-col>
@@ -214,7 +214,7 @@
                     param.currentYear = this.currentYear;
                 }
                 if (this.type === '包') {
-                    packetApi.numProgress(param).then(res => {
+                    packetApi.overallProgress(param).then(res => {
                         if (res.code === 100) {
                             this.setOption(res);
                         } else {
@@ -222,7 +222,7 @@
                         }
                     })
                 } else {
-                    schoolApi.numProgress(param).then(res => {
+                    schoolApi.overallProgress(param).then(res => {
                         if (res.code === 100) {
                             this.setOption(res);
                         } else {

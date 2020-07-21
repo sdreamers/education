@@ -7,6 +7,7 @@ import com.sixing.base.domain.base.ResultModel;
 import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.domain.packet.PacketQuery;
 import com.sixing.base.domain.packet.PacketVO;
+import com.sixing.base.security.utils.TokenManager;
 import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.packet.service.PacketService;
 import org.slf4j.Logger;
@@ -34,10 +35,11 @@ public class PacketController {
     private PacketService packetService;
 
     @GetMapping("/pages")
-    public PageRecords<PacketPO> pages(PacketQuery param, PageVO pageParam, @RequestParam(required = false) Long currentSupplierId) {
+    public PageRecords<PacketPO> pages(PacketQuery param, PageVO pageParam) {
         try {
-            if (currentSupplierId != null) {
-                param.setSupplierId(currentSupplierId);
+            Long supplierId = TokenManager.getUser().getSupplierId();
+            if (supplierId != null) {
+                param.setSupplierId(supplierId);
             }
             return packetService.pages(param, pageParam);
         } catch (Exception e) {
@@ -55,20 +57,10 @@ public class PacketController {
         }
     }
 
-    @GetMapping("/numProgress")
+    @GetMapping("/overallProgress")
     public HartsResult numProgress(PacketQuery param) {
         try {
-            return packetService.numProgress(param);
-        } catch (ServiceException e) {
-            logger.error("获取包任务整体进度报错", e);
-            return HartsResult.error(e.getMessage());
-        }
-    }
-
-    @GetMapping("/amountProgress")
-    public HartsResult amountProgress(PacketQuery param) {
-        try {
-            return packetService.amountProgress(param);
+            return packetService.overallProgress(param);
         } catch (ServiceException e) {
             logger.error("获取包任务整体进度报错", e);
             return HartsResult.error(e.getMessage());

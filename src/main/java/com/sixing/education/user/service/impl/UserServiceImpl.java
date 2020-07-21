@@ -6,6 +6,8 @@ import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.user.UserPO;
 import com.sixing.base.domain.user.UserQuery;
+import com.sixing.base.domain.user.UserVO;
+import com.sixing.base.utils.BeanCopierUtil;
 import com.sixing.base.utils.CollectionUtils;
 import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.user.dao.UserDAO;
@@ -364,5 +366,15 @@ public class UserServiceImpl implements com.sixing.education.user.service.UserSe
         UserQuery whereParams = new UserQuery();
         whereParams.setAccount(name);
         return this.get(whereParams);
+    }
+
+    @Override
+    public UserVO getUser(Long userId) throws ServiceException {
+        UserPO user = this.get(userId);
+        if (user == null) {
+            return null;
+        }
+        UserVO userVO = BeanCopierUtil.copy(user, UserVO.class);
+        return userVO;
     }
 }

@@ -27,4 +27,5 @@ public class SchoolQuery extends BaseVO implements Serializable {
 	private Long creatorId;
 	private String creatorName;
 	private String[] schools;
+	private String currentYear;
 }

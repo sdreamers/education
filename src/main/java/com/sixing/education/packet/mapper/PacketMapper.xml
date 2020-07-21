@@ -54,6 +54,9 @@
             <if test="whereParams.nameLike != null and whereParams.nameLike != ''">
                 AND `name` LIKE concat("%", #{whereParams.nameLike}, "%")
             </if>
+            <if test="whereParams.currentYear != null and whereParams.currentYear != ''">
+                AND `current_year` = #{whereParams.currentYear}
+            </if>
         </where>
     </sql>
     <sql id="sortAll">
@@ -78,6 +81,7 @@
             <if test="insertParams.creatorId != null"> `creator_id`,</if>
             <if test="insertParams.creatorName != null"> `creator_name`,</if>
             <if test="insertParams.type != null"> `type`,</if>
+            <if test="insertParams.currentYear != null"> `current_year`,</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="insertParams.id != null">#{insertParams.id},</if>
@@ -88,6 +92,7 @@
             <if test="insertParams.creatorId != null">#{insertParams.creatorId},</if>
             <if test="insertParams.creatorName != null">#{insertParams.creatorName},</if>
             <if test="insertParams.type != null">#{insertParams.type},</if>
+            <if test="insertParams.currentYear != null">#{insertParams.currentYear},</if>
         </trim>
     </insert>
 

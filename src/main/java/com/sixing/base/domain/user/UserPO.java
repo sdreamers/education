@@ -14,4 +14,5 @@ public class UserPO {
     private String password;
     private Integer nature;
     private Integer status;
+    private Long supplierId;
 }

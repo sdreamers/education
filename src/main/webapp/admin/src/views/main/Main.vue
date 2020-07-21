@@ -57,9 +57,7 @@ export default {
             document.title = title;
             if (title) {
                 this.G.pageTitle = title.split('-')[0];
-            } else {
-                this.G.pageTitle = '冻品云';
-            }
+            } 
         },
         /**
          * 路由变化
@@ -68,27 +66,6 @@ export default {
          * @description 路由变化时：1、如果两次路由为同一个视图，刷新页面；2、设置侧边栏；3、设置标题
          */
         routeChange(to) {
-            // console.log('Main routeChange', to);
-            // console.log('visitedViews', this.$store.state.tagsView.visitedViews);
-            // const routeName = to.name;
-            // if (routeName === from.name) {
-            //     return location.reload();
-            // }
-            // if (from.meta.noCache) {
-            //     this.$store.dispatch('delCachedView', from);
-            // }
-            if (to.meta.noCache) {
-                this.$store.dispatch('delView', to).then(() => {
-                    if (to.path === this.$route.path) {
-                        // const latestView = visitedViews.slice(-1)[0]
-                        // if (latestView) {
-                        this.$router.push(to)
-                        // } else {
-                        //     this.$router.push('/')
-                        // }
-                    }
-                })
-            }
             this.setPageTitle();
         }
     },

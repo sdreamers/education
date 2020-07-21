@@ -401,13 +401,13 @@ public class DeviceServiceImpl implements DeviceService {
         // 供应商
         Long supplierId = this.saveSupplier(supplierName);
         // 包
-        PacketPO packet = this.savePacket(packetName, supplierId, supplierName);
+        PacketPO packet = this.savePacket(packetName, supplierId, supplierName, currentYear);
         // 学校
-        List<SchoolPO> schools = this.saveSchool(devices.stream().map(ImportDeviceVO::getSchoolName).distinct().toArray(String[]::new));
+        List<SchoolPO> schools = this.saveSchool(devices.stream().map(ImportDeviceVO::getSchoolName).distinct().toArray(String[]::new), currentYear);
         // 包-学校中间表
         this.savePacketSchool(packet, schools, currentYear);
         // 保存设备
-        this.saveDevice(devices, packet, schools);
+        this.saveDevice(devices, packet, schools, currentYear);
     }
 
     @Override
@@ -466,7 +466,7 @@ public class DeviceServiceImpl implements DeviceService {
         return devices;
     }
 
-    private void saveDevice(List<ImportDeviceVO> devices, PacketPO packet, List<SchoolPO> schools) throws ServiceException {
+    private void saveDevice(List<ImportDeviceVO> devices, PacketPO packet, List<SchoolPO> schools, Integer currentYear) throws ServiceException {
         Map<String, Long> schoolMap = new HashMap<>(schools.size());
         schools.forEach(item -> schoolMap.put(item.getName(), item.getId()));
 
@@ -475,8 +475,7 @@ public class DeviceServiceImpl implements DeviceService {
             insertParam.setPacketId(packet.getId());
             insertParam.setPacketName(packet.getName());
             insertParam.setSchoolId(schoolMap.get(insertParam.getSchoolName()));
-            insertParam.setIncludingTaxPrice(insertParam.getExcludingTaxPrice().add(insertParam.getTax()));
-            insertParam.setTotalAmount(insertParam.getIncludingTaxPrice().multiply(new BigDecimal(insertParam.getNum().toString())));
+            insertParam.setCurrentYear(currentYear.toString());
             this.insert(insertParam);
         }
     }
@@ -518,7 +517,7 @@ public class DeviceServiceImpl implements DeviceService {
         return supplier.getId();
     }
 
-    private List<SchoolPO> saveSchool(String[] schoolNames) throws ServiceException {
+    private List<SchoolPO> saveSchool(String[] schoolNames, Integer currentYear) throws ServiceException {
         if (CollectionUtils.isEmpty(schoolNames)) {
             throw new ServiceException("学校不能为空");
         }
@@ -536,6 +535,7 @@ public class DeviceServiceImpl implements DeviceService {
             if (!existSchoolNames.contains(school)) {
                 SchoolPO insertParams = new SchoolPO();
                 insertParams.setName(school);
+                insertParams.setCurrentYear(currentYear.toString());
                 schoolService.insert(insertParams);
                 schools.add(insertParams);
             }
@@ -543,7 +543,7 @@ public class DeviceServiceImpl implements DeviceService {
         return schools;
     }
 
-    private PacketPO savePacket(String packetName, Long supplierId, String supplierName) throws ServiceException {
+    private PacketPO savePacket(String packetName, Long supplierId, String supplierName, Integer currentYear) throws ServiceException {
         if (StringUtils.isBlank(packetName)) {
             throw new ServiceException("包名不能为空");
         }
@@ -556,6 +556,7 @@ public class DeviceServiceImpl implements DeviceService {
             insertParams.setCreateTime(new Date());
             insertParams.setSupplierId(supplierId);
             insertParams.setSupplierName(supplierName);
+            insertParams.setCurrentYear(currentYear.toString());
             packetService.insert(insertParams);
             return insertParams;
         }

@@ -2,6 +2,7 @@ package com.sixing.base.security.listener;
 
 import com.sixing.base.domain.user.UserPO;
 import com.sixing.base.security.domain.User;
+import com.sixing.base.utils.BeanCopierUtil;
 import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,8 @@ public class CustomRememberMeSuccessLister implements ApplicationListener<Intera
     }
 
     private User generateAuthentication(Authentication authentication, UserPO user) {
-        User auth = new User(user.getId(), user.getName(), user.getPassword(), authentication.getAuthorities());
+        User auth = new User(authentication.getAuthorities());
+        BeanCopierUtil.copy(user, auth);
         return auth;
     }
 }

@@ -40,6 +40,12 @@ public class ImportDeviceVO {
     @ExcelProperty("税金")
     private BigDecimal tax;
 
+    @ExcelProperty("含税单价")
+    private BigDecimal includingTaxPrice;
+
+    @ExcelProperty("含税合价")
+    private BigDecimal totalAmount;
+
     @ExcelProperty("学校名称")
     private String schoolName;
 }

@@ -72,13 +72,10 @@ router.beforeEach(async (to, from, next) => {
         if (res.code === 100) {
             // 将用户信息存到全局，方便随时调取
             Vue.prototype.G.userInfo = res.content;
+            Vue.prototype.G.userInfo.insider = res.content.nature === 1 || res.content.nature === 2;
         }
     });
     let toName = to.name;
-    console.log(to);
-    if (to.query.title) {
-        to.meta.title = to.query.title;
-    }
 
     if (!hasCookie) {
         next({ name: 'login' });

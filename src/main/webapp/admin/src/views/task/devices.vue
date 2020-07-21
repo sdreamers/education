@@ -67,22 +67,6 @@
                 </div>
             </el-row>
         </el-card>
-
-        <schoolEdit
-            :dialogVisible="merchantEditDialogVisible"
-            :form="merchantEditForm"
-            :type="merchantEditType"
-            @close="merchantEditClose"/>
-
-        <appointSupplier
-            :dialogVisible="supplierDialogVisible"
-            :form="supplierForm"
-            @close="supplierDialogClose"/>
-
-        <importExcel
-            :dialogVisible="importDialogVisible"
-            @close="importDialogClose"/>
-
     </section>
 </template>
 <script>
@@ -110,11 +94,6 @@
     ];
 
     export default {
-        components: {
-            schoolEdit,
-            appointSupplier,
-            importExcel
-        },
 
         data() {
             return {
@@ -152,7 +131,7 @@
 
             handlePagers() {
                 if (!this.packetId) {
-                    this.$notify.error('异常');
+                    this.$notify.error('异常1');
                     return;
                 }
                 const param = {
@@ -198,9 +177,18 @@
             }
         },
 
-        created() {
-            this.packetId = this.$route.query.packetId;
-            this.handlePagers();
+        activated() {
+            if (this.$store.state.tagsView.visitedViews) {
+                for (const view of this.$store.state.tagsView.visitedViews) {
+                    if (view.fullPath === this.$route.name && this.$route.params.title) {
+                        view.title = this.$route.params.title;
+                    }
+                }
+            }
+            if (this.$route.params.packetId) {
+                this.packetId = this.$route.params.packetId;
+                this.handlePagers();
+            }
         }
     }
 </script>

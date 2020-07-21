@@ -430,7 +430,7 @@ public class PacketServiceImpl implements PacketService {
     }
 
     @Override
-    public HartsResult numProgress(PacketQuery param) throws ServiceException{
+    public HartsResult overallProgress(PacketQuery param) throws ServiceException{
 
         List<PacketPO> list = this.list(param);
         if (CollectionUtils.isEmpty(list)) {
@@ -462,34 +462,6 @@ public class PacketServiceImpl implements PacketService {
         HartsValue numHartsValue = new HartsValue(1, numData);
         HartsValue amountHartsValue = new HartsValue(2, amountData);
         hartsResult.setData(Lists.newArrayList(numHartsValue, amountHartsValue));
-        return hartsResult;
-    }
-
-    @Override
-    public HartsResult amountProgress(PacketQuery param) throws ServiceException{
-        List<PacketPO> list = this.list(param);
-        if (CollectionUtils.isEmpty(list)) {
-            return null;
-        }
-
-        HartsResult hartsResult = new HartsResult();
-        List<PacketVO> packets = BeanUtils.copyProperties(list, PacketVO.class);
-        hartsResult.setX(packets.stream().map(PacketVO::getName).collect(Collectors.toList()));
-        List<BigDecimal> data = new ArrayList<>();
-        for (PacketVO record : packets) {
-            DeviceQuery whereParams = new DeviceQuery();
-            whereParams.setPacketId(record.getId());
-            List<DevicePO> devices = deviceService.list(whereParams);
-            if (CollectionUtils.isNotEmpty(devices)) {
-                BigDecimal totalAmount = devices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-                List<DevicePO> installDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 1 && item.getInstall() == 1).collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(installDevices)) {
-                    BigDecimal completeAmount = installDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-                    data.add(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
-                }
-            }
-        }
-        hartsResult.setData(data);
         return hartsResult;
     }
 }
