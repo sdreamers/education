@@ -4,6 +4,14 @@
             <el-row class="list-con clearfix">
                 <el-row class="mb20" :gutter="20">
                     <el-col :lg="3" :xl="2">
+                        <el-select v-model="currentYear" filterable placeholder="请选择供应商">
+                            <el-option
+                                v-for="item in years"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                            </el-option>
+                        </el-select>
                         <el-input v-model="currentYear" placeholder="当前年份"></el-input>
                     </el-col>
                     <el-col :lg="3" :xl="3">
@@ -28,6 +36,7 @@
     import echarts from 'echarts';
     import packetApi from '@/api/packet';
     import schoolApi from '@/api/school';
+    import packetSchoolApi from '@/api/packetSchool';
 
     const app = {};
 
@@ -186,6 +195,7 @@
                 option: option,
 
                 currentYear: '',
+                years: [],
                 type: '包',
 
                 packetLegend: packetLegend,
@@ -249,11 +259,25 @@
 
             clear() {
                 this.currentYear = '';
+            },
+
+            initYears() {
+                packetSchoolApi.listYears().then(res => {
+                    if (res.code === 100) {
+                        const data = res.content;
+                        if (data && data.length > 0) {
+                            for (const year of data) {
+                                this.years.push({ id: year, name: year });
+                            }
+                        }
+                    }
+                });
             }
         },
 
         created() {
             this.defaultDate();
+            this.initYears();
         }
     }
 </script>

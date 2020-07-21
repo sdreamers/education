@@ -138,4 +138,8 @@
         <include refid="pagingAll" />
     </select>
 
+    <select id="listYears" resultType="java.lang.String">
+        select distinct current_year from t_packet_school order by current_year desc
+    </select>
+
 </mapper>

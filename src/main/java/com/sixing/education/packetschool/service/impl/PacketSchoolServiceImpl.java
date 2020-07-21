@@ -359,4 +359,9 @@ public class PacketSchoolServiceImpl implements PacketSchoolService {
         }
         return pageData;
      }
+
+    @Override
+    public List<String> listYears() throws ServiceException {
+        return packetSchoolDAO.listYears();
+    }
 }

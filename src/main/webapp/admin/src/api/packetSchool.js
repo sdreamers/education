@@ -1,11 +1,11 @@
 import fetch from '@/libs/fetch';
 
 export default {
-    statMerchantOrder(data) {
+    listYears(data) {
         return fetch({
-            url: 'stat/statMerchantOrder',
+            url: '/packetSchool/listYears',
             method: 'get',
             params: data
         });
     }
-}
+};

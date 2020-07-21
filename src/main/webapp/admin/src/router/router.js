@@ -187,17 +187,17 @@ export const appRouter = [
                 }
             },
 
-            /* {
+            {
                 path: 'packetDevices',
                 title: '设备明细',
-                name: '/project/devices',
+                name: '/packet/devices',
                 meta: {
                     title: '设备明细'
                 },
                 component: resolve => {
-                    require.ensure([], () => resolve(require('@/views/project/devices.vue')), 'packetDevices');
+                    require.ensure([], () => resolve(require('@/views/packet/devices.vue')), 'packetDevices');
                 }
-            }, */
+            },
 
             {
                 path: 'overallProgress',

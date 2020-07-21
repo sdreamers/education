@@ -213,7 +213,7 @@
             },
 
             handleEditMerchant(row) {
-                this.$router.push({ name: '/project/devices', params: { packetId: row.id, type: row.type, title: `${row.name}-供货明细` } });
+                this.$router.push({ name: '/packet/devices', params: { packetId: row.id, type: row.type, title: `${row.name}-供货明细` } });
             },
 
             merchantEditClose() {

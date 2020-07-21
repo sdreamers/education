@@ -89,4 +89,11 @@ public interface PacketSchoolDAO {
     * @return 包学校对象列表
     */
     List<PacketSchoolPO> selectsPaging(@Param("whereParams") PacketSchoolQuery whereParams, @Param("pageParams") PageVO pageParams, @Param("selectFields") String[] selectFields);
+
+    /**
+     * 获取年份集合
+     *
+     * @return 年份集合
+     * */
+    List<String> listYears();
 }

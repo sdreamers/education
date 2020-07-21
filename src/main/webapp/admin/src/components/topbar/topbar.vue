@@ -39,7 +39,6 @@
     import Util from '@/libs/util';
     import api from '@/api/common';
     import login from '@/api/login';
-    import quotaYear from '@/api/quotaYear';
     import msgList from '@/components/msg/list';
     import user from '@/api/user';
 

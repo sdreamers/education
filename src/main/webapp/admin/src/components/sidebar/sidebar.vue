@@ -14,7 +14,7 @@
                 text-color="#fff">
 
                 <router-link :to="{name: '/project/index'}">
-                    <el-menu-item  index="/project/index"><img class="menu-icon" :src="iconYonghu" />
+                    <el-menu-item  index="/packet/index"><img class="menu-icon" :src="iconYonghu" />
                         <span class="sidebar-title">包进度</span>
                     </el-menu-item>
                 </router-link>
