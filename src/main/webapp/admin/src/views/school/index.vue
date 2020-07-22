@@ -12,8 +12,8 @@
                     <el-button @click="handleClear">清除</el-button>
                 </el-col>
 
-                <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleExport">导入</el-button>
-                <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleExport">导出</el-button>
+                <!-- <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleExport">导入</el-button>
+                <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleExport">导出</el-button> -->
             </el-row>
             <el-row class="list-con clearfix">
                 <el-table :data="tableData" border v-loading="loading">

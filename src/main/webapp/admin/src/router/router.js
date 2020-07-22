@@ -225,6 +225,17 @@ export const appRouter = [
         component: Main,
         children: [
             {
+                path: 'index',
+                title: '用户管理',
+                name: '/user/index',
+                meta: {
+                    title: '用户管理'
+                },
+                component: resolve => {
+                    require.ensure([], () => resolve(require('@/views/user/index.vue')), 'userIndex');
+                }
+            },
+            {
                 path: 'updatePswd',
                 title: '更新密码',
                 name: '/user/updatePswd',

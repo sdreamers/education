@@ -7,9 +7,11 @@ import com.sixing.base.domain.base.ResultModel;
 import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.domain.packet.PacketQuery;
 import com.sixing.base.domain.packet.PacketVO;
+import com.sixing.base.security.domain.User;
 import com.sixing.base.security.utils.TokenManager;
 import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.packet.service.PacketService;
+import com.sixing.education.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +39,6 @@ public class PacketController {
     @GetMapping("/pages")
     public PageRecords<PacketPO> pages(PacketQuery param, PageVO pageParam) {
         try {
-            Long supplierId = TokenManager.getUser().getSupplierId();
-            if (supplierId != null) {
-                param.setSupplierId(supplierId);
-            }
             return packetService.pages(param, pageParam);
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -58,7 +56,7 @@ public class PacketController {
     }
 
     @GetMapping("/overallProgress")
-    public HartsResult numProgress(PacketQuery param) {
+    public HartsResult overallProgress(PacketQuery param) {
         try {
             return packetService.overallProgress(param);
         } catch (ServiceException e) {

@@ -39,6 +39,9 @@
             <if test="whereParams.currentYear != null and whereParams.currentYear != ''">
                 AND `current_year` = #{whereParams.currentYear}
             </if>
+            <if test="whereParams.nameLike != null and whereParams.nameLike != ''">
+                AND `name` like concat("%", #{whereParams.nameLike}, "%")
+            </if>
         </where>
     </sql>
     <sql id="sortAll">

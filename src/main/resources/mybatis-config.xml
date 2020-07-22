@@ -8,7 +8,5 @@
         <setting name="useColumnLabel" value="true"/>
         <!-- 开启驼峰匹配下划线 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
-        <!-- 打印查询语句 -->
-        <setting name="logImpl" value="LOG4J2"/>
     </settings>
 </configuration>

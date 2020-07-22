@@ -13,12 +13,14 @@ import com.sixing.base.domain.user.UserQuery;
 import com.sixing.base.domain.user.UserVO;
 import com.sixing.base.utils.BeanCopierUtil;
 import com.sixing.base.utils.CollectionUtils;
+import com.sixing.base.utils.StringUtils;
 import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.supplier.service.SupplierService;
 import com.sixing.education.user.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 
 /**
 * 系统用户的业务实现类
@@ -44,6 +46,13 @@ public class UserServiceImpl implements com.sixing.education.user.service.UserSe
     @Override
     public UserPO insert(UserPO insertParams) throws ServiceException {
         try {
+            if (StringUtils.isNotBlank(insertParams.getAccount())) {
+                UserQuery whereParams = new UserQuery();
+                whereParams.setAccount(insertParams.getAccount());
+                if (CollectionUtils.isNotEmpty(this.list(whereParams))) {
+                    throw new ServiceException("账号已存在, 请检查");
+                }
+            }
             userDAO.insert(insertParams);
         } catch (Exception ex) {
             throw new ServiceException(ex);
@@ -62,6 +71,14 @@ public class UserServiceImpl implements com.sixing.education.user.service.UserSe
      @Override
      public Boolean update(UserPO setParams, Long id) throws ServiceException {
         try {
+            if (StringUtils.isNotBlank(setParams.getAccount())) {
+                UserQuery userQuery = new UserQuery();
+                userQuery.setAccount(setParams.getAccount());
+                List<UserPO> user = this.list(userQuery);
+                if (user != null && user.stream().anyMatch(item -> !item.getAccount().equals(setParams.getAccount()))) {
+                    throw new ServiceException("账号已存在, 请检查");
+                }
+            }
             UserQuery whereParams = new UserQuery();
             whereParams.setId(id);
             return this.update(setParams, whereParams);
@@ -370,9 +387,9 @@ public class UserServiceImpl implements com.sixing.education.user.service.UserSe
      }
 
     @Override
-    public UserPO getByName(String name) throws ServiceException{
+    public UserPO getByAccount(String account) throws ServiceException{
         UserQuery whereParams = new UserQuery();
-        whereParams.setAccount(name);
+        whereParams.setAccount(account);
         return this.get(whereParams);
     }
 
@@ -401,12 +418,26 @@ public class UserServiceImpl implements com.sixing.education.user.service.UserSe
                 }
                 if (UserNatureConstant.SUPPLIER.equals(user.getNature()) && user.getSupplierId() != null) {
                     SupplierPO supplier = supplierService.get(user.getSupplierId());
-                    Optional.of(supplier).ifPresent(item -> user.setSupplierName(supplier.getName()));
+                    Optional.ofNullable(supplier).ifPresent(item -> user.setSupplierName(supplier.getName()));
                 }
                 users.add(user);
             }
             result.setRecords(users);
         }
         return result;
+    }
+
+    @Override
+    public void updatePassword(String oldPassword, String newPassword, Long id) throws ServiceException {
+        UserPO user = this.get(id);
+        if (user == null) {
+            throw new ServiceException("当前用户不存在");
+        }
+        if (!user.getPassword().equals(DigestUtils.md5DigestAsHex(oldPassword.getBytes()))) {
+            throw new ServiceException("原密码错误");
+        }
+        UserPO setParams = new UserPO();
+        setParams.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
+        this.update(setParams, id);
     }
 }

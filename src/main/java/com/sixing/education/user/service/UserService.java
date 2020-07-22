@@ -186,7 +186,7 @@ public interface UserService {
      * @return 用户
      * @throws ServiceException 业务异常
      */
-    UserPO getByName(String name) throws ServiceException;
+    UserPO getByAccount(String name) throws ServiceException;
 
     /**
      * 获取用户
@@ -206,4 +206,14 @@ public interface UserService {
      * @throws ServiceException 业务异常
      */
     PageRecords<UserVO> viewPages(UserQuery param, PageVO pageParam) throws ServiceException;
+
+    /**
+     * 修改密码
+     *
+     * @param oldPassword 老的密码
+     * @param newPassword 新的密码
+     * @param id          用户ID
+     * @throws ServiceException 业务异常
+     */
+    void updatePassword(String oldPassword, String newPassword, Long id) throws ServiceException;
 }

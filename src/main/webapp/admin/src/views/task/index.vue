@@ -3,7 +3,7 @@
         <el-card shadow="none">
             <el-row class="mb20" :gutter="20">
                 <el-col :span="3">
-                    <el-select v-model="search.supplierId" filterable placeholder="请选择供应商">
+                    <el-select v-model="search.supplierId" filterable placeholder="请选择供应商" v-if="G.userInfo.insider">
                         <el-option
                             v-for="item in suppliers"
                             :key="item.id"
@@ -22,7 +22,7 @@
                 </el-col>
 
                 <el-button style="float: right;margin-right: 30px;" type="primary" v-if="G.userInfo.insider" @click="handleImport">导入</el-button>
-                <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleExport">导出</el-button>
+                <el-button style="float: right;margin-right: 30px;" type="primary" v-if="G.userInfo.insider" @click="handleExport">导出</el-button>
             </el-row>
             <el-row class="list-con clearfix">
                 <el-table :data="tableData" ref="table" border v-loading="loading" @select="select"
@@ -160,6 +160,14 @@
                 }
                 if (this.search.supplierId) {
                     param.supplierId = this.search.supplierId;
+                }
+                console.log(this.G.userInfo);
+                if (this.G.userInfo.nature === 3) {
+                    if (!this.G.userInfo.supplierId) {
+                        this.$notify.error('未关联供应商,请联系管理员');
+                        return;
+                    }
+                    param.supplierId = this.G.userInfo.supplierId;
                 }
                 packetApi.pages(param).then(res => {
                     this.tableData = res.records;

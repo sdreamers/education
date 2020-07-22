@@ -45,6 +45,7 @@
             <if test="whereParams.createTime != null">AND `create_time`=#{whereParams.createTime}</if>
             <if test="whereParams.creatorId != null">AND `creator_id`=#{whereParams.creatorId}</if>
             <if test="whereParams.creatorName != null">AND `creator_name`=#{whereParams.creatorName}</if>
+            <if test="whereParams.supplierId != null">AND `supplier_id`=#{whereParams.supplierId}</if>
             <if test="whereParams.createTimeStart != null and whereParams.createTimeStart != ''">
                 AND `create_time` &gt;= #{whereParams.createTimeStart}
             </if>

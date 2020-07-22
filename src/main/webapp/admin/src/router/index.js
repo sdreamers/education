@@ -51,6 +51,7 @@ router.beforeEach(async (to, from, next) => {
             // 将用户信息存到全局，方便随时调取
             Vue.prototype.G.userInfo = res.content;
             Vue.prototype.G.userInfo.insider = res.content.nature === 1 || res.content.nature === 2;
+            console.log(Vue.prototype.G.userInfo.insider)
         }
     });
     /* let toName = to.name; */

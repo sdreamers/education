@@ -211,14 +211,8 @@
                                     userInfo.name = this.form.userName;
                                     const userInfoStr = JSON.stringify(userInfo);
                                     Util.setCookie('education_user', userInfoStr);
-                                    if (res.content) {
-                                        this.showNumberAndSend(res.content);
-                                    } else {
-                                        /* apiCommon.listPermissionsByUserId().then(() => {
-                                            this.$router.push({ name: '/account/merchant/index' });
-                                        }) */
-                                        this.$router.push({ name: '/task/index' })
-                                    }
+                                    this.G.userToken = undefined;
+                                    this.$router.push({ name: '/task/index' })
                                 }
                             }).catch(err => {
                                 this.$notify.error(err.message || '未知错误');

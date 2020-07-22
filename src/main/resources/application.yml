@@ -1,6 +1,8 @@
 server:
   port: 8767
   max-session-num: 10
+  servlet:
+    context-path: /education
 spring:
   application:
     name: education
@@ -44,4 +46,4 @@ mybatis:
   mapper-locations: classpath*:com/sixing/**/mapper/*Mapper.xml
 ---
 logging:
-  config: classpath:log4j/log4j2-test.xml
+  config: classpath:logback.xml

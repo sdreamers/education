@@ -13,7 +13,7 @@
                 background-color="#1d73d0"
                 text-color="#fff">
 
-                <router-link :to="{name: '/project/index'}">
+                <router-link :to="{name: '/project/index'}" v-if='G.userInfo.insider'>
                     <el-menu-item  index="/packet/index"><img class="menu-icon" :src="iconYonghu" />
                         <span class="sidebar-title">包进度</span>
                     </el-menu-item>
@@ -23,14 +23,19 @@
                         <span class="sidebar-title">供货明细</span>
                     </el-menu-item>
                 </router-link>
-                <router-link :to="{name: '/school/index'}">
-                <el-menu-item  index="/school/index"><img class="menu-icon" :src="iconYonghu" />
-                    <span class="sidebar-title">学校进度</span>
-                </el-menu-item>
-            </router-link>
-                <router-link :to="{name: '/overallProgress/index'}">
+                <router-link :to="{name: '/school/index'}" v-if='G.userInfo.insider'>
+                    <el-menu-item  index="/school/index"><img class="menu-icon" :src="iconYonghu" />
+                        <span class="sidebar-title">学校进度</span>
+                    </el-menu-item>
+                </router-link>
+                <router-link :to="{name: '/overallProgress/index'}" v-if='G.userInfo.insider'>
                     <el-menu-item  index="/overallProgress/index"><img class="menu-icon" :src="iconYonghu" />
                         <span class="sidebar-title">整体进度</span>
+                    </el-menu-item>
+                </router-link>
+                <router-link :to="{name: '/user/index'}" v-if='G.userInfo.insider'>
+                    <el-menu-item  index="/user/index"><img class="menu-icon" :src="iconYonghu" />
+                        <span class="sidebar-title">用户管理</span>
                     </el-menu-item>
                 </router-link>
 

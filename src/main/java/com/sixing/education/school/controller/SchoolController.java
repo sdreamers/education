@@ -38,7 +38,7 @@ public class SchoolController {
     }
 
     @GetMapping("/overallProgress")
-    public HartsResult numProgress(SchoolQuery param) {
+    public HartsResult overallProgress(SchoolQuery param) {
         try {
             return schoolService.overallProgress(param);
         } catch (ServiceException e) {

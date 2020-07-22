@@ -3,82 +3,6 @@ import axios from 'axios';
 import Vue from 'vue';
 
 export default {
-    // https://local.dongpinyun.cn:9090/manager/js/json/order_assignee_status.json
-    orderAssigneeStatus() {
-        return fetch({
-            url: '/common/dict/orderAssigneeStatus',
-            method: 'get'
-        });
-    },
-    availableAreasStreets(data) {
-        return fetch({
-            url: 'common/availableAreas/streets',
-            method: 'get',
-            params: data
-        });
-    },
-    availableAreasDistricts(data) {
-        return fetch({
-            url: 'common/availableAreas/districts',
-            method: 'get',
-            params: data
-        });
-    },
-    availableAreasCities(data) {
-        return fetch({
-            url: 'common/availableAreas/cities',
-            method: 'get',
-            params: data
-        });
-    },
-    availableAreasProvinces(data) {
-        return fetch({
-            url: 'common/availableAreas/provinces',
-            method: 'get',
-            params: data
-        });
-    },
-    // 用户的省份
-    userProvince() {
-        return fetch({
-            url: 'account/usercities/provinces',
-            method: 'get'
-        });
-    },
-    // 用户的城市
-    userCity(data) {
-        return fetch({
-            url: 'account/usercities/cities',
-            method: 'get',
-            params: data,
-            formData: true
-        });
-    },
-    updateUserCities(data) {
-        return fetch({
-            url: 'account/usercities/updateUserCities',
-            method: 'post',
-            params: data,
-            formData: true
-        });
-    },
-
-    // 用户分组
-    listMerchantGroup() {
-        return fetch({
-            url: 'account/merchantGroup/listMerchantGroup',
-            method: 'get',
-            formData: true
-        });
-    },
-
-    userCityUserCitys(data) {
-        return fetch({
-            url: 'account/usercities/userCityies',
-            method: 'get',
-            params: data
-        });
-    },
     // 登录
     saveCookie(data) {
         return fetch({
@@ -136,74 +60,6 @@ export default {
             });
         });
     },
-    productArea() {
-        if (!window.permission['_product/productArea/basic']) {
-            window.ELEMENT.Notification({
-                message: '没有获取商品地区列表权限',
-                type: 'error'
-            });
-            return new Promise(res => {
-                res({
-                    code: 100,
-                    content: []
-                })
-            })
-        }
-        return fetch({
-            url: '/product/productArea/basic',
-            method: 'get'
-        });
-    },
-    productBrand() {
-        return fetch({
-            url: '/product/productBrand/basic',
-            method: 'get'
-        });
-    },
-    productCategoryBasic(data) {
-        if (!window.permission['_product/productCategory/basic']) {
-            window.ELEMENT.Notification({
-                message: '没有获取商品分类列表权限',
-                type: 'error'
-            });
-            return new Promise(res => {
-                res({
-                    code: 100,
-                    content: []
-                })
-            })
-        }
-        return fetch({
-            url: '/product/productCategory/basic',
-            method: 'get',
-            params: data
-        });
-    },
-    productGroup(data) {
-        return fetch({
-            url: '/product/productGroup/listGroup',
-            method: 'get',
-            params: data
-        });
-    },
-    getQiniuToken() {
-        return fetch({
-            url: '/common/openapi/uploadToken',
-            method: 'get'
-        });
-    },
-    getQiniuTokenTemp() {
-        return fetch({
-            url: '/common/openapi/tempUploadToken',
-            method: 'get'
-        });
-    },
-    countUserPlatformMsg() {
-        return fetch({
-            url: '/account/userMessage/countUserPlatformMsg',
-            method: 'get'
-        })
-    },
     getSocketIOConfig() {
         return fetch({
             url: '/account/userMessage/getSocketIOConfig',
@@ -242,40 +98,5 @@ export default {
                 });
             }
         });
-    },
-    listProductMerchantType() {
-        // if (Vue.prototype.G.userInfo) {
-        //     return new Promise(res => {
-        //         res(Vue.prototype.G.userInfo)
-        //     });
-        // }
-        return fetch({
-            url: 'common/dict/productMerchantType',
-            method: 'get'
-        })
-    },
-    getRechargeCardDict() {
-        return fetch({
-            url: 'common/dict/rechargeCard',
-            method: 'get'
-        })
-    },
-    getWarehouseByUserCurrentCityId() {
-        return fetch({
-            url: 'common/dict/warehouseByUserCurrentCity',
-            method: 'get'
-        })
-    },
-    getWorkFlowStatusDict() {
-        return fetch({
-            url: 'common/dict/workflowStatus',
-            method: 'get'
-        })
-    },
-    getEvaluationTypeDict() {
-        return fetch({
-            url: 'common/dict/evaluationType',
-            method: 'get'
-        })
     }
 };

@@ -16,12 +16,14 @@ import com.sixing.base.domain.device.DeviceQuery;
 import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.domain.packet.PacketQuery;
 import com.sixing.base.domain.packet.PacketVO;
+import com.sixing.base.domain.user.UserPO;
 import com.sixing.base.utils.BeanUtils;
 import com.sixing.base.utils.CollectionUtils;
 import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.packet.dao.PacketDAO;
 import com.sixing.education.packet.service.PacketService;
 import com.dongpinyun.productmodule.shop.service.DeviceService;
+import com.sixing.education.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +42,9 @@ public class PacketServiceImpl implements PacketService {
 
     @Autowired
     private DeviceService deviceService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 新增包

@@ -10,6 +10,7 @@
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="account" property="account" />
         <result column="telephone" property="telephone" />
+        <result column="supplier_id" property="supplierId" />
     </resultMap>
 
     <sql id="selectAll">
@@ -33,6 +34,7 @@
             <if test="setParams.status != null">`status`=#{setParams.status},</if>
             <if test="setParams.account != null">`account`=#{setParams.account},</if>
             <if test="setParams.telephone != null">`telephone`=#{setParams.telephone},</if>
+            <if test="setParams.supplierId != null">`supplier_id`=#{setParams.supplierId},</if>
         </set>
     </sql>
 
@@ -45,6 +47,7 @@
             <if test="whereParams.status != null">AND `status`=#{whereParams.status}</if>
             <if test="whereParams.account != null">AND `account`=#{whereParams.account}</if>
             <if test="whereParams.telephone != null">AND `telephone`=#{whereParams.telephone}</if>
+            <if test="whereParams.supplierId != null">AND `supplier_id`=#{whereParams.supplierId}</if>
             <if test="whereParams.nameLike != null and whereParams.nameLike != ''">
                 AND `name` like concat("%", #{whereParams.nameLike}, "%")
             </if>
@@ -74,6 +77,7 @@
             <if test="insertParams.status != null"> `status`,</if>
             <if test="insertParams.account != null"> `account`,</if>
             <if test="insertParams.telephone != null"> `telephone`,</if>
+            <if test="insertParams.supplierId != null"> `supplier_id`,</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="insertParams.id != null">#{insertParams.id},</if>
@@ -83,6 +87,7 @@
             <if test="insertParams.status != null">#{insertParams.status},</if>
             <if test="insertParams.account != null">#{insertParams.account},</if>
             <if test="insertParams.telephone != null">#{insertParams.telephone},</if>
+            <if test="insertParams.supplierId != null">#{insertParams.supplierId},</if>
         </trim>
     </insert>
 

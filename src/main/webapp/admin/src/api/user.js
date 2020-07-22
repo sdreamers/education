@@ -4,23 +4,39 @@ export default {
 
     pages(data) {
         return fetch({
-            url: '/user/pages',
+            url: 'user/pages',
             method: 'get',
             params: data
         });
     },
-    updatePswd(data) {
+    insert(data) {
         return fetch({
-            url: 'account/user/updatePswd',
+            url: 'user',
             method: 'post',
             data,
             formData: true
         });
     },
-    resetPassword(data) {
+    update(data) {
         return fetch({
-            url: 'account/u/resetPassword',
-            method: 'post',
+            url: 'user',
+            method: 'put',
+            data,
+            formData: true
+        });
+    },
+    updatePassword(data) {
+        return fetch({
+            url: 'user/password',
+            method: 'put',
+            data,
+            formData: true
+        });
+    },
+    updateStatus(data) {
+        return fetch({
+            url: 'user/status',
+            method: 'put',
             data,
             formData: true
         });
