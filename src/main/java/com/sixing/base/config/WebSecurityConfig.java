@@ -100,12 +100,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .rememberMe()
                 .rememberMeServices(rememberMeServices)
-                .tokenValiditySeconds(30 * 24 * 60 * 60)
+                .tokenValiditySeconds(7 * 24 * 60 * 60)
                 .key(REMEMBER_ME_KEY);
         // session管理
         httpSecurity.sessionManagement().maximumSessions(maxSessionNum).sessionRegistry(this.sessionRegistry());
         // 跨域过滤器
-        httpSecurity.cors();
         httpSecurity.addFilterBefore(new SimpleCrossDomainFilter(), ChannelProcessingFilter.class);
     }
 
@@ -126,8 +125,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        // 拦截/**/admin、/authentication/**、/user/**请求，其余请求不进入security
-        //web.ignoring().regexMatchers("^((?!((/admin.*)|/authentication/.*)).)+$").antMatchers(HttpMethod.OPTIONS);
+        // 拦截/**/education、/authentication/**、/user/**请求，其余请求不进入security
+        // 这里不能使用/education  spring security去掉contextPath了
+        // web.ignoring().regexMatchers("^((?!((/packet.*)|/authentication/.*|/user/.*)).)+$").antMatchers(HttpMethod.OPTIONS);
         super.configure(web);
     }
 

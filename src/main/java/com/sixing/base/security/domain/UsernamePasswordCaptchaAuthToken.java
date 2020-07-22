@@ -13,7 +13,7 @@ public class UsernamePasswordCaptchaAuthToken extends AbstractAuthenticationToke
     private Object captcha;
 
     public UsernamePasswordCaptchaAuthToken(Object principal, Object credentials, Object captcha) {
-        super((Collection) null);
+        super(null);
         this.principal = principal;
         this.credentials = credentials;
         this.captcha = captcha;
@@ -28,10 +28,12 @@ public class UsernamePasswordCaptchaAuthToken extends AbstractAuthenticationToke
         super.setAuthenticated(true);
     }
 
+    @Override
     public Object getCredentials() {
         return this.credentials;
     }
 
+    @Override
     public Object getPrincipal() {
         return this.principal;
     }
@@ -40,6 +42,7 @@ public class UsernamePasswordCaptchaAuthToken extends AbstractAuthenticationToke
         return captcha;
     }
 
+    @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
         if (isAuthenticated) {
             throw new IllegalArgumentException("Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");
@@ -48,6 +51,7 @@ public class UsernamePasswordCaptchaAuthToken extends AbstractAuthenticationToke
         }
     }
 
+    @Override
     public void eraseCredentials() {
         super.eraseCredentials();
         this.credentials = null;

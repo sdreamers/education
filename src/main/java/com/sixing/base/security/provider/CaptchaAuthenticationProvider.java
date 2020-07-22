@@ -51,7 +51,7 @@ public class CaptchaAuthenticationProvider implements AuthenticationProvider {
             UsernamePasswordCaptchaAuthToken token = (UsernamePasswordCaptchaAuthToken) authentication;
             String name = (String) token.getPrincipal();
             String password = (String) token.getCredentials();
-            UserPO user = userService.getByName(name);
+            UserPO user = userService.getByAccount(name);
             if (user == null) {
                 throw new UsernameNotFoundException(ResponseMsgConstant.MerchantNotExistExceptionMsg);
             }

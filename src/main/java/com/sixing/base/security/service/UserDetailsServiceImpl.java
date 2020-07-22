@@ -25,18 +25,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserService userService;
-    /*@Autowired
-    private RoleService roleService;*/
 
-    /**
-     * 用于RememberMeFilter通过cookie验证合法性
-     *
-     * @param name 用户名
-     * */
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         try {
-            UserPO user = userService.getByName(name);
+            UserPO user = userService.getByAccount(name);
             if (user == null) {
                 throw new UsernameNotFoundException("用户名错误, 请检查");
             }
@@ -44,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             Set<String> role = new HashSet<>();
             role.add(SecurityConstant.HAS_AUTHENTICATED_KEY);
             List<GrantedAuthority> list = this.addRolePrefix(role);
-            return new User(user.getName(), user.getPassword(), list);
+            return new User(user.getAccount(), user.getPassword(), list);
         } catch (ServiceException e) {
             throw new UsernameNotFoundException(e.getMessage());
         }

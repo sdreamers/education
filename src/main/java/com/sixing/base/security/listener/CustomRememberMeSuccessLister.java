@@ -39,7 +39,7 @@ public class CustomRememberMeSuccessLister implements ApplicationListener<Intera
             if (authentication instanceof RememberMeAuthenticationToken) {
                 UserDetails principal = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
                 if (principal.isAccountNonLocked() && principal.isCredentialsNonExpired() && principal.isAccountNonExpired()) {
-                    UserPO user = userService.getByName(principal.getUsername());
+                    UserPO user = userService.getByAccount(principal.getUsername());
                     User auth = this.generateAuthentication(authentication, user);
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }

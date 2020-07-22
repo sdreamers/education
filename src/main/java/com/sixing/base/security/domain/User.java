@@ -37,7 +37,7 @@ public class User extends AbstractAuthenticationToken {
 
     @Override
     public Object getPrincipal() {
-        return name;
+        return account;
     }
 
     @Override
