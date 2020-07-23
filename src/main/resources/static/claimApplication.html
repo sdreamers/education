@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>理赔申请书</title>
+    <style>
+		body {font-family: SimSun}
+        * {
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+        html, body {
+            height: 100%;
+        }
+        #apply {
+            background: #f8f8f8;
+            width: 375px;
+            min-height: 100%;
+            margin: 0 auto;
+        }
+        #apply .page-title {
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            line-height: 42px;;
+            background: #fff;
+            border-bottom: solid 1px #ddd;
+        }
+        #apply section:last-child {
+            margin-bottom: 0;
+        }
+        #apply .title {
+            width: 345px;
+            padding: 17px 15px;
+            font-weight: 600;
+            background: #fff;
+            color: #333;
+            font-size: 17px;
+            line-height: 1;
+            border-bottom: solid 1px #ddd;
+        }
+        #apply .title-tips {
+            font-size: 12px;
+            color: #666;
+            font-weight: 300;
+            margin-top: 9px;
+        }
+        #apply .content {
+            background: #fff;
+            font-size: 15px;
+            padding-left: 15px;
+            color: #666;
+            line-height: 1.5;
+            overflow: hidden;
+        }
+        #apply .content p {
+            margin: 12px 0;
+            padding-right: 15px;
+        }
+        #apply .info-row {
+            width: 345px;
+            overflow: hidden;
+            padding: 15px 15px 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        #apply .info-title {
+            width: 140px;
+            float: left;
+            color: #999;
+        }
+        #apply .info-text {
+            /* width: 100%; */
+            width: 200px;
+            float: right;
+            color: #666;
+            text-align: right;
+            word-break:break-all;
+			word-wrap: break-word;
+        }
+        #apply .text-left {
+            display: inline-block;
+            text-align: left;
+            line-height: 1.4;
+        }
+        #apply .sign-box {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #f5f5f5;
+            margin: 15px 0 25px;
+            position: relative;
+        }
+        #apply .sign-box img {
+            width: 100%;
+            height: auto;
+        }
+        #apply .pr15 {
+            padding-right: 15px;
+        }
+    </style>
+</head>
+<body>
+<div id="apply">
+    <div class="page-title">理赔申请书</div>
+    <section >
+        <div class="title">被保险人/索赔申请人资料</div>
+        <div class="content">
+            <div class="info-row">
+                <div class="info-title">保单号</div>
+                <div class="info-text">
+                    ${policyNo}
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-title">被保险人姓名</div>
+                <div class="info-text">
+                    ${insuredName}
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-title">被保险人证件号码</div>
+                <div class="info-text">
+                    ${insuredCertificateNo}
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-title">索赔人姓名</div>
+                <div class="info-text">
+                    ${claimantName}
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-title">索赔人是被保险人的</div>
+                <div class="info-text">
+                    ${claimantRelationship}
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-title">索赔人联系电话</div>
+                <div class="info-text">
+                    ${claimantMobile}
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-title">索赔人电子邮箱</div>
+                <div class="info-text">
+                    ${claimantEmail}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="title">申请赔偿事由</div>
+        <div class="content">
+            <div class="info-row">
+                <div class="info-title">事故发生地点</div>
+                <div class="info-text">
+                    ${dangerAddress}
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-title">事故发生时间</div>
+                <div class="info-text">
+                    ${dangerTime}
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-title">案件类型</div>
+                <div class="info-text">
+                    ${caseType}
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-title">出险原因及状况</div>
+                <div class="info-text">
+                    <span class="text-left">${dangerDetail}</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="title">
+            银行账户资料
+            <p class="title-tips">
+                (需填写被保险人本人账户，若为未成年人，请填写监护人账号)
+            </p>
+        </div>
+        <div class="content">
+            <div class="info-row">
+                <div class="info-title">开户名</div>
+                <div class="info-text">${accountName}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-title">银行卡号</div>
+                <div class="info-text">${backCardNo}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-title">开户行名称</div>
+                <div class="info-text">${backName}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-title">开户行省市</div>
+                <div class="info-text">${bankAddress}</div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="title">被保险人及索赔申请人授权及声明</div>
+        <div class="content">
+            <p>1.本人声明以上陈述与回答全部属实及详尽。如有虚假不实或隐瞒情况，保险人有权拒赔保险赔偿金并依法追究法律责任。</p>
+            <p>2.本人授权保险人及其受托人从其他相关个人、警局、医疗机构等索取与本次理赔直接相关的信息和文件。</p>
+            <p>3.本人同意在本人或本人指定银行帐户收到慧择保险经纪有限公司（以下简称慧择） 指定帐户垫付的保险金之日起，全权委托慧择代为办理保险理赔并收取保险金。</p>
+        </div>
+    </section>
+    <section>
+        <div class="title">索赔人签名</div>
+        <div class="content pr15">
+            <div class="sign-box">
+                <img src="${claimantSignUrl}" alt="签名"></img>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

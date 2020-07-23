@@ -4,15 +4,15 @@
 
 <template>
     <div class="login">
-        <!--<img :src="bg">-->
-        <div class="bg" :style="'backgroundImage: url(' + bg + ')'"></div>
+        <!-- <img :src="bg"> -->
+        <!-- <div class="bg" :style="'backgroundImage: url(' + bg + ')'"></div>
         <img class="wall" :src="wall"/>
         <img class="roof" :src="roof"/>
         <img class="cloud" :src="cloud"/>
         <img class="cloud-line" :src="cloudLine"/>
-        <img class="stone" :src="stone"/>
-        <!--<img src="https://images.dongpinyun.com/erp/login-bg.png" alt="">-->
-        <!--<img src="https://images.dongpinyun.com/erp/login-assets.png" alt="" class="float-assets">-->
+        <img class="stone" :src="stone"/> -->
+        <img src="https://images.dongpinyun.com/erp/login-bg.png" alt="">
+        <img src="https://images.dongpinyun.com/erp/login-assets.png" alt="" class="float-assets">
         <div class="login-con">
             <el-card :bordered="false">
                 <!-- <div slot="header" class="clearfix"> -->

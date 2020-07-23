@@ -3,17 +3,19 @@
 </style>
 
 <template>
-    <el-aside id="aside" width="220px" style="background-color: #1d73d0" height="auto">
+    <el-aside id="aside" width="220px" 
+    style="background-color: #1d73d0" height="auto">
         <div id="sidebar" class="sidebar" style="margin-top: 15%">
             <el-menu
                 :default-active="index"
                 :default-openeds="defaultOpeneds"
+                :collapse="isCollapse"
                 class="el-menu-vertical-demo"
                 active-text-color="#ffd04b"
                 background-color="#1d73d0"
                 text-color="#fff">
 
-                <router-link :to="{name: '/project/index'}" v-if='G.userInfo.insider'>
+                <router-link :to="{name: '/project/index'}" v-show='G.userInfo.insider'>
                     <el-menu-item  index="/packet/index"><img class="menu-icon" :src="iconYonghu" />
                         <span class="sidebar-title">包进度</span>
                     </el-menu-item>
@@ -23,17 +25,17 @@
                         <span class="sidebar-title">供货明细</span>
                     </el-menu-item>
                 </router-link>
-                <router-link :to="{name: '/school/index'}" v-if='G.userInfo.insider'>
+                <router-link :to="{name: '/school/index'}" v-show='G.userInfo.insider'>
                     <el-menu-item  index="/school/index"><img class="menu-icon" :src="iconYonghu" />
                         <span class="sidebar-title">学校进度</span>
                     </el-menu-item>
                 </router-link>
-                <router-link :to="{name: '/overallProgress/index'}" v-if='G.userInfo.insider'>
+                <router-link :to="{name: '/overallProgress/index'}" v-show='G.userInfo.insider'>
                     <el-menu-item  index="/overallProgress/index"><img class="menu-icon" :src="iconYonghu" />
                         <span class="sidebar-title">整体进度</span>
                     </el-menu-item>
                 </router-link>
-                <router-link :to="{name: '/user/index'}" v-if='G.userInfo.insider'>
+                <router-link :to="{name: '/user/index'}" v-show='G.userInfo.insider'>
                     <el-menu-item  index="/user/index"><img class="menu-icon" :src="iconYonghu" />
                         <span class="sidebar-title">用户管理</span>
                     </el-menu-item>
@@ -95,7 +97,10 @@ export default {
             iconShangpin,
             iconArrow,
             logo1,
-            logo2
+            logo2,
+
+            isCollapse: false
+
         };
     },
     methods: {
