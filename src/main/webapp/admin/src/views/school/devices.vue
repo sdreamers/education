@@ -145,6 +145,9 @@
             }
             if (this.$route.params.schoolId) {
                 this.schoolId = this.$route.params.schoolId;
+                this.currentPage = 1;
+                this.totalSize = 0;
+                this.tableData = [];
                 this.handlePagers();
             }
         }

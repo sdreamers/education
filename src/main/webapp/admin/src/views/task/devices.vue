@@ -184,6 +184,9 @@
             }
             if (this.$route.params.packetId) {
                 this.packetId = this.$route.params.packetId;
+                this.currentPage = 1;
+                this.totalSize = 0;
+                this.tableData = [];
                 this.handlePagers();
             }
         }
