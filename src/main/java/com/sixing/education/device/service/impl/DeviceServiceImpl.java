@@ -426,6 +426,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void update(Long id, Integer type, Integer status) throws ServiceException {
         DevicePO device = this.get(id);
         if (status == DeviceStatusEnum.FINISHED.getCode()) {
@@ -449,6 +450,9 @@ public class DeviceServiceImpl implements DeviceService {
             default: throw new ServiceException("参数异常");
         }
         this.update(setParams, id);
+
+        // 更新时间
+        deviceDAO.updateCompleteTime(type, status, id);
     }
 
     @Override

@@ -140,6 +140,30 @@
         <include refid="whereAll" />
     </update>
 
+    <update id="updateCompleteTime">
+      update t_device
+      set
+        <if test="type == 1">
+          produce_time =
+        </if>
+        <if test="type == 2">
+          arrival_time =
+        </if>
+        <if test="type == 3">
+          install_time =
+        </if>
+        <choose>
+            <when test="status == 1">
+                now()
+            </when>
+            <otherwise>
+                null
+            </otherwise>
+        </choose>
+
+      where id = #{id}
+    </update>
+
     <delete id="delete">
         delete from t_device
         <include refid="whereAll" />

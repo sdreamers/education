@@ -1,6 +1,5 @@
 package com.sixing.education.user.controller;
 
-import com.qiniu.util.Md5;
 import com.sixing.base.constant.Constant;
 import com.sixing.base.constant.UserNatureConstant;
 import com.sixing.base.domain.base.PageRecords;
@@ -12,13 +11,11 @@ import com.sixing.base.domain.user.UserVO;
 import com.sixing.base.security.utils.TokenManager;
 import com.sixing.base.utils.StringUtils;
 import com.sixing.base.utils.exception.ServiceException;
-import com.sixing.education.device.controller.DeviceController;
 import com.sixing.education.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**

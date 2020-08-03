@@ -83,10 +83,10 @@
     const columns = [
         { key: 'schoolName', title: '学校名称' },
         { key: 'name', title: '设备名称' },
+        { key: 'technicalParamter', title: '技术参数' },
         { key: 'num', title: '数量' },
         { key: 'unit', title: '单位' },
-        { key: 'excludingTaxPrice', title: '不含税单价(元)' },
-        { key: 'tax', title: '税金(元)' },
+        { key: 'includingTaxPrice', title: '含税单价(元)' },
         { key: 'totalAmount', title: '含税总价(元)' }
     ];
 

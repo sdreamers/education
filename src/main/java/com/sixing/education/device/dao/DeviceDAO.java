@@ -89,4 +89,12 @@ public interface DeviceDAO {
     * @return 设备对象列表
     */
     List<DevicePO> selectsPaging(@Param("whereParams") DeviceQuery whereParams, @Param("pageParams") PageVO pageParams, @Param("selectFields") String[] selectFields);
+
+    /**
+     * 更新设置的节点完成时间
+     *
+     * @param type 完成类型
+     * @param status 是否完成
+     * */
+    void updateCompleteTime(@Param("type") Integer type, @Param("status") Integer status, @Param("id") Long id);
 }

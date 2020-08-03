@@ -22,30 +22,174 @@
     <script src="./echarts.min.js"></script>
 </head>
 <body>
-        <div id="main" style="width: 90%; height:400px;"></div>
+<select>
+    <option value ="volvo">Volvo</option>
+    <option value ="saab">Saab</option>
+    <option value="opel">Opel</option>
+    <option value="audi">Audi</option>
+</select>
+        <div id="main" style="width: 100%; height:1200px;"></div>
 
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
 
         // 指定图表的配置项和数据
-        var option = {
-            title: {
-                text: 'ECharts 入门示例'
+        var posList = [
+            'left', 'right', 'top', 'bottom',
+            'inside',
+            'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+            'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+        ];
+
+        var app = {};
+
+        app.configParameters = {
+            rotate: {
+                min: -90,
+                max: 90
             },
-            tooltip: {},
+            align: {
+                options: {
+                    left: 'left',
+                    center: 'center',
+                    right: 'right'
+                }
+            },
+            verticalAlign: {
+                options: {
+                    top: 'top',
+                    middle: 'middle',
+                    bottom: 'bottom'
+                }
+            },
+            position: {
+                options: echarts.util.reduce(posList, function (map, pos) {
+                    map[pos] = pos;
+                    return map;
+                }, {})
+            },
+            distance: {
+                min: 0,
+                max: 100,
+                splitNumber: 20
+            }
+        };
+
+        app.config = {
+            rotate: 90,
+            align: 'left',
+            verticalAlign: 'middle',
+            position: 'insideBottom',
+            distance: 15,
+            onChange: function () {
+                var labelOption = {
+                    normal: {
+                        rotate: app.config.rotate,
+                        align: app.config.align,
+                        verticalAlign: app.config.verticalAlign,
+                        position: app.config.position,
+                        distance: app.config.distance
+                    }
+                };
+                myChart.setOption({
+                    series: [{
+                        label: labelOption
+                    }, {
+                        label: labelOption
+                    }, {
+                        label: labelOption
+                    }, {
+                        label: labelOption
+                    }]
+                });
+            }
+        };
+
+
+        var labelOption = {
+            show: true,
+            position: app.config.position,
+            distance: app.config.distance,
+            align: app.config.align,
+            verticalAlign: app.config.verticalAlign,
+            rotate: app.config.rotate,
+            formatter: '{c}%',
+            fontSize: 20,
+            rich: {
+                name: {
+                    textBorderColor: '#fff'
+                }
+            }
+        };
+
+        option = {
+            color: ['#006699', '#ce2828'],
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
             legend: {
-                data:['销量']
+                data: ['Forest', 'Steppe'],
+                textStyle: {
+                    fontSize: 24
+                },
             },
-            xAxis: {
-                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    mark: {show: true}
+                }
             },
-            yAxis: {},
-            series: [{
-                name: '销量',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
-            }]
+            grid: {
+                bottom:'20%'
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    axisTick: {show: false},
+                    data: ['成都市更新供应商', '成都市更新供应商1', '成都市更新供应商2', '成都市更新供应商3', '成都市更新供应商4'],
+                    axisLabel: {
+                        fontSize: 24,
+                        interval: 0,
+                        rotate: 70
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    min: 0,
+                    max: 100,
+                    splitNumber: 10,
+                    axisLabel: {
+                        fontSize: 24,
+                        formatter: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: 'Forest',
+                    type: 'bar',
+                    barGap: 0,
+                    label: labelOption,
+                    data: [55, 25, 33, 78, 12]
+                },
+                {
+                    name: 'Steppe',
+                    type: 'bar',
+                    label: labelOption,
+                    data: [65, 76, 13, 45, 43]
+                }
+            ]
         };
 
         // 使用刚指定的配置项和数据显示图表。

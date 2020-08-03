@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
 * 设备的持久对象
@@ -38,5 +39,8 @@ public class DevicePO implements Serializable {
 	private Integer produce;
 	private Integer arrival;
 	private Integer install;
+	private Date produceTime;
+	private Date arrivalTime;
+	private Date installTime;
 	private String currentYear;
 }
