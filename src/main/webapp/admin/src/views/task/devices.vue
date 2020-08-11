@@ -29,26 +29,20 @@
                     </el-table-column>
                     <el-table-column prop="produce" label="生产/采购" align="center">
                         <template slot-scope="scope">
-                            <el-select v-model="scope.row.produce" @change="handleStatusChange(scope.row, 1)">
-                                <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
-                                </el-option>
-                            </el-select>
+                            <el-input v-model="scope.row.produceNum" @change="handleStatusChange(scope.row, 1)" placeholder="生产/采购">
+                            </el-input>
                         </template>
                     </el-table-column>
                     <el-table-column prop="produce" label="到货" align="center">
                         <template slot-scope="scope">
-                            <el-select v-model="scope.row.arrival" @change="handleStatusChange(scope.row, 2)">
-                                <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
-                                </el-option>
-                            </el-select>
+                            <el-input v-model="scope.row.arrivalNum" @change="handleStatusChange(scope.row, 2)" placeholder="到货">
+                            </el-input>
                         </template>
                     </el-table-column>
                     <el-table-column prop="produce" label="安装" align="center">
                         <template slot-scope="scope">
-                            <el-select v-model="scope.row.install" @change="handleStatusChange(scope.row, 3)">
-                                <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
-                                </el-option>
-                            </el-select>
+                            <el-input v-model="scope.row.installNum" @change="handleStatusChange(scope.row, 3)" placeholder="安装">
+                            </el-input>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -83,7 +77,7 @@
     const columns = [
         { key: 'schoolName', title: '学校名称' },
         { key: 'name', title: '设备名称' },
-        { key: 'technicalParamter', title: '技术参数' },
+        /*{ key: 'technicalParamter', title: '技术参数' },*/
         { key: 'num', title: '数量' },
         { key: 'unit', title: '单位' },
         { key: 'includingTaxPrice', title: '含税单价(元)' },
@@ -128,7 +122,6 @@
 
             handlePagers() {
                 if (!this.packetId) {
-                    this.$notify.error('异常1');
                     return;
                 }
                 const param = {
@@ -148,17 +141,32 @@
             handleStatusChange(row, type) {
                 const param = { id: row.id, type: type };
                 if (type === 1) {
-                    param.status = row.produce;
+                    param.completeNum = row.produceNum;
                 } else if (type === 2) {
-                    param.status = row.arrival;
+                    param.completeNum = row.arrivalNum;
                 } else if (type === 3) {
-                    param.status = row.install;
+                    param.completeNum = row.installNum;
                 } else {
                     this.$notify.error('参数异常');
                     return;
                 }
 
-                deviceApi.updateStatus(param).then(res => {
+                if (Number.isNaN(Number.parseInt(param.completeNum))) {
+                    this.$notify.error('请输入正整数');
+                    return;
+                }
+
+                if (Number.parseInt(param.completeNum) < 0) {
+                    this.$notify.error('请输入正整数');
+                    return;
+                }
+
+                if (Number.parseInt(param.completeNum) > Number.parseInt(row.num)) {
+                    this.$notify.error('输入的数量不能大于设备总数');
+                    return;
+                }
+
+                deviceApi.updateCompleteNum(param).then(res => {
                     if (res.code === 100) {
                         this.$notify.success(res.message || '成功');
                     } else {

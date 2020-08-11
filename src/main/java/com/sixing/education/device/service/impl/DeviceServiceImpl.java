@@ -427,32 +427,27 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(Long id, Integer type, Integer status) throws ServiceException {
+    public void update(Long id, Integer type, Integer completeNum) throws ServiceException {
         DevicePO device = this.get(id);
-        if (status == DeviceStatusEnum.FINISHED.getCode()) {
-            if (type == 2 && device.getProduce() != DeviceStatusEnum.FINISHED.getCode()) {
-                throw new ServiceException("生产/采购 未完成");
-            } else if (type == 3 && device.getArrival() != DeviceStatusEnum.FINISHED.getCode()) {
-                throw new ServiceException("到货 未完成");
-            }
-        } else {
-            if (type == 2 && device.getInstall() != DeviceStatusEnum.UNFINISHED.getCode()) {
-                throw new ServiceException("安装 已完成");
-            } else if (type == 1 && device.getArrival() != DeviceStatusEnum.UNFINISHED.getCode()) {
-                throw new ServiceException("到货 已完成");
-            }
-        }
         DevicePO setParams = new DevicePO();
         switch (type) {
-            case 1: setParams.setProduce(status); break;
-            case 2: setParams.setArrival(status); break;
-            case 3: setParams.setInstall(status); break;
+            case 1: setParams.setProduceNum(completeNum); break;
+            case 2: setParams.setArrivalNum(completeNum); break;
+            case 3: setParams.setInstallNum(completeNum); break;
             default: throw new ServiceException("参数异常");
         }
         this.update(setParams, id);
 
-        // 更新时间
-        deviceDAO.updateCompleteTime(type, status, id);
+        if (device.getNum().equals(completeNum)) {
+            DevicePO setCompleteTime = new DevicePO();
+            switch (type) {
+                case 1: setCompleteTime.setProduceTime(new Date()); break;
+                case 2: setCompleteTime.setArrivalTime(new Date()); break;
+                case 3: setCompleteTime.setInstallTime(new Date()); break;
+                default: throw new ServiceException("参数异常");
+            }
+            this.update(setCompleteTime, id);
+        }
     }
 
     @Override
@@ -461,13 +456,7 @@ public class DeviceServiceImpl implements DeviceService {
         whereParams.setPacketId(packetId);
         List<DevicePO> list = this.list(whereParams);
 
-        List<ExportDeviceVO> devices = BeanUtils.copyProperties(list, ExportDeviceVO.class);
-        if (CollectionUtils.isNotEmpty(devices)) {
-            devices.forEach(item -> item.setProduceStr(DeviceStatusEnum.findName(item.getProduce())));
-            devices.forEach(item -> item.setArriveStr(DeviceStatusEnum.findName(item.getArrival())));
-            devices.forEach(item -> item.setInstallStr(DeviceStatusEnum.findName(item.getInstall())));
-        }
-        return devices;
+        return BeanUtils.copyProperties(list, ExportDeviceVO.class);
     }
 
     private void saveDevice(List<ImportDeviceVO> devices, PacketPO packet, List<SchoolPO> schools, Integer currentYear) throws ServiceException {
@@ -563,6 +552,10 @@ public class DeviceServiceImpl implements DeviceService {
             insertParams.setCurrentYear(currentYear.toString());
             packetService.insert(insertParams);
             return insertParams;
+        } else {
+            if (!supplierName.equals(packet.getSupplierName())) {
+                throw new ServiceException("包已存在, 对应的供应商为" + packet.getSupplierName());
+            }
         }
         return packet;
     }

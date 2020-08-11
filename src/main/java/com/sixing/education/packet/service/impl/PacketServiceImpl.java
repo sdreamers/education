@@ -398,10 +398,10 @@ public class PacketServiceImpl implements PacketService {
             if (CollectionUtils.isNotEmpty(devices)) {
                 int totalNum = devices.size();
                 BigDecimal totalAmount = devices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-                List<DevicePO> unStartDevices = devices.stream().filter(item -> item.getProduce() == 0 && item.getArrival() == 0 && item.getInstall() == 0).collect(Collectors.toList());
-                List<DevicePO> produceDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 0 && item.getInstall() == 0).collect(Collectors.toList());
-                List<DevicePO> arrivalDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 1 && item.getInstall() == 0).collect(Collectors.toList());
-                List<DevicePO> installDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 1 && item.getInstall() == 1).collect(Collectors.toList());
+                List<DevicePO> unStartDevices = devices.stream().filter(item -> item.getNum() - item.getProduceNum() > 0).collect(Collectors.toList());
+                List<DevicePO> produceDevices = devices.stream().filter(item -> item.getNum() - item.getProduceNum() <= 0).collect(Collectors.toList());
+                List<DevicePO> arrivalDevices = devices.stream().filter(item -> item.getNum() - item.getArrivalNum() <= 0).collect(Collectors.toList());
+                List<DevicePO> installDevices = devices.stream().filter(item -> item.getNum() - item.getInstallNum() <= 0).collect(Collectors.toList());
                 if (CollectionUtils.isNotEmpty(unStartDevices)) {
                     int completeNum = unStartDevices.size();
                     BigDecimal completeAmount = unStartDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -455,7 +455,7 @@ public class PacketServiceImpl implements PacketService {
             if (CollectionUtils.isNotEmpty(devices)) {
                 int totalNum = devices.size();
                 BigDecimal totalAmount = devices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-                List<DevicePO> installDevices = devices.stream().filter(item -> item.getProduce() == 1 && item.getArrival() == 1 && item.getInstall() == 1).collect(Collectors.toList());
+                List<DevicePO> installDevices = devices.stream().filter(item -> item.getNum() - item.getInstallNum() <= 0).collect(Collectors.toList());
                 if (CollectionUtils.isNotEmpty(installDevices)) {
                     int completeNum = installDevices.size();
                     BigDecimal completeAmount = installDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);

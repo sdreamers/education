@@ -8,9 +8,9 @@ export default {
             params: data
         });
     },
-    updateStatus(data) {
+    updateCompleteNum(data) {
         return fetch({
-            url: '/device/status',
+            url: '/device/completeNum',
             method: 'put',
             data: data,
             formData: true

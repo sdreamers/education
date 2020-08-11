@@ -22,6 +22,7 @@ public class DeviceQuery extends BaseVO implements Serializable {
 	}
 
 	private Long id;
+	private String no;
 	private Long packetId;
 	private String packetName;
 	private Long schoolId;
@@ -38,8 +39,8 @@ public class DeviceQuery extends BaseVO implements Serializable {
 	private Integer inProgressStatusGt;
 	private BigDecimal includingTaxPrice;
 	private BigDecimal totalAmount;
-	private Integer produce;
-	private Integer arrival;
-	private Integer install;
+	private Integer produceNum;
+	private Integer arrivalNum;
+	private Integer installNum;
 	private String currentYear;
 }

@@ -54,10 +54,10 @@ public class DeviceController {
         }
     }
 
-    @PutMapping("/status")
-    public ResultModel<Void> updateStatus(Integer status, Integer type, Long id) {
+    @PutMapping("/completeNum")
+    public ResultModel<Void> updateCompleteNum(Integer completeNum, Integer type, Long id) {
         try {
-            deviceService.update(id, type, status);
+            deviceService.update(id, type, completeNum);
             return ResultModel.ok();
         } catch (Exception e) {
             logger.error(e.getMessage());

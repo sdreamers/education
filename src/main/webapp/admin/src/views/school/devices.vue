@@ -65,9 +65,9 @@
         { key: 'excludingTaxPrice', title: '不含税单价(元)' },
         { key: 'tax', title: '税金(元)' },
         { key: 'totalAmount', title: '含税总价(元)' },
-        { key: 'produce', title: '生产/采购' },
-        { key: 'arrival', title: '到货' },
-        { key: 'install', title: '安装' }
+        { key: 'produceNum', title: '生产/采购' },
+        { key: 'arrivalNum', title: '到货' },
+        { key: 'installNum', title: '安装' }
     ];
 
     export default {
@@ -122,13 +122,6 @@
                 }
                 deviceApi.pages(param).then(res => {
                     this.tableData = res.records;
-                    if (this.tableData && this.tableData.length > 0) {
-                        this.tableData.forEach(item => {
-                            item.produce = statusMap[item.produce];
-                            item.arrival = statusMap[item.arrival];
-                            item.install = statusMap[item.install];
-                        });
-                    }
                     this.totalSize = res.total;
                 })
             }

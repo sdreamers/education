@@ -183,7 +183,6 @@ public interface DeviceService {
      * @param devices     解析生成的设备
      * @param packet      包
      * @param currentYear excel对应的年份
-     * @param type        类型
      * @throws ServiceException
      */
     void importDevice(List<ImportDeviceVO> devices, String packet, Integer currentYear, String supplierName) throws ServiceException;

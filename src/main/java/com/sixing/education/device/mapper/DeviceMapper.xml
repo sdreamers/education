@@ -16,9 +16,10 @@
         <result column="num" property="num" jdbcType="INTEGER" />
         <result column="excluding_tax_price" property="excludingTaxPrice" jdbcType="DECIMAL" />
         <result column="tax" property="tax" jdbcType="DECIMAL" />
-        <result column="produce" property="produce" />
-        <result column="arrival" property="arrival" />
-        <result column="install" property="install" />
+        <result column="produce_num" property="produceNum" />
+        <result column="arrival_num" property="arrivalNum" />
+        <result column="install_num" property="installNum" />
+        <result column="no" property="no" />
     </resultMap>
 
     <sql id="selectAll">
@@ -48,9 +49,13 @@
             <if test="setParams.num != null">`num`=#{setParams.num},</if>
             <if test="setParams.excludingTaxPrice != null">`excluding_tax_price`=#{setParams.excludingTaxPrice},</if>
             <if test="setParams.tax != null">`tax`=#{setParams.tax},</if>
-            <if test="setParams.produce != null">`produce`=#{setParams.produce},</if>
-            <if test="setParams.arrival != null">`arrival`=#{setParams.arrival},</if>
-            <if test="setParams.install != null">`install`=#{setParams.install},</if>
+            <if test="setParams.produceNum != null">`produce_num`=#{setParams.produceNum},</if>
+            <if test="setParams.arrivalNum != null">`arrival_num`=#{setParams.arrivalNum},</if>
+            <if test="setParams.installNum != null">`install_num`=#{setParams.installNum},</if>
+            <if test="setParams.produceTime != null">`produce_time`=#{setParams.produceTime},</if>
+            <if test="setParams.arrivalTime != null">`arrival_time`=#{setParams.arrivalTime},</if>
+            <if test="setParams.installTime != null">`install_time`=#{setParams.installTime},</if>
+            <if test="setParams.no != null">`no`=#{setParams.no},</if>
         </set>
     </sql>
 
@@ -72,9 +77,10 @@
             <if test="whereParams.nameLike != null and whereParams.nameLike != ''">
                 AND `name` like concat("%", #{whereParams.nameLike}, "%")
             </if>
-            <if test="whereParams.produce != null">AND `produce`=#{whereParams.produce}</if>
-            <if test="whereParams.arrival != null">AND `arrival`=#{whereParams.arrival}</if>
-            <if test="whereParams.install != null">AND `install`=#{whereParams.install}</if>
+            <if test="whereParams.produceNum != null">AND `produce_num`=#{whereParams.produceNum}</if>
+            <if test="whereParams.arrivalNum != null">AND `arrival_num`=#{whereParams.arrivalNum}</if>
+            <if test="whereParams.installNum != null">AND `install_num`=#{whereParams.installNum}</if>
+            <if test="whereParams.no != null">AND `no`=#{whereParams.no}</if>
         </where>
     </sql>
     <sql id="sortAll">
@@ -106,10 +112,11 @@
             <if test="insertParams.tax != null"> `tax`,</if>
             <if test="insertParams.includingTaxPrice != null">`including_tax_price`,</if>
             <if test="insertParams.totalAmount != null">`total_amount`,</if>
-            <if test="insertParams.produce != null">`produce`,</if>
-            <if test="insertParams.arrival != null">`arrival`,</if>
-            <if test="insertParams.install != null">`install`,</if>
+            <if test="insertParams.produceNum != null">`produce_num`,</if>
+            <if test="insertParams.arrivalNum != null">`arrival_num`,</if>
+            <if test="insertParams.installNum != null">`install_num`,</if>
             <if test="insertParams.currentYear != null"> `current_year`,</if>
+            <if test="insertParams.no != null"> `no`,</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="insertParams.id != null">#{insertParams.id},</if>
@@ -127,10 +134,11 @@
             <if test="insertParams.tax != null">#{insertParams.tax},</if>
             <if test="insertParams.includingTaxPrice != null">#{insertParams.includingTaxPrice},</if>
             <if test="insertParams.totalAmount != null">#{insertParams.totalAmount},</if>
-            <if test="insertParams.produce != null">#{insertParams.produce},</if>
-            <if test="insertParams.arrival != null">#{insertParams.arrival},</if>
-            <if test="insertParams.install != null">#{insertParams.install},</if>
+            <if test="insertParams.produceNum != null">#{insertParams.produceNum},</if>
+            <if test="insertParams.arrivalNum != null">#{insertParams.arrivalNum},</if>
+            <if test="insertParams.installNum != null">#{insertParams.installNum},</if>
             <if test="insertParams.currentYear != null">#{insertParams.currentYear},</if>
+            <if test="insertParams.no != null">#{insertParams.no},</if>
         </trim>
     </insert>
 
