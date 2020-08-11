@@ -120,6 +120,17 @@ export const appRouter = [
                 component: resolve => {
                     require.ensure([], () => resolve(require('@/views/packet/devices.vue')), 'packetDevices');
                 }
+            },
+            {
+                path: 'school',
+                title: '学校进度',
+                name: '/packet/school',
+                meta: {
+                    title: '设备明细'
+                },
+                component: resolve => {
+                    require.ensure([], () => resolve(require('@/views/packet/school.vue')), 'packetSchool');
+                }
             }
         ]
     },
@@ -153,6 +164,17 @@ export const appRouter = [
                 },
                 component: resolve => {
                     require.ensure([], () => resolve(require('@/views/school/devices.vue')), 'schoolDevices');
+                }
+            },
+            {
+                path: 'packet',
+                title: '包进度',
+                name: '/school/packet',
+                meta: {
+                    title: '供货明细'
+                },
+                component: resolve => {
+                    require.ensure([], () => resolve(require('@/views/school/packet.vue')), 'schoolPacket');
                 }
             }
         ]

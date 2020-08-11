@@ -42,6 +42,12 @@
             <if test="whereParams.nameLike != null and whereParams.nameLike != ''">
                 AND `name` like concat("%", #{whereParams.nameLike}, "%")
             </if>
+            <if test="whereParams.schoolIds != null and whereParams.schoolIds.length > 0">
+                AND id in
+                <foreach collection="whereParams.schoolIds" open="(" close=")" item="item" separator=",">
+                    #{item}
+                </foreach>
+            </if>
         </where>
     </sql>
     <sql id="sortAll">

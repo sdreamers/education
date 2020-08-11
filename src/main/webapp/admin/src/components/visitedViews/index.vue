@@ -129,9 +129,9 @@ export default {
             const maxLeft = offsetWidth - menuMinWidth // left boundary
             const left = e.clientX - offsetLeft + 15 // 15: margin right
             if (left > maxLeft) {
-                this.left = maxLeft
+                this.left = maxLeft + 170;
             } else {
-                this.left = left
+                this.left = left + 170;
             }
             this.top = e.clientY
             this.visible = true

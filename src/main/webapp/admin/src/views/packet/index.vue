@@ -17,32 +17,16 @@
                     </el-input>
                 </el-col>
 
-                <!--<el-col :span="6">
-                    <el-date-picker
-                        v-model="search.dateArr"
-                        @change="handlePagers"
-                        type="daterange"
-                        align="right"
-                        unlink-panels
-                        :picker-options="pickerOptions"
-                        value-format="yyyy-MM-dd"
-                        range-separator="至"
-                        start-placeholder="项目完成开始日期"
-                        end-placeholder="项目完成结束日期">
-                    </el-date-picker>
-                </el-col>-->
                 <el-col :span="4">
                     <el-button type="primary" @click="handleSearch">搜索</el-button>
                     <el-button @click="handleClear">清除</el-button>
                 </el-col>
 
-                <!-- <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleExport">导入</el-button>
-                <el-button style="float: right;margin-right: 30px;" type="primary" @click="handleExport">导出</el-button> -->
             </el-row>
             <el-row class="list-con clearfix">
                 <el-table :data="tableData" border v-loading="loading">
                     <el-table-column v-for="(column,key) in columns" :label="column.title" :key="key" align="center">
-                        <el-table-column v-for="(subColumn,subKey) in column.columns" :prop="subColumn.key" width="120%"
+                        <el-table-column v-for="(subColumn,subKey) in column.columns" :prop="subColumn.key" width="80%"
                                          :label="subColumn.title" align="center" :key="subKey">
                             <template slot-scope="scope">
                                 <span>{{scope.row[subColumn.key]}}</span>
@@ -54,6 +38,11 @@
                     </el-table-column>
                     <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
+                            <el-button
+                                type="text"
+                                @click.stop="handleViewSchool(scope.row)">查看学校进度
+                            </el-button>
+
                             <el-button
                                 type="text"
                                 @click.stop="handleEditMerchant(scope.row)">查看任务明细
@@ -102,10 +91,10 @@
     const columns = [
         { key: 'name', title: '包名' },
         { key: 'supplierName', title: '供应商' },
-        { key: 'unStart', title: '未开始', columns: [{ key: 'unStartDeviceNumProgress', title: '数量进度' }, { key: 'unStartDeviceAmountProgress', title: '金额进度' }] },
-        { key: 'produce', title: '生产/采购', columns: [{ key: 'produceDeviceNumProgress', title: '数量进度' }, { key: 'produceDeviceAmountProgress', title: '金额进度' }] },
-        { key: 'arrival', title: '到货', columns: [{ key: 'arrivalDeviceNumProgress', title: '数量进度' }, { key: 'arrivalDeviceAmountProgress', title: '金额进度' }] },
-        { key: 'install', title: '安装', columns: [{ key: 'installDeviceNumProgress', title: '数量进度' }, { key: 'installDeviceAmountProgress', title: '金额进度' }] }];
+        { key: 'unStart', title: '生产/采购(未完成)', columns: [{ key: 'unStartDeviceNumProgress', title: '数量进度' }, { key: 'unStartDeviceAmountProgress', title: '金额进度' }] },
+        { key: 'produce', title: '生产/采购(完成)', columns: [{ key: 'produceDeviceNumProgress', title: '数量进度' }, { key: 'produceDeviceAmountProgress', title: '金额进度' }] },
+        { key: 'arrival', title: '到货(完成)', columns: [{ key: 'arrivalDeviceNumProgress', title: '数量进度' }, { key: 'arrivalDeviceAmountProgress', title: '金额进度' }] },
+        { key: 'install', title: '整体进度', columns: [{ key: 'installDeviceNumProgress', title: '数量进度' }, { key: 'installDeviceAmountProgress', title: '金额进度' }] }];
 
     const deviceStatuses = [{ label: '生产/采购', value: 1 }, { label: '到货', value: 2 }, { label: '安装', value: 3 }]
 
@@ -184,6 +173,10 @@
                     }
                     this.totalSize = res.total;
                 });
+            },
+
+            handleViewSchool(row) {
+                this.$router.push({ name: '/packet/school', params: { packetId: row.id, packetName: row.name, type: row.type, title: `${row.name}-学校进度` } });
             },
 
             handleEditMerchant(row) {

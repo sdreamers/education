@@ -117,6 +117,9 @@
                     limit: this.pageSize,
                     schoolId: this.schoolId
                 };
+                if (this.packetId) {
+                    param.packetId = this.packetId;
+                }
                 if (this.search.nameLike) {
                     param.nameLike = this.search.nameLike;
                 }
@@ -138,6 +141,7 @@
             }
             if (this.$route.params.schoolId) {
                 this.schoolId = this.$route.params.schoolId;
+                this.packetId = this.$route.params.packetId;
                 this.currentPage = 1;
                 this.totalSize = 0;
                 this.tableData = [];

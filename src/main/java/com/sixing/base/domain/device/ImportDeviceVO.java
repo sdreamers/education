@@ -1,5 +1,6 @@
 package com.sixing.base.domain.device;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
 
@@ -15,6 +16,9 @@ public class ImportDeviceVO {
 
     @ExcelProperty("设备名称")
     private String name;
+
+    @ExcelProperty("设备编号")
+    private String no;
 
     @ExcelProperty("技术参数")
     private String technicalParamter;

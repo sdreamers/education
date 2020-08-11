@@ -63,7 +63,7 @@
         { key: 'tax', title: '税金(元)' },
         { key: 'produceNum', title: '生产/采购' },
         { key: 'arrivalNum', title: '到货' },
-        { key: 'installNum', title: '安装' }
+        { key: 'installNum', title: '整体进度' }
     ];
 
     export default {
@@ -114,8 +114,10 @@
                     packetId: this.packetId
                 };
                 if (this.search.nameLike) {
-                    //
                     param.nameLike = this.search.nameLike;
+                }
+                if (this.schoolId) {
+                    param.schoolId = this.schoolId;
                 }
                 deviceApi.pages(param).then(res => {
                     this.tableData = res.records;

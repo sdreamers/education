@@ -15,12 +15,15 @@ import com.sixing.base.domain.device.DevicePO;
 import com.sixing.base.domain.device.DeviceQuery;
 import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.domain.packet.PacketVO;
+import com.sixing.base.domain.packetschool.PacketSchoolPO;
+import com.sixing.base.domain.packetschool.PacketSchoolQuery;
 import com.sixing.base.domain.school.SchoolPO;
 import com.sixing.base.domain.school.SchoolQuery;
 import com.sixing.base.domain.school.SchoolVO;
 import com.sixing.base.utils.BeanUtils;
 import com.sixing.base.utils.CollectionUtils;
 import com.sixing.base.utils.exception.ServiceException;
+import com.sixing.education.packetschool.service.PacketSchoolService;
 import com.sixing.education.school.dao.SchoolDAO;
 import com.sixing.education.school.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +43,9 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Autowired
     private com.dongpinyun.productmodule.shop.service.DeviceService deviceService;
+
+    @Autowired
+    private PacketSchoolService packetSchoolService;
 
     /**
     * 新增学校
@@ -380,6 +386,15 @@ public class SchoolServiceImpl implements SchoolService {
     public PageRecords<SchoolVO> progressPages(SchoolQuery param, PageVO pageParam) throws ServiceException {
         PageRecords<SchoolVO> result = new PageRecords<>();
 
+        if (param.getPacketId() != null) {
+            PacketSchoolQuery whereParams = new PacketSchoolQuery();
+            whereParams.setPacketId(param.getPacketId());
+            List<PacketSchoolPO> packetSchools = packetSchoolService.list(whereParams);
+            if (CollectionUtils.isEmpty(packetSchools)) {
+                return result;
+            }
+            param.setSchoolIds(packetSchools.stream().map(PacketSchoolPO::getPacketId).toArray(Long[]::new));
+        }
         PageRecords<SchoolPO> pageRecords = this.pages(param, pageParam);
         if (pageRecords.getTotal() < 1) {
             return result;

@@ -1,22 +1,10 @@
 <template>
     <section class="view-content">
         <el-card shadow="none">
-            <el-row class="mb20" :gutter="20">
-                <el-col :span="3">
-                    <el-input v-model="search.nameLike" placeholder="学校名称">
-                    </el-input>
-                </el-col>
-
-                <el-col :span="4">
-                    <el-button type="primary" @click="handleSearch">搜索</el-button>
-                    <el-button @click="handleClear">清除</el-button>
-                </el-col>
-
-            </el-row>
             <el-row class="list-con clearfix">
                 <el-table :data="tableData" border v-loading="loading">
                     <el-table-column v-for="(column,key) in columns" :label="column.title" :key="key" align="center">
-                        <el-table-column v-for="(subColumn,subKey) in column.columns" :prop="subColumn.key" width="100%"
+                        <el-table-column v-for="(subColumn,subKey) in column.columns" :prop="subColumn.key" width="120%"
                                          :label="subColumn.title" align="center" :key="subKey">
                             <template slot-scope="scope">
                                 <span>{{scope.row[subColumn.key]}}</span>
@@ -30,12 +18,7 @@
                         <template slot-scope="scope">
                             <el-button
                                 type="text"
-                                @click.stop="handleViewPacket(scope.row)">查看包进度
-                            </el-button>
-
-                            <el-button
-                                type="text"
-                                @click.stop="handleViewDevice(scope.row)">查看任务明细
+                                @click.stop="handleEditMerchant(scope.row)">查看任务明细
                             </el-button>
                         </template>
                     </el-table-column>
@@ -59,17 +42,8 @@
     </section>
 </template>
 <script>
-    import schoolApi from '@/api/school';
-
-    const merchantEditForm = {
-        packetId: ''
-    };
-
-    const supplierForm = {
-        projectId: '',
-        oldSupplier: '',
-        newSupplier: ''
-    };
+    import supplierApi from '@/api/supplier'
+    import packetApi from '@/api/packet';
 
     const search = {
         supplierId: '',
@@ -78,7 +52,8 @@
     };
 
     const columns = [
-        { key: 'name', title: '学校名称' },
+        { key: 'name', title: '包名' },
+        { key: 'supplierName', title: '供应商' },
         { key: 'unStart', title: '生产/采购(未完成)', columns: [{ key: 'unStartDeviceNumProgress', title: '数量进度' }, { key: 'unStartDeviceAmountProgress', title: '金额进度' }] },
         { key: 'produce', title: '生产/采购(完成)', columns: [{ key: 'produceDeviceNumProgress', title: '数量进度' }, { key: 'produceDeviceAmountProgress', title: '金额进度' }] },
         { key: 'arrival', title: '到货(完成)', columns: [{ key: 'arrivalDeviceNumProgress', title: '数量进度' }, { key: 'arrivalDeviceAmountProgress', title: '金额进度' }] },
@@ -88,7 +63,6 @@
 
 
     export default {
-
         data() {
             return {
                 tableData: [],
@@ -100,17 +74,12 @@
                 quotaYearArr: [],
                 search: JSON.parse(JSON.stringify(search)),
 
+                suppliers: [],
                 deviceStatuses: deviceStatuses,
                 inProgressStatuses: [],
 
-                /* 添加商户 */
-                merchantEditDialogVisible: false,
-                merchantEditType: '',
-                merchantEditForm: JSON.parse(JSON.stringify(merchantEditForm)),
-
-                /* 指派供应商 */
-                supplierDialogVisible: false,
-                supplierForm: JSON.parse(JSON.stringify(supplierForm))
+                schoolId: '',
+                schoolName: ''
             }
         },
 
@@ -139,13 +108,10 @@
                     page: this.currentPage,
                     limit: this.pageSize
                 };
-                if (this.search.supplierId) {
-                    param.supplierId = this.search.supplierId;
+                if (this.schoolId) {
+                    param.schoolId = this.schoolId;
                 }
-                if (this.search.nameLike) {
-                    param.nameLike = this.search.nameLike;
-                }
-                schoolApi.progressPages(param).then(res => {
+                packetApi.progressPages(param).then(res => {
                     this.tableData = res.records;
                     if (this.tableData && this.tableData.length > 0) {
                         for (const data of this.tableData) {
@@ -163,33 +129,41 @@
                 });
             },
 
-            handleViewPacket(row) {
-                this.$router.push({ name: '/school/packet', params: { schoolId: row.id, schoolName: row.name, type: row.type, title: `${row.name}-包进度` } });
-            },
-
-            handleViewDevice(row) {
-                this.$router.push({ name: '/school/devices', params: { schoolId: row.id, type: row.type, title: `${row.name}-供货明细` } });
-            },
-
-            merchantEditClose() {
-                this.merchantEditDialogVisible = false;
-                this.merchantEditForm = JSON.parse(JSON.stringify(merchantEditForm));
-                this.handlePagers();
-            },
-
-            supplierDialogClose() {
-                this.supplierDialogVisible = false;
-                this.supplierForm = JSON.parse(JSON.stringify(supplierForm));
+            handleEditMerchant(row) {
+                this.$router.push({ name: '/school/devices', params: { packetId: row.id, schoolId: this.schoolId, type: row.type, title: `${this.schoolName}-${row.name}-供货明细` } });
             },
 
             handleExport() {
                 const exportUrl = window.vars.URLApiBase + '/quota/export';
                 return location.href = exportUrl;
+            },
+
+            loadSuppliers() {
+                supplierApi.list().then(res => {
+                    if (res.code === 100 && res.content) {
+                        this.suppliers = res.content;
+                    }
+                    this.suppliers.unshift({ id: '', name: '全部供应商' });
+                })
             }
         },
 
-        created() {
-            this.handlePagers();
+        activated() {
+            if (this.$store.state.tagsView.visitedViews) {
+                for (const view of this.$store.state.tagsView.visitedViews) {
+                    if (view.fullPath === this.$route.name && this.$route.params.title) {
+                        view.title = this.$route.params.title;
+                    }
+                }
+            }
+            if (this.$route.params.schoolId) {
+                this.schoolId = this.$route.params.schoolId;
+                this.schoolName = this.$route.params.schoolName;
+                this.currentPage = 1;
+                this.totalSize = 0;
+                this.tableData = [];
+                this.handlePagers();
+            }
         }
     }
 </script>

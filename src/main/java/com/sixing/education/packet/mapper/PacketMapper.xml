@@ -58,6 +58,12 @@
             <if test="whereParams.currentYear != null and whereParams.currentYear != ''">
                 AND `current_year` = #{whereParams.currentYear}
             </if>
+            <if test="whereParams.packetIds != null and whereParams.packetIds.length > 0">
+                AND id in
+                <foreach collection="whereParams.packetIds" open="(" close=")" item="item" separator=",">
+                    #{item}
+                </foreach>
+            </if>
         </where>
     </sql>
     <sql id="sortAll">

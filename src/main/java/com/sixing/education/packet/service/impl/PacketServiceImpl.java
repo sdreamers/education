@@ -16,6 +16,8 @@ import com.sixing.base.domain.device.DeviceQuery;
 import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.domain.packet.PacketQuery;
 import com.sixing.base.domain.packet.PacketVO;
+import com.sixing.base.domain.packetschool.PacketSchoolPO;
+import com.sixing.base.domain.packetschool.PacketSchoolQuery;
 import com.sixing.base.domain.user.UserPO;
 import com.sixing.base.utils.BeanUtils;
 import com.sixing.base.utils.CollectionUtils;
@@ -23,6 +25,7 @@ import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.packet.dao.PacketDAO;
 import com.sixing.education.packet.service.PacketService;
 import com.dongpinyun.productmodule.shop.service.DeviceService;
+import com.sixing.education.packetschool.service.PacketSchoolService;
 import com.sixing.education.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +48,9 @@ public class PacketServiceImpl implements PacketService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PacketSchoolService packetSchoolService;
 
     /**
      * 新增包
@@ -384,6 +390,16 @@ public class PacketServiceImpl implements PacketService {
     @Override
     public PageRecords<PacketVO> progressPages(PacketQuery param, PageVO pageParam) throws ServiceException {
         PageRecords<PacketVO> result = new PageRecords<>();
+
+        if (param.getSchoolId() != null) {
+            PacketSchoolQuery whereParams = new PacketSchoolQuery();
+            whereParams.setSchoolId(param.getSchoolId());
+            List<PacketSchoolPO> packetSchools = packetSchoolService.list(whereParams);
+            if (CollectionUtils.isEmpty(packetSchools)) {
+                return result;
+            }
+            param.setPacketIds(packetSchools.stream().map(PacketSchoolPO::getPacketId).toArray(Long[]::new));
+        }
 
         PageRecords<PacketPO> pageRecords = this.pages(param, pageParam);
         if (pageRecords.getTotal() < 1) {

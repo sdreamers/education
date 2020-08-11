@@ -30,11 +30,6 @@
                         <template slot-scope="scope">
                             <el-button
                                 type="text"
-                                @click.stop="handleViewPacket(scope.row)">查看包进度
-                            </el-button>
-
-                            <el-button
-                                type="text"
                                 @click.stop="handleViewDevice(scope.row)">查看任务明细
                             </el-button>
                         </template>
@@ -60,16 +55,6 @@
 </template>
 <script>
     import schoolApi from '@/api/school';
-
-    const merchantEditForm = {
-        packetId: ''
-    };
-
-    const supplierForm = {
-        projectId: '',
-        oldSupplier: '',
-        newSupplier: ''
-    };
 
     const search = {
         supplierId: '',
@@ -103,14 +88,8 @@
                 deviceStatuses: deviceStatuses,
                 inProgressStatuses: [],
 
-                /* 添加商户 */
-                merchantEditDialogVisible: false,
-                merchantEditType: '',
-                merchantEditForm: JSON.parse(JSON.stringify(merchantEditForm)),
-
-                /* 指派供应商 */
-                supplierDialogVisible: false,
-                supplierForm: JSON.parse(JSON.stringify(supplierForm))
+                packetId: '',
+                packetName: ''
             }
         },
 
@@ -163,23 +142,8 @@
                 });
             },
 
-            handleViewPacket(row) {
-                this.$router.push({ name: '/school/packet', params: { schoolId: row.id, schoolName: row.name, type: row.type, title: `${row.name}-包进度` } });
-            },
-
             handleViewDevice(row) {
-                this.$router.push({ name: '/school/devices', params: { schoolId: row.id, type: row.type, title: `${row.name}-供货明细` } });
-            },
-
-            merchantEditClose() {
-                this.merchantEditDialogVisible = false;
-                this.merchantEditForm = JSON.parse(JSON.stringify(merchantEditForm));
-                this.handlePagers();
-            },
-
-            supplierDialogClose() {
-                this.supplierDialogVisible = false;
-                this.supplierForm = JSON.parse(JSON.stringify(supplierForm));
+                this.$router.push({ name: '/school/devices', params: { schoolId: row.id, packetId: this.packetId, type: row.type, title: `${this.packetName}-${row.name}-供货明细` } });
             },
 
             handleExport() {
@@ -188,8 +152,22 @@
             }
         },
 
-        created() {
-            this.handlePagers();
+        activated() {
+            if (this.$store.state.tagsView.visitedViews) {
+                for (const view of this.$store.state.tagsView.visitedViews) {
+                    if (view.fullPath === this.$route.name && this.$route.params.title) {
+                        view.title = this.$route.params.title;
+                    }
+                }
+            }
+            if (this.$route.params.packetId) {
+                this.packetId = this.$route.params.packetId;
+                this.packetName = this.$route.params.packetName;
+                this.currentPage = 1;
+                this.totalSize = 0;
+                this.tableData = [];
+                this.handlePagers();
+            }
         }
     }
 </script>
