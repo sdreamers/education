@@ -8,6 +8,7 @@ import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.sixing.base.domain.device.ExportDeviceVO;
 import com.sixing.base.domain.device.ImportDeviceVO;
+import com.sixing.base.domain.school.ExportSchoolProgressVO;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -21,15 +22,11 @@ import java.util.List;
  * */
 public class ExcelUtils {
 
-    public static void export(OutputStream outputStream, List<ExportDeviceVO> devices) {
-        ExcelWriter excelWriter = EasyExcel.write(outputStream).head().build();
+    public static void export(OutputStream outputStream, List<ExportSchoolProgressVO> devices) {
+        ExcelWriter excelWriter = EasyExcel.write(outputStream, ExportSchoolProgressVO.class).build();
         // 这里注意 如果同一个sheet只要创建一次
-        WriteSheet sheet = EasyExcel.writerSheet("设备明细").build();
+        WriteSheet sheet = EasyExcel.writerSheet("学校进度").build();
         excelWriter.write(devices, sheet);
         excelWriter.finish();
-    }
-
-    private static List<List<String>> head() {
-
     }
 }

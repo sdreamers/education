@@ -22,6 +22,7 @@
                     <el-button @click="handleClear">清除</el-button>
                 </el-col>
 
+                <el-button style="float: right;margin-right: 30px;" type="primary" v-if="G.userInfo.insider" @click="handleExportProgress">导出进度</el-button>
             </el-row>
             <el-row class="list-con clearfix">
                 <el-table :data="tableData" border v-loading="loading">
@@ -206,6 +207,17 @@
                     }
                     this.suppliers.unshift({ id: '', name: '全部供应商' });
                 })
+            },
+
+            handleExportProgress() {
+                let exportUrl = window.vars.URLApiBase + '/packet/exportProgress?a=1';
+                if (this.search.nameLike) {
+                    exportUrl += `&nameLike=${this.search.nameLike}`;
+                }
+                if (this.search.supplierId) {
+                    exportUrl += `&supplierId=${this.search.supplierId}`;
+                }
+                return location.href = exportUrl;
             }
         },
 

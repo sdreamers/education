@@ -3,9 +3,12 @@ package com.sixing.education.packet.service;
 import com.sixing.base.domain.base.HartsResult;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
+import com.sixing.base.domain.packet.ExportPacketProgressVO;
 import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.domain.packet.PacketQuery;
 import com.sixing.base.domain.packet.PacketVO;
+import com.sixing.base.domain.school.ExportSchoolProgressVO;
+import com.sixing.base.domain.school.SchoolQuery;
 import com.sixing.base.utils.exception.ServiceException;
 
 import java.util.List;
@@ -198,4 +201,13 @@ public interface PacketService {
      * @throws ServiceException 业务异常
      */
     HartsResult overallProgress(PacketQuery param) throws ServiceException;
+
+    /**
+     * 学校进度导出实体列表
+     *
+     * @param param 查询条件
+     * @return 实体列表
+     * @throws ServiceException 业务异常
+     */
+    List<ExportPacketProgressVO> listExportProgress(PacketQuery param) throws ServiceException;
 }

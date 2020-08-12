@@ -6,6 +6,7 @@ import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.base.ResultModel;
 import com.sixing.base.domain.device.*;
 import com.sixing.base.domain.packet.PacketPO;
+import com.sixing.base.domain.school.SchoolPO;
 import com.sixing.base.utils.CollectionUtils;
 import com.sixing.base.utils.StringUtils;
 import com.sixing.base.utils.exception.ServiceException;
@@ -13,6 +14,7 @@ import com.sixing.education.device.utils.ExcelUtils;
 import com.dongpinyun.productmodule.shop.service.DeviceService;
 import com.sixing.education.packet.controller.PacketController;
 import com.sixing.education.packet.service.PacketService;
+import com.sixing.education.school.service.SchoolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,9 @@ public class DeviceController {
     @Autowired
     private PacketService packetService;
 
+    @Autowired
+    private SchoolService schoolService;
+
     @GetMapping("/pages")
     public PageRecords<DeviceVO> pages(DeviceQuery param, PageVO pageParam) {
         try {
@@ -65,8 +70,8 @@ public class DeviceController {
         }
     }
 
-    @GetMapping("/export")
-    public void export(@RequestParam Long packetId, HttpServletResponse response) throws Exception {
+    @GetMapping("/exportPacketDevice")
+    public void exportPacketDevice(@RequestParam Long packetId, HttpServletResponse response) throws Exception {
         if (packetId == null) {
             return;
         }
@@ -74,9 +79,33 @@ public class DeviceController {
         if (packet == null) {
             return;
         }
-        List<ExportDeviceVO> devices = deviceService.listExportDevices(packetId);
+        final DeviceQuery whereParams = new DeviceQuery();
+        whereParams.setPacketId(packetId);
+        List<ExportDeviceVO> devices = deviceService.listExportDevices(whereParams);
         if (CollectionUtils.isNotEmpty(devices)) {
             String filename = new String((packet.getName() + "_" + packet.getSupplierName() + ".xls").getBytes(), StandardCharsets.ISO_8859_1);
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment;filename=" + filename);
+            ServletOutputStream out = response.getOutputStream();
+            ExcelUtils.export(out, devices);
+            out.close();
+        }
+    }
+
+    @GetMapping("/exportSchoolDevice")
+    public void exportSchoolDevice(@RequestParam Long schoolId, HttpServletResponse response) throws Exception {
+        if (schoolId == null) {
+            return;
+        }
+        SchoolPO school = schoolService.get(schoolId);
+        if (school == null) {
+            return;
+        }
+        final DeviceQuery whereParams = new DeviceQuery();
+        whereParams.setSchoolId(schoolId);
+        List<ExportDeviceVO> devices = deviceService.listExportDevices(whereParams);
+        if (CollectionUtils.isNotEmpty(devices)) {
+            String filename = new String((school.getName() + "-设备明细.xls").getBytes(), StandardCharsets.ISO_8859_1);
             response.setContentType("application/octet-stream");
             response.setHeader("Content-Disposition", "attachment;filename=" + filename);
             ServletOutputStream out = response.getOutputStream();

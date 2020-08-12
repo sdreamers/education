@@ -451,10 +451,8 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public List<ExportDeviceVO> listExportDevices(Long packetId) throws ServiceException {
-        DeviceQuery whereParams = new DeviceQuery();
-        whereParams.setPacketId(packetId);
-        List<DevicePO> list = this.list(whereParams);
+    public List<ExportDeviceVO> listExportDevices(DeviceQuery param) throws ServiceException {
+        List<DevicePO> list = this.list(param);
 
         return BeanUtils.copyProperties(list, ExportDeviceVO.class);
     }

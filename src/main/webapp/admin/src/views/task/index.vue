@@ -205,7 +205,7 @@
                     return;
                 }
                 const row = this.selections[0];
-                const exportUrl = window.vars.URLApiBase + '/device/export?packetId=' + row.id;
+                const exportUrl = window.vars.URLApiBase + '/device/exportPacketDevice?packetId=' + row.id;
                 return location.href = exportUrl;
             },
 

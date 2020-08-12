@@ -17,6 +17,7 @@ import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.domain.packet.PacketVO;
 import com.sixing.base.domain.packetschool.PacketSchoolPO;
 import com.sixing.base.domain.packetschool.PacketSchoolQuery;
+import com.sixing.base.domain.school.ExportSchoolProgressVO;
 import com.sixing.base.domain.school.SchoolPO;
 import com.sixing.base.domain.school.SchoolQuery;
 import com.sixing.base.domain.school.SchoolVO;
@@ -402,46 +403,50 @@ public class SchoolServiceImpl implements SchoolService {
         result.setTotal(pageRecords.getTotal());
         result.setRecords(BeanUtils.copyProperties(pageRecords.getRecords(), SchoolVO.class));
         for (SchoolVO record : result.getRecords()) {
-            DeviceQuery whereParams = new DeviceQuery();
-            whereParams.setSchoolId(record.getId());
-            List<DevicePO> devices = deviceService.list(whereParams);
-            if (CollectionUtils.isNotEmpty(devices)) {
-                int totalNum = devices.stream().mapToInt(DevicePO::getNum).sum();
-                BigDecimal totalAmount = devices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-                List<DevicePO> unStartDevices = devices.stream().filter(item -> item.getNum() - item.getProduceNum() > 0).collect(Collectors.toList());
-                List<DevicePO> produceDevices = devices.stream().filter(item -> item.getNum() - item.getProduceNum() <= 0).collect(Collectors.toList());
-                List<DevicePO> arrivalDevices = devices.stream().filter(item -> item.getNum() - item.getArrivalNum() <= 0).collect(Collectors.toList());
-                List<DevicePO> installDevices = devices.stream().filter(item -> item.getNum() - item.getInstallNum() <= 0).collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(unStartDevices)) {
-                    int completeNum = unStartDevices.stream().mapToInt(DevicePO::getNum).sum();
-                    BigDecimal completeAmount = unStartDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-                    record.setUnStartDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
-                    record.setUnStartDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
-                }
-
-                if (CollectionUtils.isNotEmpty(produceDevices)) {
-                    int completeNum = produceDevices.stream().mapToInt(DevicePO::getNum).sum();
-                    BigDecimal completeAmount = produceDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-                    record.setProduceDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
-                    record.setProduceDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
-                }
-
-                if (CollectionUtils.isNotEmpty(arrivalDevices)) {
-                    int completeNum = arrivalDevices.stream().mapToInt(DevicePO::getNum).sum();
-                    BigDecimal completeAmount = arrivalDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-                    record.setArrivalDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
-                    record.setArrivalDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
-                }
-
-                if (CollectionUtils.isNotEmpty(installDevices)) {
-                    int completeNum = installDevices.stream().mapToInt(DevicePO::getNum).sum();
-                    BigDecimal completeAmount = installDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-                    record.setInstallDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
-                    record.setInstallDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
-                }
-            }
+            this.setSchoolProgress(record);
         }
         return result;
+    }
+
+    private void setSchoolProgress(SchoolVO record) throws ServiceException {
+        DeviceQuery whereParams = new DeviceQuery();
+        whereParams.setSchoolId(record.getId());
+        List<DevicePO> devices = deviceService.list(whereParams);
+        if (CollectionUtils.isNotEmpty(devices)) {
+            int totalNum = devices.stream().mapToInt(DevicePO::getNum).sum();
+            BigDecimal totalAmount = devices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+            List<DevicePO> unStartDevices = devices.stream().filter(item -> item.getNum() - item.getProduceNum() > 0).collect(Collectors.toList());
+            List<DevicePO> produceDevices = devices.stream().filter(item -> item.getNum() - item.getProduceNum() <= 0).collect(Collectors.toList());
+            List<DevicePO> arrivalDevices = devices.stream().filter(item -> item.getNum() - item.getArrivalNum() <= 0).collect(Collectors.toList());
+            List<DevicePO> installDevices = devices.stream().filter(item -> item.getNum() - item.getInstallNum() <= 0).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(unStartDevices)) {
+                int completeNum = unStartDevices.stream().mapToInt(DevicePO::getNum).sum();
+                BigDecimal completeAmount = unStartDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+                record.setUnStartDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                record.setUnStartDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+            }
+
+            if (CollectionUtils.isNotEmpty(produceDevices)) {
+                int completeNum = produceDevices.stream().mapToInt(DevicePO::getNum).sum();
+                BigDecimal completeAmount = produceDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+                record.setProduceDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                record.setProduceDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+            }
+
+            if (CollectionUtils.isNotEmpty(arrivalDevices)) {
+                int completeNum = arrivalDevices.stream().mapToInt(DevicePO::getNum).sum();
+                BigDecimal completeAmount = arrivalDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+                record.setArrivalDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                record.setArrivalDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+            }
+
+            if (CollectionUtils.isNotEmpty(installDevices)) {
+                int completeNum = installDevices.stream().mapToInt(DevicePO::getNum).sum();
+                BigDecimal completeAmount = installDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+                record.setInstallDeviceNumProgress(new BigDecimal(String.valueOf(completeNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+                record.setInstallDeviceAmountProgress(completeAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)));
+            }
+        }
     }
 
     @Override
@@ -477,5 +482,18 @@ public class SchoolServiceImpl implements SchoolService {
         HartsValue amountHartsValue = new HartsValue(2, amountData);
         hartsResult.setData(Lists.newArrayList(numHartsValue, amountHartsValue));
         return hartsResult;
+    }
+
+    @Override
+    public List<ExportSchoolProgressVO> listExportProgress(SchoolQuery param) throws ServiceException {
+        final List<SchoolPO> schools = this.list(param);
+        if (CollectionUtils.isEmpty(schools)) {
+            return null;
+        }
+        final List<SchoolVO> schoolVOS = BeanUtils.copyProperties(schools, SchoolVO.class);
+        for (SchoolVO school : schoolVOS) {
+            this.setSchoolProgress(school);
+        }
+        return BeanUtils.copyProperties(schoolVOS, ExportSchoolProgressVO.class);
     }
 }

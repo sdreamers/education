@@ -12,9 +12,13 @@
                     <el-button @click="handleClear">清除</el-button>
                 </el-col>
 
+                <el-button style="float: right;margin-right: 30px;" type="primary" v-if="G.userInfo.insider" @click="handleExportProgress">导出进度</el-button>
+                <el-button style="float: right;margin-right: 30px;" type="primary" v-if="G.userInfo.insider" @click="handleExportDevices">导出设备明细</el-button>
             </el-row>
             <el-row class="list-con clearfix">
-                <el-table :data="tableData" border v-loading="loading">
+                <el-table :data="tableData" border v-loading="loading" @select="select"
+                          @selection-change="handleSelectionChange">
+                    <el-table-column type="selection" width="50"></el-table-column>
                     <el-table-column v-for="(column,key) in columns" :label="column.title" :key="key" align="center">
                         <el-table-column v-for="(subColumn,subKey) in column.columns" :prop="subColumn.key" width="100%"
                                          :label="subColumn.title" align="center" :key="subKey">
@@ -182,8 +186,33 @@
                 this.supplierForm = JSON.parse(JSON.stringify(supplierForm));
             },
 
-            handleExport() {
-                const exportUrl = window.vars.URLApiBase + '/quota/export';
+            select(selection, row) {
+                this.$refs.table.clearSelection();
+                if (selection.length === 0) {
+                    return;
+                }
+                this.$refs.table.toggleRowSelection(row, true);
+            },
+
+            handleSelectionChange(row) {
+                this.selections = row;
+            },
+
+            handleExportDevices() {
+                if (!this.selections || this.selections.length !== 1) {
+                    this.$notify.error('请选择一条记录导出');
+                    return;
+                }
+                const row = this.selections[0];
+                const exportUrl = window.vars.URLApiBase + '/device/exportSchoolDevice?schoolId=' + row.id;
+                return location.href = exportUrl;
+            },
+
+            handleExportProgress() {
+                let exportUrl = window.vars.URLApiBase + '/school/exportProgress?a=1';
+                if (this.search.nameLike) {
+                    exportUrl += `&nameLike=${this.search.nameLike}`;
+                }
                 return location.href = exportUrl;
             }
         },

@@ -3,23 +3,24 @@ package com.sixing.education.packet.controller;
 import com.sixing.base.domain.base.HartsResult;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
-import com.sixing.base.domain.base.ResultModel;
+import com.sixing.base.domain.packet.ExportPacketProgressVO;
 import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.domain.packet.PacketQuery;
 import com.sixing.base.domain.packet.PacketVO;
-import com.sixing.base.security.domain.User;
-import com.sixing.base.security.utils.TokenManager;
+import com.sixing.base.utils.CollectionUtils;
 import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.packet.service.PacketService;
-import com.sixing.education.user.service.UserService;
+import com.sixing.education.packet.utils.ExcelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -52,6 +53,19 @@ public class PacketController {
             return packetService.progressPages(param, pageParam);
         } catch (Exception e) {
             return new PageRecords<>();
+        }
+    }
+
+    @GetMapping("/exportProgress")
+    public void exportProgress(PacketQuery param, HttpServletResponse response) throws Exception {
+        List<ExportPacketProgressVO> packets = packetService.listExportProgress(param);
+        if (CollectionUtils.isNotEmpty(packets)) {
+            String filename = new String("包进度.xls".getBytes(), StandardCharsets.ISO_8859_1);
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment;filename=" + filename);
+            ServletOutputStream out = response.getOutputStream();
+            ExcelUtils.export(out, packets);
+            out.close();
         }
     }
 

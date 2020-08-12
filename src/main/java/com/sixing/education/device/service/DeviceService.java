@@ -180,10 +180,11 @@ public interface DeviceService {
     /**
      * 导入excel
      *
-     * @param devices     解析生成的设备
-     * @param packet      包
-     * @param currentYear excel对应的年份
-     * @throws ServiceException
+     * @param devices      解析生成的设备
+     * @param packet       包
+     * @param currentYear  excel对应的年份
+     * @param supplierName 供应商名称
+     * @throws ServiceException 业务异常
      */
     void importDevice(List<ImportDeviceVO> devices, String packet, Integer currentYear, String supplierName) throws ServiceException;
 
@@ -200,17 +201,19 @@ public interface DeviceService {
     /**
      * 更新节点
      *
-     * @param id 设备ID
+     * @param id     设备ID
+     * @param type   更新类型
      * @param status 状态
-     * @throws ServiceException
-     * */
+     * @throws ServiceException 业务异常
+     */
     void update(Long id, Integer type, Integer status) throws ServiceException;
 
     /**
      * 获取设备导出实体
      *
-     * @param packetId 包ID
+     * @param param 查询条件
      * @return 设备
-     * */
-    List<ExportDeviceVO> listExportDevices(Long packetId) throws ServiceException;
+     * @throws ServiceException 业务异常
+     */
+    List<ExportDeviceVO> listExportDevices(DeviceQuery param) throws ServiceException;
 }
