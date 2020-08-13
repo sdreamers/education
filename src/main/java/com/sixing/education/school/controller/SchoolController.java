@@ -45,8 +45,8 @@ public class SchoolController {
         }
     }
 
-    @GetMapping("/exportSchoolProgress")
-    public void exportSchoolProgress(SchoolQuery param, HttpServletResponse response) throws Exception {
+    @GetMapping("/exportProgress")
+    public void exportProgress(SchoolQuery param, HttpServletResponse response) throws Exception {
         List<ExportSchoolProgressVO> schools = schoolService.listExportProgress(param);
         if (CollectionUtils.isNotEmpty(schools)) {
             String filename = new String("学校进度.xls".getBytes(), StandardCharsets.ISO_8859_1);

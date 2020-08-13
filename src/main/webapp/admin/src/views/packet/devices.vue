@@ -57,6 +57,7 @@
         { key: 'packetName', title: '包名' },
         { key: 'schoolName', title: '学校名' },
         { key: 'name', title: '设备名称' },
+        { key: 'no', title: '设备编号' },
         { key: 'num', title: '数量' },
         { key: 'unit', title: '单位' },
         { key: 'excludingTaxPrice', title: '不含税单价(元)' },

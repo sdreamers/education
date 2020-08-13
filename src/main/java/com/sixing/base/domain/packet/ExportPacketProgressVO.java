@@ -17,26 +17,26 @@ public class ExportPacketProgressVO {
     private String name;
 
     @ExcelProperty(value = "生产/采购未完成任务进度", index = 1)
-    private BigDecimal unStartDeviceNumProgress;
+    private String unStartDeviceNumProgressStr;
 
     @ExcelProperty(value = "生产/采购未完成金额进度", index = 2)
-    private BigDecimal unStartDeviceAmountProgress;
+    private String unStartDeviceAmountProgressStr;
 
     @ExcelProperty(value = "生产/采购完成任务进度", index = 3)
-    private BigDecimal produceDeviceNumProgress;
+    private String produceDeviceNumProgressStr;
 
     @ExcelProperty(value = "生产/采购完成金额进度", index = 4)
-    private BigDecimal produceDeviceAmountProgress;
+    private String produceDeviceAmountProgressStr;
 
     @ExcelProperty(value = "到货完成任务进度", index = 5)
-    private BigDecimal arrivalDeviceNumProgress;
+    private String arrivalDeviceNumProgressStr;
 
     @ExcelProperty(value = "到货完成金额进度", index = 6)
-    private BigDecimal arrivalDeviceAmountProgress;
+    private String arrivalDeviceAmountProgressStr;
 
     @ExcelProperty(value = "整体任务进度", index = 7)
-    private BigDecimal installDeviceNumProgress;
+    private String installDeviceNumProgressStr;
 
     @ExcelProperty(value = "整体金额进度", index = 8)
-    private BigDecimal installDeviceAmountProgress;
+    private String installDeviceAmountProgressStr;
 }
