@@ -156,7 +156,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.21</version>
+            <version>8.0.15</version>
         </dependency>
         <dependency>
             <groupId>net.sf.json-lib</groupId>
@@ -376,7 +376,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.dongpinyun.pol.PolApplication</mainClass>
+                            <mainClass>com.sixing.education.EducationApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

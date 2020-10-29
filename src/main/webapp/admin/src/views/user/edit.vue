@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :close-on-click-modal="false" title="导入设备" :visible="dialogVisible" width="30%" @close="$emit('close')">
+    <el-dialog :close-on-click-modal="false" title="新建/编辑用户" :visible="dialogVisible" width="30%" @close="$emit('close')">
         <el-form :model="form" label-position="left" ref="ruleForm" label-width="90px" :rules="rules">
             <el-form-item label="用户名" prop="name">
                 <el-input v-model="form.name" placeholder="请输入用户名">
@@ -10,7 +10,7 @@
             </el-form-item>
             <el-form-item label="手机号码" prop="telephone">
                 <el-input v-model="form.telephone" placeholder="请输入手机号码"></el-input>
-            </el-form-item> 
+            </el-form-item>
             <el-form-item label="角色" prop="nature">
                 <el-select v-model="form.nature" filterable placeholder="请选择角色" @change="handleNatureChange">
                         <el-option

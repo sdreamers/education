@@ -1,8 +1,6 @@
 server:
-  port: 8767
+  port: 80
   max-session-num: 10
-  servlet:
-    context-path: /education
 spring:
   application:
     name: education
@@ -21,9 +19,12 @@ spring:
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://172.19.0.111:3306/claim_platform?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
-      username: it
-      password: its123
+      url: jdbc:mysql://127.0.0.1:3306/education?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+      username: root
+      #本地
+      #password: 130327
+      #线上
+      password: Education!@#2020
       driver-class-name: com.mysql.jdbc.Driver
       filters: stat
       maxActive: 5
