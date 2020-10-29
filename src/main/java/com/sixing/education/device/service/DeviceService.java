@@ -1,4 +1,4 @@
-package com.dongpinyun.productmodule.shop.service;
+package com.sixing.education.device.service;
 
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;

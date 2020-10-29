@@ -1,13 +1,9 @@
 package com.sixing.education.device.service.impl;
 
 import com.google.common.collect.Lists;
-import com.sixing.base.dict.device.DeviceStatusEnum;
-import com.sixing.base.dict.device.DeviceTypeEnum;
-import com.sixing.base.dict.device.InProgressStatusEnum;
 import com.sixing.base.domain.base.PageRecords;
 import com.sixing.base.domain.base.PageVO;
 import com.sixing.base.domain.device.*;
-import com.dongpinyun.productmodule.shop.service.DeviceService;
 import com.sixing.base.domain.packet.PacketPO;
 import com.sixing.base.domain.packet.PacketQuery;
 import com.sixing.base.domain.packetschool.PacketSchoolPO;
@@ -21,6 +17,7 @@ import com.sixing.base.utils.CollectionUtils;
 import com.sixing.base.utils.StringUtils;
 import com.sixing.base.utils.exception.ServiceException;
 import com.sixing.education.device.dao.DeviceDAO;
+import com.sixing.education.device.service.DeviceService;
 import com.sixing.education.packet.service.PacketService;
 import com.sixing.education.packetschool.service.PacketSchoolService;
 import com.sixing.education.school.service.SchoolService;
