@@ -78,7 +78,8 @@
         { key: 'schoolName', title: '学校名称' },
         { key: 'name', title: '设备名称' },
         { key: 'no', title: '设备编号' },
-        /*{ key: 'technicalParamter', title: '技术参数' },*/
+        { key: 'specification', title: '规格' },
+        { key: 'model', title: '规格' },
         { key: 'num', title: '数量' },
         { key: 'unit', title: '单位' },
         { key: 'includingTaxPrice', title: '含税单价(元)' },

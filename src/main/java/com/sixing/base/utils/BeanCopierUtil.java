@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author sixing
  */
 public class BeanCopierUtil {
+
     /**
      * BeanCopier的缓存
      */

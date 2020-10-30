@@ -423,7 +423,7 @@ public class SchoolServiceImpl implements SchoolService {
             List<DevicePO> hasInstallDevices = devices.stream().filter(item -> item.getInstallNum() > 0).collect(Collectors.toList());
 
             int unStartNum = totalNum - devices.stream().mapToInt(DevicePO::getProduceNum).sum();
-            BigDecimal unStartAmount = totalAmount.subtract(hasProduceDevices.stream().map(DevicePO::getTotalAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
+            BigDecimal unStartAmount = totalAmount.subtract(hasProduceDevices.stream().map(item -> item.getIncludingTaxPrice().multiply(new BigDecimal(item.getProduceNum()))).reduce(BigDecimal.ZERO, BigDecimal::add));
             record.setUnStartDeviceNumProgress(new BigDecimal(String.valueOf(unStartNum)).divide(new BigDecimal(String.valueOf(totalNum)), 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).setScale(2, RoundingMode.HALF_UP));
             record.setUnStartDeviceAmountProgress(unStartAmount.divide(totalAmount, 4, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).setScale(2, RoundingMode.HALF_UP));
 
