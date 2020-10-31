@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.Service;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -195,6 +196,9 @@ public class DeviceController {
             if (device.getNum() == null || device.getNum() < 1) {
                 return ResultModel.fail("第" + row + "行数量为空, 请检查");
             }
+            if (StringUtils.isBlank(device.getNo())) {
+                return ResultModel.fail("第" + row + "行设备编号为空, 请检查");
+            }
             if (device.getExcludingTaxPrice() == null) {
                 return ResultModel.fail("第" + row + "行不含税单价为空, 请检查");
             }
@@ -206,6 +210,9 @@ public class DeviceController {
             }
             if (device.getTotalAmount() == null) {
                 return ResultModel.fail("第" + row + "行含税合价为空, 请检查");
+            }
+            if (!device.getIncludingTaxPrice().multiply(new BigDecimal(device.getNum().toString())).equals(device.getTotalAmount())) {
+                return ResultModel.fail("第" + row + "行含税合价计算不准确, 请检查");
             }
             if (StringUtils.isBlank(device.getSchoolName())) {
                 return ResultModel.fail("第" + row + "行学校为空, 请检查");
