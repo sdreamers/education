@@ -20,6 +20,7 @@
         <result column="arrival_num" property="arrivalNum" />
         <result column="install_num" property="installNum" />
         <result column="no" property="no" />
+        <result column="brand" property="brand" />
     </resultMap>
 
     <sql id="selectAll">
@@ -56,6 +57,7 @@
             <if test="setParams.arrivalTime != null">`arrival_time`=#{setParams.arrivalTime},</if>
             <if test="setParams.installTime != null">`install_time`=#{setParams.installTime},</if>
             <if test="setParams.no != null">`no`=#{setParams.no},</if>
+            <if test="setParams.brand != null">`no`=#{setParams.brand},</if>
         </set>
     </sql>
 
@@ -117,6 +119,7 @@
             <if test="insertParams.installNum != null">`install_num`,</if>
             <if test="insertParams.currentYear != null"> `current_year`,</if>
             <if test="insertParams.no != null"> `no`,</if>
+            <if test="insertParams.brand != null"> `brand`,</if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="insertParams.id != null">#{insertParams.id},</if>
@@ -139,6 +142,7 @@
             <if test="insertParams.installNum != null">#{insertParams.installNum},</if>
             <if test="insertParams.currentYear != null">#{insertParams.currentYear},</if>
             <if test="insertParams.no != null">#{insertParams.no},</if>
+            <if test="insertParams.brand != null">#{insertParams.brand},</if>
         </trim>
     </insert>
 

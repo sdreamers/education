@@ -31,30 +31,33 @@ public class ExportDeviceVO {
     @ExcelProperty(value = "型号", index = 5)
     private String model;
 
-    @ExcelProperty(value = "单位", index = 6)
+    @ExcelProperty(value = "品牌/制造商", index = 6)
+    private String brand;
+
+    @ExcelProperty(value = "单位", index = 7)
     private String unit;
 
-    @ExcelProperty(value = "数量", index = 7)
+    @ExcelProperty(value = "数量", index = 8)
     private Integer num;
 
-    @ExcelProperty(value = "不含税单价", index = 8)
+    @ExcelProperty(value = "不含税单价", index = 9)
     private BigDecimal excludingTaxPrice;
 
-    @ExcelProperty(value = "税金", index = 9)
+    @ExcelProperty(value = "税金", index = 10)
     private BigDecimal tax;
 
-    @ExcelProperty(value = "含税单价", index = 10)
+    @ExcelProperty(value = "含税单价", index = 11)
     private BigDecimal includingTaxPrice;
 
-    @ExcelProperty(value = "含税总价", index = 11)
+    @ExcelProperty(value = "含税总价", index = 12)
     private BigDecimal totalAmount;
 
-    @ExcelProperty(value = "生产/采购数量", index = 12)
+    @ExcelProperty(value = "生产/采购数量", index = 13)
     private Integer produceNum;
 
-    @ExcelProperty(value = "到货数量", index = 13)
+    @ExcelProperty(value = "到货数量", index = 14)
     private Integer arrivalNum;
 
-    @ExcelProperty(value = "安装数量", index = 14)
+    @ExcelProperty(value = "安装数量", index = 15)
     private Integer installNum;
 }

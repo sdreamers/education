@@ -17,14 +17,18 @@
             <el-row class="list-con clearfix">
                 <el-table :data="tableData" border v-loading="loading">
                     <el-table-column v-for="(column,key) in columns" :label="column.title" :key="key" align="center">
-                        <el-table-column v-for="(subColumn,subKey) in column.columns" :prop="subColumn.key" width="120%"
-                                         :label="subColumn.title" align="center" :key="subKey">
-                            <template slot-scope="scope">
-                                <span>{{scope.row[subColumn.key]}}</span>
-                            </template>
-                        </el-table-column>
                         <template slot-scope="scope">
-                            <span>{{scope.row[column.key]}}</span>
+                            <template v-if="column.key !== 'name'">
+                                <span>{{scope.row[column.key]}}</span>
+                            </template>
+                            <template v-else>
+                                <el-popover trigger="hover" placement="top" width="50%">
+                                    <p>技术参数: {{ scope.row.technicalParamter }}</p>
+                                    <div slot="reference" class="name-wrapper">
+                                        <span>{{ scope.row[column.key] }}</span>
+                                    </div>
+                                </el-popover>
+                            </template>
                         </template>
                     </el-table-column>
                     <el-table-column prop="produce" label="生产/采购" align="center">
@@ -79,7 +83,8 @@
         { key: 'name', title: '设备名称' },
         { key: 'no', title: '设备编号' },
         { key: 'specification', title: '规格' },
-        { key: 'model', title: '规格' },
+        { key: 'model', title: '型号' },
+        { key: 'brand', title: '品牌/制造商' },
         { key: 'num', title: '数量' },
         { key: 'unit', title: '单位' },
         { key: 'includingTaxPrice', title: '含税单价(元)' },

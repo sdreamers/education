@@ -52,4 +52,7 @@ public class ImportDeviceVO {
 
     @ExcelProperty("学校名称")
     private String schoolName;
+
+    @ExcelProperty("品牌/制造商")
+    private String brand;
 }

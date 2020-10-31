@@ -44,4 +44,5 @@ public class DevicePO implements Serializable {
 	private Date arrivalTime;
 	private Date installTime;
 	private String currentYear;
+	private String brand;
 }
