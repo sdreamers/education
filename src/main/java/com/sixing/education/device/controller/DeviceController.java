@@ -158,7 +158,7 @@ public class DeviceController {
                 throw new ServiceException("供应商不能为空");
             }
             String currentYearStr = fileName.substring(fileName.lastIndexOf("-") + 1);
-            Integer currentYear;
+            int currentYear;
             try {
                 if (StringUtils.isBlank(currentYearStr) || (currentYear = Integer.parseInt(currentYearStr.replaceAll(Constant.YEAR_CN, ""))) < 1) {
                     throw new ServiceException("年份错误");

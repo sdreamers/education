@@ -1,6 +1,8 @@
 server:
   port: 80
   max-session-num: 10
+  tomcat:
+    basedir: /home/data/tmp
 spring:
   application:
     name: education
